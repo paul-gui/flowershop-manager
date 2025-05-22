@@ -14,6 +14,7 @@ export default {
         accent1: '#d16ba5',
         accent2: '#88d498',
         accent3: '#9d79bc',
+        error: '#f15c6d',
       },
     },
     fontFamily: {

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Locations from "@/components/Locations.vue";
 import LocationEdit from "@/components/LocationEdit.vue";
+import AuthPage from "@/views/AuthPage.vue";
 
 const routes = [
     {
@@ -11,6 +12,10 @@ const routes = [
     {
         path: '/location-edit',
         component: LocationEdit,
+    },
+    {
+        path: '/authentication',
+        component: AuthPage,
     }
 ]
 
