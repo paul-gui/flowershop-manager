@@ -42,12 +42,18 @@ const successMessage = ref("")
 
 async function handleRegistration() {
   errors.value = []
-  //Check if passwords match
-  if (user.value.password !== user.value.passwordConfirmation) {
-    alert('Passwords do not match!')
-  }
   //Attempt user registration
   try{
+    //Check if passwords match
+    if (user.value.password !== user.value.passwordConfirmation) {
+      throw {
+        response:{
+          data:[{
+            description: 'Passwords do not match',
+          }]
+        }
+      };
+    }
     const res = await register(user.value)
     successMessage.value = 'Account created!'
   } catch (err) {
