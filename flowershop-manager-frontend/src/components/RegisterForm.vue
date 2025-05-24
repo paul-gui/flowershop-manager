@@ -24,12 +24,11 @@
         <li class="mt-2" v-for="(err, index) in errors" :key="index">- {{ err }}</li>
       </ul>
     </form>
-
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { register } from "@/services/AuthenticationService.ts";
+import { register } from '@/services/AuthenticationService.js'
 
 const user = ref({
   email: "",
@@ -46,7 +45,6 @@ async function handleRegistration() {
   //Check if passwords match
   if (user.value.password !== user.value.passwordConfirmation) {
     alert('Passwords do not match!')
-    return
   }
   //Attempt user registration
   try{
