@@ -40,6 +40,7 @@ watch(loginForm, () => {
   error.value = '';
 }, { deep: true });
 
+
 async function handleLogin() {
   loading.value = true;
   error.value = '';
@@ -47,25 +48,27 @@ async function handleLogin() {
   try {
     const res = await login(loginForm.value); // This calls your login method
 
-    const decoded : any = jwtDecode(res.token);
-    const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-    const roleList = Array.isArray(roles) ? roles : [roles];
-    const auth = useAuthStore();
-    auth.setRoles(roleList);
-    console.log(auth.roles);
+    setRolesFromToken(res.token);
 
     // Redirect after login
-   await router.push('/'); // or whatever your home page is
+   await router.push('/locations'); // or whatever your home page is
 
   } catch (err: any) {
     if (err.response && err.response.data?.message) {
       error.value = err.response.data.message; // from backend
     } else {
-      console.log(err)
       error.value = 'Login failed. Please try again.'; // fallback
     }
   } finally {
     loading.value = false;
   }
+}
+
+function setRolesFromToken(token: string) {
+  const decoded : any = jwtDecode(token);
+  const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  const roleList = Array.isArray(roles) ? roles : [roles];
+  const auth = useAuthStore();
+  auth.setRoles(roleList);
 }
 </script>

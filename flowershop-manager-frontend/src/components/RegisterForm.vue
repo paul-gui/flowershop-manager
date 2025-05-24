@@ -38,7 +38,6 @@ const user = ref({
 })
 
 const errors = ref<string[]>([])
-const successMessage = ref("")
 
 async function handleRegistration() {
   errors.value = []
@@ -46,19 +45,14 @@ async function handleRegistration() {
   try{
     //Check if passwords match
     if (user.value.password !== user.value.passwordConfirmation) {
-      throw {
-        response:{
-          data:[{
-            description: 'Passwords do not match',
-          }]
-        }
-      };
+      errors.value = ['Passwords do not match']
     }
-    const res = await register(user.value)
-    successMessage.value = 'Account created!'
-  } catch (err) {
-    if (err.response?.data && Array.isArray(err.response.data)) {
-      errors.value = err.response.data.map((e:any) => e.description)
+    else {
+      const res = await register(user.value)
+    }
+  } catch (error) {
+    if (error.response?.data && Array.isArray(error.response.data)) {
+      errors.value = error.response.data.map((e:any) => e.description)
     }
     else {
       errors.value = ['An unexpected error occurred.']
