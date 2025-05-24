@@ -6,7 +6,7 @@ import AuthPage from "@/views/AuthPage.vue";
 
 const routes = [
     {
-        path: '/',
+        path: '/locations',
         component: Locations,
     },
     {
@@ -14,7 +14,7 @@ const routes = [
         component: LocationEdit,
     },
     {
-        path: '/authentication',
+        path: '/',
         component: AuthPage,
     }
 ]

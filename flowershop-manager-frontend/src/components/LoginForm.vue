@@ -23,7 +23,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { login } from "@/services/AuthenticationService.js"; // adjust path as needed
+import { login } from "@/services/AuthenticationService"; // adjust path as needed
+import { jwtDecode } from "jwt-decode";
+import { useAuthStore } from "@/stores/auth";
 
 const error = ref('');
 const loading = ref(false);
@@ -34,9 +36,9 @@ const loginForm = ref({
   password: '',
 })
 
-watch([loginForm.value.email, loginForm.value.password], () => {
+watch(loginForm, () => {
   error.value = '';
-});
+}, { deep: true });
 
 async function handleLogin() {
   loading.value = true;
@@ -45,13 +47,21 @@ async function handleLogin() {
   try {
     const res = await login(loginForm.value); // This calls your login method
 
+    const decoded : any = jwtDecode(res.token);
+    const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    const roleList = Array.isArray(roles) ? roles : [roles];
+    const auth = useAuthStore();
+    auth.setRoles(roleList);
+    console.log(auth.roles);
+
     // Redirect after login
-   await router.push('/dashboard'); // or whatever your home page is
+   await router.push('/'); // or whatever your home page is
 
   } catch (err: any) {
     if (err.response && err.response.data?.message) {
       error.value = err.response.data.message; // from backend
     } else {
+      console.log(err)
       error.value = 'Login failed. Please try again.'; // fallback
     }
   } finally {
