@@ -48,10 +48,11 @@ async function handleLogin() {
   try {
     const res = await login(loginForm.value); // This calls your login method
 
+    setToken(res.token);
     setRolesFromToken(res.token);
 
     // Redirect after login
-   await router.push('/locations'); // or whatever your home page is
+   await router.push('/warehouses'); // or whatever your home page is
 
   } catch (err: any) {
     if (err.response && err.response.data?.message) {
@@ -62,6 +63,11 @@ async function handleLogin() {
   } finally {
     loading.value = false;
   }
+}
+
+function setToken(token: string) {
+  const auth = useAuthStore();
+  auth.setToken(token);
 }
 
 function setRolesFromToken(token: string) {
