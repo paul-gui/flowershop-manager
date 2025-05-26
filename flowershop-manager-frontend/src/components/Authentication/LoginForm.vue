@@ -3,11 +3,11 @@
     <h2 class="text-2xl font-bold text-center text-text_primary">Login</h2>
     <div>
       <label class="block mb-1 font-medium text-text_secondary">Email</label>
-      <input v-model="loginForm.email" type="email" class="w-full p-2 rounded-md border border-cards bg-divider focus:outline-none focus:border-gray-500 text-text_secondary" required />
+      <input v-model="loginForm.email" type="email" class="w-full p-2 rounded-md border border-cards bg-divider focus:outline-none focus:ring-2 focus:ring-indigo-500 text-text_secondary" required />
     </div>
     <div>
       <label class="block mb-1 font-medium text-text_secondary">Password</label>
-      <input v-model="loginForm.password" type="password" class="w-full p-2 border rounded-md border-cards bg-divider focus:outline-none focus:border-gray-500 text-text_secondary" required />
+      <input v-model="loginForm.password" type="password" class="w-full p-2 border rounded-md border-cards bg-divider focus:outline-none focus:ring-2 focus:ring-indigo-500 text-text_secondary" required />
     </div>
     <button type="submit" :disabled="loading" class="w-full bg-accent3 text-text_accents py-2 rounded-md hover:bg-[rgb(128,100,128)]">
       <!-- Show spinner when loading -->
