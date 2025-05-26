@@ -13,11 +13,14 @@
 import WarehouseButton from "@/components/Warehouses/warehouse_button.vue";
 import { getWarehouses } from "@/services/WarehousesService";
 import {onMounted, ref} from "vue";
+import { Warehouse } from "@/components/Warehouses/Models/Warehouse";
 
-const buttonLabels = ref([])
+const buttonLabels = ref([''])
 
-onMounted(() => {
-   getWarehousesAsync();
+onMounted(async () => {
+  const res:Warehouse[] = await getWarehouses()
+  buttonLabels.value = res.map(i => i.name)
+  console.log(buttonLabels.value)
 })
 
 async function getWarehousesAsync() {
