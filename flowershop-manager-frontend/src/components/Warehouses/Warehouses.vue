@@ -11,11 +11,19 @@
 </template>
 <script setup lang="ts">
 import WarehouseButton from "@/components/Warehouses/warehouse_button.vue";
+import { getWarehouses } from "@/services/WarehousesService";
+import {onMounted, ref} from "vue";
 
-const buttonLabels = [
-    'Solar mare curte',
-    'Solar mic curte',
-    'Solar 1 afara',
-    'Solar 2 afara',
-]
+const buttonLabels = ref([])
+
+onMounted(() => {
+   getWarehousesAsync();
+})
+
+async function getWarehousesAsync() {
+  const res = await getWarehouses()
+  buttonLabels.value = res.map(i => i.name)
+  console.log(buttonLabels.value)
+}
+
 </script>

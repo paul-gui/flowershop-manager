@@ -18,7 +18,7 @@ namespace FlowershopAPI.Controllers
             _warehousesManager = warehousesManager;
         }
 
-        [HttpGet]
+        [HttpGet("GetWarehouses")]
         public async Task<ActionResult<List<Warehouse>>> GetWarehouses()
         {
             var result = await _warehousesManager.GetWarehousesAsync();
@@ -38,7 +38,7 @@ namespace FlowershopAPI.Controllers
             }
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPost("CreateWarehouse")]
         public async Task<ActionResult<Warehouse>> CreateWarehouse([FromBody]WarehouseDto dto)
         {
             var result = await _warehousesManager.CreateWarehouseAsync(dto);
