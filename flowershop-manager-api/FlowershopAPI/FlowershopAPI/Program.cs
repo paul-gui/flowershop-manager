@@ -1,5 +1,7 @@
 
 using FlowershopAPI.Data;
+using FlowershopAPI.Managers.Warehouses;
+using FlowershopAPI.Managers.Warehouses.Contract;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -71,6 +73,8 @@ namespace FlowershopAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddTransient<IWarehousesManager, WarehousesManager>();
 
             var app = builder.Build();
 
