@@ -50,7 +50,7 @@ async function handleRegistration() {
     else {
       const res = await register(user.value)
     }
-  } catch (error) {
+  } catch (error: any) {
     if (error.response?.data && Array.isArray(error.response.data)) {
       errors.value = error.response.data.map((e:any) => e.description)
     }
