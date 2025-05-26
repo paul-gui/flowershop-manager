@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen gap-10">
+  <div class="flex flex-col items-center justify-center h-screen gap-10">
     <h1 class="text-h1 text-text_primary">Locatii</h1>
-    <div class="flex w-[80%] flex-col items-center space-y-2">
+    <div class="w-[80%] space-y-2 max-h-[60%] overflow-y-auto">
       <div v-for="(labelText, index) in buttonLabels" :key="index" class="flex rounded-lg overflow-hidden border border-divider bg-cards text-text_secondary w-full max-w-md">
         <warehouse-button :label="labelText"></warehouse-button>
       </div>
@@ -11,10 +11,10 @@
 </template>
 <script setup lang="ts">
 import WarehouseButton from "@/components/Warehouses/warehouse_button.vue";
-import { getWarehouses } from "@/services/WarehousesService";
+import { getWarehouses } from "@/services/WarehousesService.ts";
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import type { Warehouse } from "@/components/Warehouses/Models/Warehouse";
+import type { Warehouse } from "@/components/Warehouses/Models/Warehouse.ts";
 
 const buttonLabels = ref([''])
 

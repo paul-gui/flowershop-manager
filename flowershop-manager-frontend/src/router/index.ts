@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/warehouse-details',
       name: 'warehouseDetails',
-      component: () => import('../components/Warehouses/WarehouseDetails.vue'),
+      component: () => import('../components/Warehouses/WarehouseAdd.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
   ],
