@@ -6,27 +6,30 @@
         <warehouse-button :label="labelText"></warehouse-button>
       </div>
     </div>
-    <button class="bg-accent2 py-3 px-8 rounded-lg" onclick="location.href='warehouse-details'">Adauga</button>
+    <button class="bg-accent2 py-3 px-8 rounded-lg" v-on:click="goToAddWarehouse">Adauga</button>
   </div>
 </template>
 <script setup lang="ts">
 import WarehouseButton from "@/components/Warehouses/warehouse_button.vue";
 import { getWarehouses } from "@/services/WarehousesService";
-import {onMounted, ref} from "vue";
-import { Warehouse } from "@/components/Warehouses/Models/Warehouse";
+import { onMounted, ref } from "vue";
+import router from "@/router";
+import type { Warehouse } from "@/components/Warehouses/Models/Warehouse";
 
 const buttonLabels = ref([''])
 
 onMounted(async () => {
-  const res:Warehouse[] = await getWarehouses()
-  buttonLabels.value = res.map(i => i.name)
-  console.log(buttonLabels.value)
+  await getWarehousesAsync();
 })
 
 async function getWarehousesAsync() {
-  const res = await getWarehouses()
+  const res:Warehouse[] = await getWarehouses()
   buttonLabels.value = res.map(i => i.name)
   console.log(buttonLabels.value)
+}
+
+function goToAddWarehouse(): void {
+  router.push("/warehouse-details")
 }
 
 </script>

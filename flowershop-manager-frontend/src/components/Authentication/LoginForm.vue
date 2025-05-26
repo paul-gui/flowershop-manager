@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { login } from "@/services/AuthenticationService"; // adjust path as needed
+import { login } from "@/services/AuthenticationService";
 import { jwtDecode } from "jwt-decode";
 import { useAuthStore } from "@/stores/auth";
 

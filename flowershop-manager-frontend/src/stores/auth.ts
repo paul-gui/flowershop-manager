@@ -1,10 +1,14 @@
 import { defineStore } from 'pinia';
 
+type authState = {
+    token: string | null;
+    roles: string[];
+}
+
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
+    state: () :authState => ({
         token: null,
-        roles: [],
-        user: null
+        roles: [''],
     }),
     actions: {
         setToken(token: string) {
@@ -16,7 +20,6 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.token = null;
             this.roles = [];
-            this.user = null;
         }
     },
     getters: {

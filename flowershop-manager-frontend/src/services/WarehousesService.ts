@@ -1,5 +1,5 @@
 import api from "@/services/API";
-import { WarehouseDto } from "@/dtos/dataInputDTOs";
+import type { WarehouseDto } from "@/dtos/dataInputDTOs";
 
 const baseUrl = 'Warehouses'
 

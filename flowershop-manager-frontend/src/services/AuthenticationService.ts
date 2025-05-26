@@ -1,5 +1,5 @@
 import api from "@/services/API";
-import { LoginDto, RegisterDto } from "@/dtos/authDTOs"
+import type { LoginDto, RegisterDto } from "@/dtos/authDTOs"
 
 const baseUrl = "Auth";
 
