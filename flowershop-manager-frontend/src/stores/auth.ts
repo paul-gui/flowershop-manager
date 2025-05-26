@@ -7,10 +7,10 @@ export const useAuthStore = defineStore('auth', {
         user: null
     }),
     actions: {
-        setToken(token) {
+        setToken(token: string) {
             this.token = token;
         },
-        setRoles(roles) {
+        setRoles(roles: string[]) {
             this.roles = roles;
         },
         logout() {
@@ -18,5 +18,10 @@ export const useAuthStore = defineStore('auth', {
             this.roles = [];
             this.user = null;
         }
-    }
+    },
+    getters: {
+        isAuthenticated: state => !!state.token,
+        hasRole: (state) => (role: string) => state.roles?.includes(role),
+    },
+    persist: true,
 });
