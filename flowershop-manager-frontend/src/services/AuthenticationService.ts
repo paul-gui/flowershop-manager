@@ -9,6 +9,5 @@ export async function register(registerDto: RegisterDto) {
 }
 export async function login(loginDto: LoginDto) {
     const res = await api.post(baseUrl + "/login", loginDto);
-    localStorage.setItem("token",res.data.token);
     return res.data;
 }
