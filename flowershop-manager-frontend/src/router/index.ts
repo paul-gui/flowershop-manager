@@ -3,11 +3,13 @@ import AuthPage from '@/views/AuthPage.vue'
 import Warehouses from '@/components/Warehouses/Warehouses.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/auth',
+      path: '/',
       name: 'auth',
       component: AuthPage,
     },
@@ -18,11 +20,18 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/warehouse-details',
+      path: '/warehouse-details/:id',
       name: 'warehouseDetails',
       component: () => import('../components/Warehouses/WarehouseDetails.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
+      props: true
     },
+    {
+      path: '/warehouse-add',
+      name: 'wareHouseAdd',
+      component: () => import('../components/Warehouses/WarehouseAdd.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
+    }
   ],
 })
 
@@ -33,7 +42,7 @@ router.beforeEach((to, from, next) => {
   const requiredRoles = to.meta.roles as string[] | null;
 
   if (requiresAuth && !authStore.isAuthenticated) {
-    return next({ path: '/auth' })
+    return next({ path: '/' })
   }
 
   if (requiredRoles && !requiredRoles.every(role => authStore.roles.includes(role))){

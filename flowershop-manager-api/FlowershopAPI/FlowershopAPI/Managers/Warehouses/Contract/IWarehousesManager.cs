@@ -6,9 +6,10 @@ namespace FlowershopAPI.Managers.Warehouses.Contract
 {
     public interface IWarehousesManager
     {
-        Task<List<Warehouse>> GetWarehousesAsync();
-        Task<Warehouse?> GetWarehouseByIdAsync(string id);
-        Task<Warehouse> CreateWarehouseAsync(WarehouseDto warehouseDto);
-        Task<Warehouse> UpdateWarehouseAsync(string id, WarehouseDto dto);
+        Task<List<DTOs.WarehouseDTO>> GetWarehousesAsync();
+        Task<DTOs.WarehouseDTO?> GetWarehouseByIdAsync(Guid id);
+        Task<DTOs.WarehouseDTO> CreateWarehouseAsync(WarehouseInput warehouseDto);
+        Task<DTOs.WarehouseDTO> UpdateWarehouseAsync(Guid id, WarehouseInput dto);
+        Task<DTOs.WarehouseDTO> DeleteWarehouseAsync(Guid id);
     }
 }
