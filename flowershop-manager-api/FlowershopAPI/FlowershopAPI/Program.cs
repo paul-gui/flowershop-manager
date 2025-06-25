@@ -1,5 +1,6 @@
 
 using FlowershopAPI.Data;
+using FlowershopAPI.Managers.Products;
 using FlowershopAPI.Managers.Warehouses;
 using FlowershopAPI.Managers.Warehouses.Contract;
 using FlowershopAPI.Models;
@@ -74,7 +75,10 @@ namespace FlowershopAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAutoMapper(typeof(Program));
+
             builder.Services.AddTransient<IWarehousesManager, WarehousesManager>();
+            builder.Services.AddTransient<IProductsManager, ProductsManager>();
 
             var app = builder.Build();
 

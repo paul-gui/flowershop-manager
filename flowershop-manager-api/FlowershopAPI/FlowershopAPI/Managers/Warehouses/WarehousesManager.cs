@@ -1,8 +1,10 @@
-﻿using FlowershopAPI.Data;
+﻿using AutoMapper;
+using FlowershopAPI.Data;
 using FlowershopAPI.DTOs;
 using FlowershopAPI.Managers.Warehouses.Contract;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,37 +13,43 @@ namespace FlowershopAPI.Managers.Warehouses
     public class WarehousesManager : IWarehousesManager
     {
         ApplicationDbContext _context;
-        public WarehousesManager(ApplicationDbContext context) 
+        private readonly IMapper _mapper;
+        public WarehousesManager(ApplicationDbContext context, IMapper mapper) 
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<Warehouse?> GetWarehouseByIdAsync(string id)
+        public async Task<DTOs.WarehouseDTO?> GetWarehouseByIdAsync(Guid id)
         {
-            var result = await _context.Warehouses.FindAsync(id);
+            var warehouse = await _context.Warehouses.Include(w => w.Products).FirstOrDefaultAsync(w => w.Id == id);
+            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+
             return result;
         }
 
-        public async Task<List<Warehouse>> GetWarehousesAsync()
+        public async Task<List<DTOs.WarehouseDTO>> GetWarehousesAsync()
         {
-            var result = await _context.Warehouses.ToListAsync();
+            var warehouses = await _context.Warehouses.ToListAsync();
+            var result = _mapper.Map<List<DTOs.WarehouseDTO>>(warehouses);
+
             return result;
         }
 
-        public async Task<Warehouse> CreateWarehouseAsync(WarehouseDto dto)
+        public async Task<DTOs.WarehouseDTO> CreateWarehouseAsync(WarehouseInput dto)
         {
-            Warehouse warehouse = new Warehouse()
-            {
-                Name = dto.Name,
-            };
+            
+            var warehouse = _mapper.Map<Models.Warehouse>(dto);
             _context.Warehouses.Add(warehouse);
             await _context.SaveChangesAsync();
 
-            return warehouse;
+            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+
+            return result;
         }
 
 
-        public async Task<Warehouse> UpdateWarehouseAsync(string id, WarehouseDto dto)
+        public async Task<DTOs.WarehouseDTO> UpdateWarehouseAsync(Guid id, WarehouseInput dto)
         {
             var warehouse = await _context.Warehouses.FindAsync(id);
 
@@ -55,7 +63,25 @@ namespace FlowershopAPI.Managers.Warehouses
             _context.Update(warehouse);
             await _context.SaveChangesAsync();
 
-            return warehouse;
+            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+
+            return result;
+        }
+
+        public async Task<DTOs.WarehouseDTO> DeleteWarehouseAsync(Guid id)
+        {
+            var warehouse = await _context.Warehouses.FindAsync(id);
+
+            if(warehouse == null)
+            {
+                throw new WarehouseNotFoundException("Warehouse not found!");
+            }
+
+            _context.Warehouses.Remove(warehouse);
+            await _context.SaveChangesAsync();
+
+            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+            return result;
         }
     }
 }
