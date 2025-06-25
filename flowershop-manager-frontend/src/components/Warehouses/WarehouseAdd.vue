@@ -10,7 +10,10 @@
           class="bg-[#2a2a40] text-lg text-text_secondary placeholder-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
     </div>
-    <button type="submit" class="bg-accent2 py-3 px-8 rounded-lg">Adauga</button>
+    <div class="flex justify-center space-x-2">
+      <button @click="goBack" type="button" class="bg-error text-text_accents py-3 px-8 rounded-lg">Anuleaza</button>
+      <button type="submit" class="bg-accent2 text-text_accents py-3 px-8 rounded-lg">Adauga</button>
+    </div>
   </form>
 </template>
 <script setup lang="ts">
@@ -24,11 +27,15 @@ const warehouse = ref({
 
 async function handleSubmit() {
   try{
-    const result = await addWarehouse(warehouse.value)
-    router.push({ path: "/warehouses" })
+    await addWarehouse(warehouse.value)
+    await router.push({ path: "/warehouses" })
   }
   catch (error){
     console.log(error)
   }
+}
+
+async function goBack(){
+  await router.push({ path: "/warehouses" })
 }
 </script>

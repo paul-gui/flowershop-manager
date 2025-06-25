@@ -1,35 +1,37 @@
 <template>
   <div class="flex flex-col items-center justify-center h-screen gap-10">
     <h1 class="text-h1 text-text_primary">Locatii</h1>
-    <div class="w-[80%] space-y-2 max-h-[60%] overflow-y-auto">
-      <div v-for="(labelText, index) in buttonLabels" :key="index" class="flex rounded-lg overflow-hidden border border-divider bg-cards text-text_secondary w-full max-w-md">
-        <warehouse-button :label="labelText"></warehouse-button>
+    <div class="w-[80%] space-y-2 max-h-[60%] overflow-y-scroll">
+      <div v-for="(warehouse, index) in warehouses" :key="index">
+        <content-button :title="warehouse.name" icon="fa fa-pen" @secondary-click="() => goToEditWarehouse(warehouse.id)"></content-button>
       </div>
     </div>
     <button class="bg-accent2 py-3 px-8 rounded-lg" v-on:click="goToAddWarehouse">Adauga</button>
   </div>
 </template>
 <script setup lang="ts">
-import WarehouseButton from "@/components/Warehouses/warehouse_button.vue";
-import { getWarehouses } from "@/services/WarehousesService.ts";
-import { onMounted, ref } from "vue";
+import {getWarehouses} from "@/services/WarehousesService.ts";
+import {onMounted, ref} from "vue";
 import router from "@/router";
-import type { Warehouse } from "@/components/Warehouses/Models/Warehouse.ts";
+import type {Warehouse} from "@/components/Warehouses/Models/Warehouse.ts";
+import ContentButton from "@/components/Warehouses/content-button.vue";
 
-const buttonLabels = ref([''])
+const warehouses = ref<Warehouse[]>([])
 
 onMounted(async () => {
   await getWarehousesAsync();
 })
 
 async function getWarehousesAsync() {
-  const res:Warehouse[] = await getWarehouses()
-  buttonLabels.value = res.map(i => i.name)
-  console.log(buttonLabels.value)
+  warehouses.value = await getWarehouses()
 }
 
 function goToAddWarehouse(): void {
-  router.push("/warehouse-details")
+  router.push("/warehouse-add")
+}
+
+function goToEditWarehouse(id: string): void {
+  router.push("/warehouse-details/" + id);
 }
 
 </script>
