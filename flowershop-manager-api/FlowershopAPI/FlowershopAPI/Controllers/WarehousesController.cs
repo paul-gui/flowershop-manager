@@ -19,7 +19,7 @@ namespace FlowershopAPI.Controllers
         }
 
         [HttpGet("GetWarehouses")]
-        public async Task<ActionResult<List<Warehouse>>> GetWarehouses()
+        public async Task<ActionResult<List<DTOs.WarehouseDTO>>> GetWarehouses()
         {
             var result = await _warehousesManager.GetWarehousesAsync();
             if (result == null)
@@ -28,8 +28,8 @@ namespace FlowershopAPI.Controllers
             }
             return Ok(result);
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Warehouse>> GetWarehouseById(string id)
+        [HttpGet("GetWarehouse/{id}")]
+        public async Task<ActionResult<DTOs.WarehouseDTO>> GetWarehouse(Guid id)
         {
             var result = await _warehousesManager.GetWarehouseByIdAsync(id);
             if (result == null)
@@ -39,7 +39,7 @@ namespace FlowershopAPI.Controllers
             return Ok(result);
         }
         [HttpPost("CreateWarehouse")]
-        public async Task<ActionResult<Warehouse>> CreateWarehouse([FromBody]WarehouseDto dto)
+        public async Task<ActionResult<DTOs.WarehouseDTO>> CreateWarehouse([FromBody]WarehouseInput dto)
         {
             var result = await _warehousesManager.CreateWarehouseAsync(dto);
             if (result == null)
@@ -48,8 +48,8 @@ namespace FlowershopAPI.Controllers
             }
             return Ok(result);
         }
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Warehouse>> EditWarehouse(string id,  [FromBody]WarehouseDto dto)
+        [HttpPut("EditWarehouse/{id}")]
+        public async Task<ActionResult<DTOs.WarehouseDTO>> EditWarehouse(Guid id,  [FromBody]WarehouseInput dto)
         {
             try
             {
@@ -64,6 +64,25 @@ namespace FlowershopAPI.Controllers
             {
                 return StatusCode(500, "An unexpected error occurred.");
             }
+        }
+
+        [HttpDelete("DeleteWarehouse/{id}")]
+        public async Task<ActionResult<DTOs.WarehouseDTO>> DeleteWarehouse(Guid id)
+        {
+            try
+            {
+                var result = await _warehousesManager.DeleteWarehouseAsync(id);
+                return Ok(result);
+            }
+            catch (WarehouseNotFoundException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(500, "An unexpected error occured.");
+            }
+
         }
     }
 }

@@ -1,16 +1,22 @@
 <script setup lang="ts">
-defineProps({
-  label: String
-})
+import type { Warehouse } from './Models/Warehouse';
+import router from "@/router";
+const props = defineProps<{
+  warehouse: Warehouse;
+}>()
+
+function onEditClick(){
+  router.push({ path: `/warehouse-details/${props.warehouse.id}`})
+}
 </script>
 
 <template>
   <!-- Left Button -->
   <button
-      class="flex-1 px-4 text-left hover:bg-[#3A3A55] transition-colors"
+      class="flex-1 px-4 text-left hover:bg-divider transition-colors"
       onclick="location.href='/details-page'"
   >
-    {{ label }}
+    {{ warehouse.name }}
   </button>
 
   <!-- Divider (optional visual border) -->
@@ -19,7 +25,7 @@ defineProps({
   <!-- Right Button (Icon) -->
   <button
       class="p-6 flex items-center justify-center hover:bg-divider transition-colors"
-      onclick="location.href='/edit-page'"
+      v-on:click="onEditClick"
   >
     <i class="fa fa-pen"></i>
   </button>
