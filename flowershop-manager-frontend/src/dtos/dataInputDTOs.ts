@@ -4,4 +4,8 @@ export interface WarehouseDto {
 export interface ProductDto{
     name: string;
     warehouseId: string;
+    prices:{
+        destinationId: string;
+        value: number;
+    }
 }

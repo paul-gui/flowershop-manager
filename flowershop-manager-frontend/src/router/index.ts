@@ -31,6 +31,13 @@ const router = createRouter({
       name: 'wareHouseAdd',
       component: () => import('../components/Warehouses/WarehouseAdd.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
+    },
+    {
+      path: '/product-details/:id',
+      name: 'productDetails',
+      component: () => import('../components/Products/ProductDetails.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
+      props: true
     }
   ],
 })

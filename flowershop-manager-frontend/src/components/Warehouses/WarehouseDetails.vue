@@ -24,7 +24,7 @@
         <label class="block text-sm mb-2">Flori</label>
         <div class="max-h-96 overflow-scroll">
           <div v-for="(flower, index) in flowers" :key="index" class="mb-2">
-            <content-button :title="flower.name" description="Pret" icon="fa fa-trash text-red-500" @secondary-click="() => { removeFlower(index) }"></content-button>
+            <content-button :title="flower.name" description="Pret" icon="fa fa-trash text-red-500" @primary-click="() => { goToDetails(index) }" @secondary-click="() => { removeFlower(index) }"></content-button>
           </div>
         </div>
 
@@ -80,6 +80,10 @@ async function addFlower(){
   const product: ProductDto = {
     name: 'Muscata',
     warehouseId: props.id,
+    prices: {
+      destinationId: '1',
+      value: 20.0,
+    }
   }
   const res = await addProduct(product)
   await getWarehouseDetails()
@@ -112,6 +116,10 @@ const removeFlower = async (index: number) => {
   const res = await deleteProduct(id)
   await getWarehouseDetails()
   console.log(res)
+}
+
+const goToDetails = async (index: number) => {
+  await router.push({ path: `/product-details/${index}` })
 }
 
 </script>
