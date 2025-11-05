@@ -1,6 +1,6 @@
 ﻿namespace FlowershopAPI.DTOs
 {
-    public class ProductInput
+    public class CreateProductDTO
     {
         public string Name { get; set; }
         public Guid WarehouseId { get; set; }
@@ -18,5 +18,11 @@
     {
         public Guid DestinationId { get; set; }
         public decimal Value { get; set; }
+    }
+    
+    public class DestinationDTO
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

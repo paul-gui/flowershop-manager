@@ -1,4 +1,5 @@
-﻿using FlowershopAPI.DTOs;
+﻿using FlowershopAPI.Contracts.Products;
+using FlowershopAPI.DTOs;
 using FlowershopAPI.Managers.Products;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -17,9 +18,9 @@ namespace FlowershopAPI.Controllers
         }
 
         [HttpPost("AddProduct")]
-        public async Task<ActionResult<DTOs.ProductDTO>> AddProduct([FromBody]DTOs.ProductInput product)
+        public async Task<ActionResult<DTOs.ProductDTO>> AddProduct([FromBody]CreateProductRequest createProduct)
         {
-            var result = await _productsManager.AddProduct(product);
+            var result = await _productsManager.AddProduct(createProduct);
             if (result == null)
             {
                 return BadRequest();
@@ -36,6 +37,17 @@ namespace FlowershopAPI.Controllers
                 return NotFound();
             }
 
+            return Ok(result);
+        }
+
+        [HttpGet("GetDestinations")]
+        public async Task<ActionResult<List<DTOs.DestinationDTO>>> GetDestinations()
+        {
+            var result = await _productsManager.GetDestinations();
+            if (result == null)
+            {
+                return NotFound();
+            } 
             return Ok(result);
         }
     }

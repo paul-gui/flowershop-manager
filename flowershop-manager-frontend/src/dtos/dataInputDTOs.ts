@@ -7,5 +7,5 @@ export interface ProductDto{
     prices:{
         destinationId: string;
         value: number;
-    }
+    }[]
 }
