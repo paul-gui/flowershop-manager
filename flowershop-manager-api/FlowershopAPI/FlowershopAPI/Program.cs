@@ -103,9 +103,11 @@ namespace FlowershopAPI
                 var services = scope.ServiceProvider;
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var context = services.GetRequiredService<ApplicationDbContext>();
 
                 await DbSeeds.SeedRoles(roleManager);
                 await DbSeeds.SeedAdminUser(userManager);
+                await DbSeeds.SeedDestinations(context);
             }
 
             app.Run();

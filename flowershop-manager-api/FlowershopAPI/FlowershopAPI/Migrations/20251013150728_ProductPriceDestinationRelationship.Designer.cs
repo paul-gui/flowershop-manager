@@ -4,6 +4,7 @@ using FlowershopAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowershopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251013150728_ProductPriceDestinationRelationship")]
+    partial class ProductPriceDestinationRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,18 +38,6 @@ namespace FlowershopAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Destinations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Name = "Florărie"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            Name = "En Gros"
-                        });
                 });
 
             modelBuilder.Entity("FlowershopAPI.Models.Price", b =>
@@ -61,15 +52,14 @@ namespace FlowershopAPI.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Value")
+                    b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationId");
 
-                    b.HasIndex("ProductId", "DestinationId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Prices");
                 });
@@ -326,7 +316,7 @@ namespace FlowershopAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("FlowershopAPI.Models.Product", "Product")
-                        .WithMany("Prices")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -396,11 +386,6 @@ namespace FlowershopAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FlowershopAPI.Models.Product", b =>
-                {
-                    b.Navigation("Prices");
                 });
 
             modelBuilder.Entity("FlowershopAPI.Models.Warehouse", b =>
