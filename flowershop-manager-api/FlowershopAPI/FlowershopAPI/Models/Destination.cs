@@ -4,6 +4,6 @@
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        List<Price> Prices { get; set; }
+        ICollection<Price> Prices { get; set; } = new List<Price>();
     }
 }

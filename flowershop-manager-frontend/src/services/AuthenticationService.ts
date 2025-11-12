@@ -1,13 +1,13 @@
 import api from "@/services/API";
-import type { LoginDto, RegisterDto } from "@/dtos/authDTOs"
+import type { LoginRequest, RegisterRequest } from '@/types/dtos/authentication/authentication.dto.ts'
 
 const baseUrl = "Auth";
 
-export async function register(registerDto: RegisterDto) {
-    const res = await api.post(baseUrl + "/register", registerDto);
+export async function register(registerRequest: RegisterRequest) {
+    const res = await api.post(baseUrl + "/register", registerRequest);
     return res.data;
 }
-export async function login(loginDto: LoginDto) {
-    const res = await api.post(baseUrl + "/login", loginDto);
+export async function login(loginRequest: LoginRequest) {
+    const res = await api.post(baseUrl + "/login", loginRequest);
     return res.data;
 }

@@ -41,5 +41,17 @@ namespace FlowershopAPI.Data
                 }
             }
         }
+
+        public static async Task SeedDestinations(ApplicationDbContext context)
+        {
+            if (!context.Destinations.Any())
+            {
+                context.Destinations.AddRange(
+                    new Destination { Id =Guid.NewGuid(), Name = "Florarie"},
+                    new Destination { Id = Guid.NewGuid(), Name = "En Gros"}
+                );
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

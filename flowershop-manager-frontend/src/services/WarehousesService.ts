@@ -1,9 +1,9 @@
 import api from "@/services/API";
-import type { WarehouseDto } from "@/dtos/dataInputDTOs";
+import type { WarehouseRequest } from '@/types/dtos/warehouse/warehouse.dto.ts'
 
 const baseUrl = 'Warehouses'
 
-export async function addWarehouse(warehouse: WarehouseDto){
+export async function addWarehouse(warehouse: WarehouseRequest){
     const res = await api.post(baseUrl + '/CreateWarehouse', warehouse)
     return res.data
 }
@@ -18,7 +18,7 @@ export async function getWarehouse(id: string){
     return res.data
 }
 
-export async function editWarehouse(id: string, warehouse: WarehouseDto){
+export async function editWarehouse(id: string, warehouse: WarehouseRequest){
     const res = await api.put(baseUrl + '/EditWarehouse/' + id, warehouse)
     return res.data
 }

@@ -1,14 +1,16 @@
-﻿using FlowershopAPI.DTOs;
+﻿using FlowershopAPI.Contracts.Products;
+using FlowershopAPI.DTOs;
 
 namespace FlowershopAPI.Managers.Products
 {
     public interface IProductsManager
     {
         public Task<List<DTOs.ProductDTO>> GetProducts(Guid warehouseId);
-        public Task<DTOs.ProductDTO> GetProduct(Guid Id);
-        public Task<DTOs.ProductDTO> AddProduct(DTOs.ProductInput product);
-        public Task<DTOs.ProductDTO> UpdateProduct(Guid Id, DTOs.ProductInput product);
+        public Task<ProductResponse?> GetProduct(Guid Id);
+        public Task<DTOs.ProductDTO> AddProduct(CreateProductRequest createProduct);
+        public Task<ProductResponse?> UpdateProduct(UpdateProductRequest createProduct);
         public Task<DTOs.ProductDTO> DeleteProduct(Guid id);
+        public Task<List<DTOs.DestinationDTO>> GetDestinations();
     }
 
     public class Product
