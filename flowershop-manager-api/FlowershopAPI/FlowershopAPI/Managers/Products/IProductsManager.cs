@@ -8,7 +8,7 @@ namespace FlowershopAPI.Managers.Products
         public Task<List<DTOs.ProductDTO>> GetProducts(Guid warehouseId);
         public Task<ProductResponse?> GetProduct(Guid Id);
         public Task<DTOs.ProductDTO> AddProduct(CreateProductRequest createProduct);
-        public Task<DTOs.ProductDTO> UpdateProduct(Guid Id, CreateProductRequest createProduct);
+        public Task<ProductResponse?> UpdateProduct(UpdateProductRequest createProduct);
         public Task<DTOs.ProductDTO> DeleteProduct(Guid id);
         public Task<List<DTOs.DestinationDTO>> GetDestinations();
     }

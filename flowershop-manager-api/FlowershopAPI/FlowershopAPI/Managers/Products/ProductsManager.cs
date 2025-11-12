@@ -78,9 +78,20 @@ namespace FlowershopAPI.Managers.Products
             return result;
         }
 
-        public Task<ProductDTO> UpdateProduct(Guid Id, CreateProductRequest createProduct)
+        public async Task<ProductResponse?> UpdateProduct(UpdateProductRequest updateProductRequest)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.Include(p => p.Prices).FirstOrDefaultAsync(p => p.Id == updateProductRequest.Id);
+            if (product == null)
+                return null;
+            
+            product.Name = updateProductRequest.Name;
+            product.Prices = _mapper.Map<List<Price>>(updateProductRequest.Prices);
+            
+            await _context.SaveChangesAsync();
+            
+            var result = _mapper.Map<ProductResponse>(product);
+            
+            return result;
         }
 
         public async Task<DTOs.ProductDTO> DeleteProduct(Guid id)

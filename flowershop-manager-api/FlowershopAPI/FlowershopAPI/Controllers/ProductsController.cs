@@ -39,6 +39,19 @@ namespace FlowershopAPI.Controllers
             return Ok(result);
         }
 
+        [HttpPut("UpdateProduct")]
+        public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] UpdateProductRequest updateProduct)
+        {
+            var result = await _productsManager.UpdateProduct(updateProduct);
+            
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(result);
+        }
+
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<ActionResult<DTOs.ProductDTO>> DeleteProduct(Guid id)
         {

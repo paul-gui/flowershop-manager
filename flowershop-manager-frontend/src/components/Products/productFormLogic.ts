@@ -1,10 +1,16 @@
 import type {
   CreateProductRequest,
   ProductPriceForDestinationWithName,
+  UpdateProductRequest,
 } from '@/types/dtos/products/product.dto.ts'
 
 import { computed, ref } from 'vue'
-import { addProduct, getDestinations, getProductById } from '@/services/ProductsService.ts'
+import {
+  addProduct,
+  getDestinations,
+  getProductById,
+  updateProduct,
+} from '@/services/ProductsService.ts'
 import type { Destination } from '@/types/models/destination.ts'
 
 export function useProductFormLogic(params: { warehouseId?: string, productId?: string }) {
@@ -37,7 +43,8 @@ export function useProductFormLogic(params: { warehouseId?: string, productId?: 
         const p = await getProductById(params.productId!)
         form.value.name = p.name
         form.value.warehouseId = p.warehouseId!
-        form.value.prices = p.prices.sort((a, b) => b.destinationName.localeCompare(a.destinationName))
+        form.value.prices = p.prices
+          .sort((a:ProductPriceForDestinationWithName, b:ProductPriceForDestinationWithName) => b.destinationName.localeCompare(a.destinationName))
       }
       else {
         error.value = 'Invalid navigation'
@@ -56,7 +63,13 @@ export function useProductFormLogic(params: { warehouseId?: string, productId?: 
       await addProduct(form.value)
     }
     else {
-      console.log("Edit pressed")
+      const updateProductRequest: UpdateProductRequest = {
+        id: params.productId!,
+        name: form.value.name,
+        warehouseId: form.value.warehouseId,
+        prices: form.value.prices,
+      }
+      await updateProduct(updateProductRequest)
     }
   }
 

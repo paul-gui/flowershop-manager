@@ -77,10 +77,10 @@ import { onMounted, ref } from 'vue'
 import { getWarehouse, editWarehouse, deleteWarehouse } from '@/services/WarehousesService.ts'
 import { addProduct, deleteProduct } from '@/services/ProductsService.ts'
 import type { Product, Warehouse } from '@/components/Warehouses/Models/Warehouse.ts'
-import type { ProductDto, WarehouseDto } from '@/dtos/dataInputDTOs.ts'
 import ContentButton from '@/components/Warehouses/content-button.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import router from '@/router'
+import type { WarehouseRequest } from '@/types/dtos/warehouse/warehouse.dto.ts'
 
 const props = defineProps<{
   id: string
@@ -133,7 +133,7 @@ async function goToProductDetails(productId: string) {
 
 async function saveWarehouse() {
   if (warehouse.value) {
-    const warehouseDto: WarehouseDto = {
+    const warehouseDto: WarehouseRequest = {
       name: name.value,
     }
     await editWarehouse(warehouse.value.id, warehouseDto)
