@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FlowershopAPI.Data;
 using FlowershopAPI.DTOs;
 using FlowershopAPI.Models;
@@ -28,9 +29,18 @@ namespace FlowershopAPI.Managers.Products
             return result;
         }
 
-        public Task<DTOs.ProductDTO> GetProduct(Guid Id)
+        public async Task<ProductResponse?> GetProduct(Guid id)
         {
+            var product = await _context.Products
+                .AsNoTracking()
+                .Where(p => p.Id == id)
+                .ProjectTo<ProductResponse>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
             
+            if (product == null)
+                return null;
+            
+            return product;
         }
 
         public async Task<DTOs.ProductDTO> AddProduct(CreateProductRequest createProductRequest)

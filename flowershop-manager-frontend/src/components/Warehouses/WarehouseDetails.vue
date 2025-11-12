@@ -27,14 +27,14 @@
     <div>
       <label class="block text-sm mb-2">Flori</label>
       <div class="max-h-96 overflow-scroll">
-        <div v-for="(flower, index) in flowers" :key="index" class="mb-2">
+        <div v-for="(f, index) in flowers" :key="f.id" class="mb-2">
           <content-button
-            :title="flower.name"
+            :title="f.name"
             description="Pret"
             icon="fa fa-trash text-red-500"
             @primary-click="
               () => {
-                goToDetails(index)
+                goToDetails(f.id)
               }
             "
             @secondary-click="
@@ -104,22 +104,30 @@ async function getWarehouseDetails() {
 }
 
 async function addFlower() {
-  // const product: ProductDto = {
-  //   name: 'Muscata',
-  //   warehouseId: props.id,
-  //   prices: {
-  //     destinationId: '1',
-  //     value: 20.0,
-  //   }
-  // }
-  // const res = await addProduct(product)
-  // await getWarehouseDetails()
-  // console.log(res)
   await router.push({
     name: 'warehouseAddProduct',
     params: {
       id: props.id,
     },
+  })
+}
+
+async function goToDetails(id: string) {
+  await router.push({
+    name: 'productDetails',
+    params: {
+      id: id,
+    }
+  })
+}
+
+async function goToProductDetails(productId: string) {
+  await router.push({
+    name: 'warehouseEditProduct',
+    params: {
+      id: props.id,
+      productId: productId,
+    }
   })
 }
 
@@ -151,7 +159,7 @@ const removeFlower = async (index: number) => {
   console.log(res)
 }
 
-const goToDetails = async (index: number) => {
-  await router.push({ path: `/product-details/${index}` })
-}
+// const goToDetails = async (index: number) => {
+//   await router.push({ path: `/product-details/${index}` })
+// }
 </script>

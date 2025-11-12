@@ -17,6 +17,17 @@ namespace FlowershopAPI.Controllers
             _productsManager = productsManager;
         }
 
+        [HttpGet("GetProduct/{id}")]
+        public async Task<ActionResult<ProductResponse>> GetProduct(Guid id)
+        {
+            var result = await _productsManager.GetProduct(id);
+            if (result == null)
+            {
+                return NotFound("Product not found");
+            }
+            return Ok(result);
+        }
+
         [HttpPost("AddProduct")]
         public async Task<ActionResult<DTOs.ProductDTO>> AddProduct([FromBody]CreateProductRequest createProduct)
         {

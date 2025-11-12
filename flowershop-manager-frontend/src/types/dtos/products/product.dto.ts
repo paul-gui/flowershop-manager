@@ -1,7 +1,7 @@
 export interface CreateProductRequest {
   name: string;
   warehouseId: string;
-  prices: ReadonlyArray<ProductPriceForDestination>
+  prices: ReadOnlyArray<ProductPriceForDestinationWithName>
 }
 
 export interface ProductPriceForDestination{
@@ -13,4 +13,11 @@ export interface ProductPriceForDestinationWithName{
   destinationId: string;
   destinationName: string;
   value: number;
+}
+
+export interface CreateProductResponse {
+  productId: string;
+  name: string;
+  warehouseId: string;
+  prices: ReadonlyArray<ProductPriceForDestinationWithName>;
 }

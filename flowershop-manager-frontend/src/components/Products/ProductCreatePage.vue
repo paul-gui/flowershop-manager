@@ -1,50 +1,26 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { addProduct, getDestinations, getProductById } from '@/services/ProductsService.ts'
+import { onMounted } from 'vue'
+import { useProductFormLogic } from '@/components/Products/productFormLogic.ts'
+import type { CreateProductRequest } from '@/types/dtos/products/product.dto.ts'
 import router from '@/router'
-import { useRoute } from 'vue-router'
-import type {
-  CreateProductRequest, CreateProductResponse,
-  ProductPriceForDestinationWithName,
-} from '@/types/dtos/products/product.dto.ts'
-import type { Destination } from '@/types/models/destination.ts'
 
-const route = useRoute()
-const selectedWarehouseId = route.params.id.toString()
-const pricesInput = ref<ProductPriceForDestinationWithName[]>([])
-
-const createProductForm = ref<CreateProductRequest>({
-  name: '',
-  warehouseId: '',
-  prices: [],
-})
+const props = defineProps<{ id: string }>()
+const upsert = useProductFormLogic({warehouseId: props.id})
 
 onMounted(async () => {
-  getDestinations().then((response: Destination[]) => {
-    for (const d of response) {
-      if (!(d.id in pricesInput.value))
-        pricesInput.value.push({
-          destinationId: d.id,
-          destinationName: d.name,
-          value: 0,
-        })
-    }
-  })
+  await upsert.hydrate()
 })
 
-function cancel() {
+async function onSubmit() {
+  console.log(upsert.form.value.prices)
+  await upsert.submitProduct()
   router.back()
 }
 
-async function save() {
-  createProductForm.value.warehouseId = selectedWarehouseId
-  createProductForm.value.prices = pricesInput.value.map(p => ({
-    destinationId: p.destinationId,
-    value: p.value,
-  }))
-  const response = await addProduct(createProductForm.value)
-  console.log(response)
+function onCancel() {
+   router.back()
 }
+
 </script>
 
 <template>
@@ -53,7 +29,7 @@ async function save() {
       <div>
         <label class="block text-sm mb-1">Denumire</label>
         <input
-          v-model="createProductForm.name"
+          v-model="upsert.form.value.name"
           type="text"
           class="w-full bg-cards text-xl text-text_secondary px-4 py-2 rounded-xl focus:outline-none"
         />
@@ -63,7 +39,7 @@ async function save() {
         <label class="block text-gray-300 mb-2">Pret</label>
         <div class="space-y-3">
           <div
-            v-for="(p, idx) in pricesInput"
+            v-for="(p, idx) in upsert.form.value.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >
@@ -79,13 +55,13 @@ async function save() {
 
       <div class="fixed bottom-8 left-0 flex justify-center mt-6 space-x-4 w-full">
         <button
-          @click="cancel"
+          @click="onCancel"
           class="bg-error hover:bg-red-600 text-text_accents py-3 px-10 rounded-xl"
         >
           Anuleaza
         </button>
         <button
-          @click="save"
+          @click="onSubmit"
           class="bg-accent2 hover:bg-green-600 text-text_accents py-3 px-10 rounded-xl"
         >
           Salveaza
@@ -94,5 +70,3 @@ async function save() {
     </div>
   </div>
 </template>
-
-<style scoped></style>

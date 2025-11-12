@@ -29,7 +29,7 @@ const router = createRouter({
     {
       path: '/warehouse-details/:id/add-product',
       name: 'warehouseAddProduct',
-      component: () => import('../components/Products/ProductDetails.vue'),
+      component: () => import('../components/Products/ProductCreatePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
     },
@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: '/product-details/:id',
       name: 'productDetails',
-      component: () => import('../components/Products/ProductDetails.vue'),
+      component: () => import('../components/Products/ProductEditPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
     }

@@ -11,6 +11,6 @@ public class ProductResponse
 public class PriceForProductResponse
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
+    public string DestinationName { get; set; }
+    public decimal Value { get; set; }
 }
