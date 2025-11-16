@@ -13,10 +13,10 @@
 import {getWarehouses} from "@/services/WarehousesService.ts";
 import {onMounted, ref} from "vue";
 import router from "@/router";
-import type {Warehouse} from "@/components/Warehouses/Models/Warehouse.ts";
+import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import ContentButton from "@/components/Warehouses/content-button.vue";
 
-const warehouses = ref<Warehouse[]>([])
+const warehouses = ref<WarehouseResponse[]>([])
 
 onMounted(async () => {
   await getWarehousesAsync();

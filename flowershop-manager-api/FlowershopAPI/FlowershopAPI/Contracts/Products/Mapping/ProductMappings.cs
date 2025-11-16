@@ -10,7 +10,7 @@ public class ProductMappings : Profile
         CreateMap<Price, PriceForProductResponse>()
             .ForMember(d => d.DestinationName,
                 opt => opt.MapFrom(s => s.Destination.Name));
-        CreateMap<ProductPriceForDestination, Price>()
+        CreateMap<PriceForProductRequest, Price>()
             .ForMember(d => d.Destination,  opt => opt.Ignore())
             .ForMember(d => d.Product, opt => opt.Ignore());
         CreateMap<Product, ProductResponse>();

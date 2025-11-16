@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Warehouse } from './Models/Warehouse';
+import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import router from "@/router";
 const props = defineProps<{
-  warehouse: Warehouse;
+  warehouse: WarehouseResponse;
 }>()
 
 function onEditClick(){
