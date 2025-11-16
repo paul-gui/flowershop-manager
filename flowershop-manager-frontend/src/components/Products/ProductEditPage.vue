@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useProductFormLogic } from '@/components/Products/productFormLogic.ts'
-import type { CreateProductRequest } from '@/types/dtos/products/product.dto.ts'
 import router from '@/router'
 
 const props = defineProps<{ id: string }>()
@@ -37,7 +36,7 @@ function onCancel() {
         <label class="block text-gray-300 mb-2">Pret</label>
         <div class="space-y-3">
           <div
-            v-for="(p, idx) in upsert.form.value.prices"
+            v-for="(p) in upsert.form.value.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >

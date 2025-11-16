@@ -27,14 +27,14 @@
     <div>
       <label class="block text-sm mb-2">Flori</label>
       <div class="max-h-96 overflow-scroll">
-        <div v-for="(f, index) in flowers" :key="f.id" class="mb-2">
+        <div v-for="(f, index) in products" :key="f.id" class="mb-2">
           <content-button
             :title="f.name"
             description="Pret"
             icon="fa fa-trash text-red-500"
             @primary-click="
               () => {
-                goToDetails(f.id)
+                goToProductDetailsPage(f.id)
               }
             "
             @secondary-click="
@@ -47,7 +47,7 @@
       </div>
 
       <button
-        v-on:click="addFlower"
+        v-on:click="goToCreateProductPage"
         class="mt-2 flex items-center gap-2 text-sm text-text_primary bg-cards px-4 py-2 rounded-xl hover:bg-[#3c3860]"
       >
         <i class="fa fa-plus" />
@@ -63,7 +63,7 @@
         Anuleaza
       </button>
       <button
-        @click="saveWarehouse"
+        @click="onSubmit"
         class="bg-accent2 hover:bg-green-600 text-text_accents py-3 px-10 rounded-xl"
       >
         Salveaza
@@ -74,21 +74,24 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getWarehouse, editWarehouse, deleteWarehouse } from '@/services/WarehousesService.ts'
-import { addProduct, deleteProduct } from '@/services/ProductsService.ts'
-import type { Product, Warehouse } from '@/components/Warehouses/Models/Warehouse.ts'
+import { getWarehouse, updateWarehouse, deleteWarehouse } from '@/services/WarehousesService.ts'
+import { deleteProduct } from '@/services/ProductsService.ts'
+import type { WarehouseDetailsResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import ContentButton from '@/components/Warehouses/content-button.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import router from '@/router'
-import type { WarehouseRequest } from '@/types/dtos/warehouse/warehouse.dto.ts'
+import type {
+  UpdateWarehouseRequest,
+} from '@/types/dtos/warehouse/warehouseRequests.dto.ts'
+import type { ProductResponse } from '@/types/dtos/products/productResponses.dto.ts'
 
 const props = defineProps<{
   id: string
 }>()
 
 const name = ref('')
-const flowers = ref<Product[]>([])
-const warehouse = ref<Warehouse>()
+const products = ref<ProductResponse[]>([])
+const warehouse = ref<WarehouseDetailsResponse>()
 const showModal = ref<boolean>(false)
 
 onMounted(async () => {
@@ -99,11 +102,11 @@ async function getWarehouseDetails() {
   warehouse.value = await getWarehouse(props.id)
   if (warehouse.value) {
     name.value = warehouse.value.name
-    flowers.value = warehouse.value.products
+    products.value = warehouse.value.products
   }
 }
 
-async function addFlower() {
+async function goToCreateProductPage() {
   await router.push({
     name: 'warehouseAddProduct',
     params: {
@@ -112,31 +115,22 @@ async function addFlower() {
   })
 }
 
-async function goToDetails(id: string) {
+async function goToProductDetailsPage(id: string) {
   await router.push({
     name: 'productDetails',
     params: {
       id: id,
-    }
+    },
   })
 }
 
-async function goToProductDetails(productId: string) {
-  await router.push({
-    name: 'warehouseEditProduct',
-    params: {
-      id: props.id,
-      productId: productId,
-    }
-  })
-}
-
-async function saveWarehouse() {
+async function onSubmit() {
   if (warehouse.value) {
-    const warehouseDto: WarehouseRequest = {
+    const updateWarehouseRequest: UpdateWarehouseRequest = {
+      id: props.id,
       name: name.value,
     }
-    await editWarehouse(warehouse.value.id, warehouseDto)
+    await updateWarehouse(updateWarehouseRequest)
     await goBack()
   }
 }
@@ -153,13 +147,8 @@ async function deleteWarehouseButton() {
 }
 
 const removeFlower = async (index: number) => {
-  const id = flowers.value[index].id
-  const res = await deleteProduct(id)
+  const id = products.value[index].id
+  await deleteProduct(id)
   await getWarehouseDetails()
-  console.log(res)
 }
-
-// const goToDetails = async (index: number) => {
-//   await router.push({ path: `/product-details/${index}` })
-// }
 </script>

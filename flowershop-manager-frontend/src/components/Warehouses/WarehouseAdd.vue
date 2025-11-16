@@ -18,7 +18,7 @@
 </template>
 <script setup lang="ts">
 import {ref} from "vue";
-import { addWarehouse } from "@/services/WarehousesService.ts";
+import { createWarehouse } from "@/services/WarehousesService.ts";
 import router from '@/router'
 
 const warehouse = ref({
@@ -27,7 +27,7 @@ const warehouse = ref({
 
 async function handleSubmit() {
   try{
-    await addWarehouse(warehouse.value)
+    await createWarehouse(warehouse.value)
     await router.push({ path: "/warehouses" })
   }
   catch (error){
