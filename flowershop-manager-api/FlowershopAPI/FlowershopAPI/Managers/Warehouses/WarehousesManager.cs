@@ -1,86 +1,71 @@
 ﻿using AutoMapper;
+using FlowershopAPI.Contracts.Warehouses;
 using FlowershopAPI.Data;
-using FlowershopAPI.DTOs;
 using FlowershopAPI.Managers.Warehouses.Contract;
-using FlowershopAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowershopAPI.Managers.Warehouses
 {
-    public class WarehousesManager : IWarehousesManager
+    public class WarehousesManager(ApplicationDbContext context, IMapper mapper) : IWarehousesManager
     {
-        ApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        public WarehousesManager(ApplicationDbContext context, IMapper mapper) 
+        public async Task<WarehouseDetailsResponse> CreateWarehouse(CreateWarehouseRequest createWarehouseRequest)
         {
-            _context = context;
-            _mapper = mapper;
-        }
+            var warehouse = mapper.Map<Models.Warehouse>(createWarehouseRequest);
+            context.Warehouses.Add(warehouse);
+            await context.SaveChangesAsync();
 
-        public async Task<DTOs.WarehouseDTO?> GetWarehouseByIdAsync(Guid id)
-        {
-            var warehouse = await _context.Warehouses.Include(w => w.Products).FirstOrDefaultAsync(w => w.Id == id);
-            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+            var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
 
             return result;
         }
 
-        public async Task<List<DTOs.WarehouseDTO>> GetWarehousesAsync()
+        public async Task<WarehouseDetailsResponse?> GetWarehouseById(Guid id)
         {
-            var warehouses = await _context.Warehouses.ToListAsync();
-            var result = _mapper.Map<List<DTOs.WarehouseDTO>>(warehouses);
+            var warehouse = await context.Warehouses.Include(w => w.Products).FirstOrDefaultAsync(w => w.Id == id);
+            var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
 
             return result;
         }
 
-        public async Task<DTOs.WarehouseDTO> CreateWarehouseAsync(WarehouseInput dto)
+        public async Task<List<WarehouseResponse>> GetWarehouses()
         {
-            
-            var warehouse = _mapper.Map<Models.Warehouse>(dto);
-            _context.Warehouses.Add(warehouse);
-            await _context.SaveChangesAsync();
-
-            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+            var warehouses = await context.Warehouses.ToListAsync();
+            var result = mapper.Map<List<WarehouseResponse>>(warehouses);
 
             return result;
         }
 
-
-        public async Task<DTOs.WarehouseDTO> UpdateWarehouseAsync(Guid id, WarehouseInput dto)
+        public async Task<WarehouseDetailsResponse?> UpdateWarehouse(UpdateWarehouseRequest updateWarehouseRequest)
         {
-            var warehouse = await _context.Warehouses.FindAsync(id);
+            var warehouse = await context.Warehouses.FirstOrDefaultAsync(w => w.Id == updateWarehouseRequest.Id);
 
             if (warehouse == null)
             {
-                throw new WarehouseNotFoundException("Warehouse not found!");
+                return null;
             }
 
-            warehouse.Name = dto.Name;
+            warehouse.Name = updateWarehouseRequest.Name;
+            
+            await context.SaveChangesAsync();
 
-            _context.Update(warehouse);
-            await _context.SaveChangesAsync();
-
-            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+            var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
 
             return result;
         }
 
-        public async Task<DTOs.WarehouseDTO> DeleteWarehouseAsync(Guid id)
+        public async Task<WarehouseDetailsResponse?> DeleteWarehouse(Guid id)
         {
-            var warehouse = await _context.Warehouses.FindAsync(id);
+            var warehouse = await context.Warehouses.FirstOrDefaultAsync(w => w.Id == id);
 
             if(warehouse == null)
             {
-                throw new WarehouseNotFoundException("Warehouse not found!");
+                return null;
             }
 
-            _context.Warehouses.Remove(warehouse);
-            await _context.SaveChangesAsync();
+            context.Warehouses.Remove(warehouse);
+            await context.SaveChangesAsync();
 
-            var result = _mapper.Map<DTOs.WarehouseDTO>(warehouse);
+            var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
             return result;
         }
     }

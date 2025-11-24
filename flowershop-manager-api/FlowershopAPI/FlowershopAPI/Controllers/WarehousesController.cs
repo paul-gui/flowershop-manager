@@ -1,4 +1,4 @@
-﻿using FlowershopAPI.DTOs;
+﻿using FlowershopAPI.Contracts.Warehouses;
 using FlowershopAPI.Managers.Warehouses.Contract;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -9,80 +9,57 @@ namespace FlowershopAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WarehousesController : ControllerBase
+    public class WarehousesController(IWarehousesManager warehousesManager) : ControllerBase
     {
-        IWarehousesManager _warehousesManager;
-
-        public WarehousesController(IWarehousesManager warehousesManager)
+        [HttpPost("CreateWarehouse")]
+        public async Task<ActionResult<WarehouseDetailsResponse>> CreateWarehouse([FromBody]CreateWarehouseRequest createWarehouseRequest)
         {
-            _warehousesManager = warehousesManager;
+            var result = await warehousesManager.CreateWarehouse(createWarehouseRequest);
+            return Ok(result);
         }
 
         [HttpGet("GetWarehouses")]
-        public async Task<ActionResult<List<DTOs.WarehouseDTO>>> GetWarehouses()
+        public async Task<ActionResult<List<WarehouseResponse>>> GetWarehouses()
         {
-            var result = await _warehousesManager.GetWarehousesAsync();
-            if (result == null)
+            var result = await warehousesManager.GetWarehouses();
+            if (result.Count == 0)
             {
-                return NotFound();
+                return NotFound("No warehouses found");
             }
             return Ok(result);
         }
+        
         [HttpGet("GetWarehouse/{id}")]
-        public async Task<ActionResult<DTOs.WarehouseDTO>> GetWarehouse(Guid id)
+        public async Task<ActionResult<WarehouseDetailsResponse>> GetWarehouse(Guid id)
         {
-            var result = await _warehousesManager.GetWarehouseByIdAsync(id);
+            var result = await warehousesManager.GetWarehouseById(id);
             if (result == null)
             {
-                return NotFound();
+                return NotFound("Warehouse not found");
             }
             return Ok(result);
         }
-        [HttpPost("CreateWarehouse")]
-        public async Task<ActionResult<DTOs.WarehouseDTO>> CreateWarehouse([FromBody]WarehouseInput dto)
+        
+        [HttpPut("UpdateWarehouse")]
+        public async Task<ActionResult<WarehouseDetailsResponse>> UpdateWarehouse([FromBody]UpdateWarehouseRequest updateWarehouseRequest)
         {
-            var result = await _warehousesManager.CreateWarehouseAsync(dto);
+            var result = await warehousesManager.UpdateWarehouse(updateWarehouseRequest);
             if (result == null)
             {
-                return BadRequest();
+                return NotFound("Warehouse not found");
             }
             return Ok(result);
-        }
-        [HttpPut("EditWarehouse/{id}")]
-        public async Task<ActionResult<DTOs.WarehouseDTO>> EditWarehouse(Guid id,  [FromBody]WarehouseInput dto)
-        {
-            try
-            {
-                var result = await _warehousesManager.UpdateWarehouseAsync(id, dto);
-                return Ok(result);
-            }
-            catch (WarehouseNotFoundException)
-            {
-                return NotFound();
-            }
-            catch
-            {
-                return StatusCode(500, "An unexpected error occurred.");
-            }
         }
 
         [HttpDelete("DeleteWarehouse/{id}")]
-        public async Task<ActionResult<DTOs.WarehouseDTO>> DeleteWarehouse(Guid id)
+        public async Task<ActionResult<WarehouseDetailsResponse>> DeleteWarehouse(Guid id)
         {
-            try
+            var result = await warehousesManager.DeleteWarehouse(id);
+            if (result == null)
             {
-                var result = await _warehousesManager.DeleteWarehouseAsync(id);
-                return Ok(result);
+                return NotFound("Warehouse not found");
             }
-            catch (WarehouseNotFoundException)
-            {
-                return NotFound();
-            }
-            catch
-            {
-                return StatusCode(500, "An unexpected error occured.");
-            }
-
+            return Ok(result);
         }
     }
 }
