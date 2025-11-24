@@ -1,9 +1,15 @@
-﻿namespace FlowershopAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FlowershopAPI.Models
 {
     public class Destination
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        ICollection<Price> Prices { get; set; } = new List<Price>();
+        
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; } = null!;
+
+        public ICollection<Price> Prices { get; set; } = new List<Price>();
     }
 }

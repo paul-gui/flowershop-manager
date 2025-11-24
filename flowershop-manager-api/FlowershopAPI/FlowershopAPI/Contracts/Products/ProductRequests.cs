@@ -1,22 +1,40 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FlowershopAPI.Contracts.Products;
 
 public class CreateProductRequest
 {
-    public string Name { get; set; }
-    public Guid WarehouseId { get; set; }
-    public IReadOnlyList<PriceForProductRequest> Prices { get; set; }
+    [Required]
+    public required string Name { get; set; }
+    
+    [Required]
+    public required Guid WarehouseId { get; set; }
+    
+    [Required]
+    public required IReadOnlyList<PriceForProductRequest> Prices { get; set; }
 }
 
 public class UpdateProductRequest
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public Guid WarehouseId { get; set; }
-    public IReadOnlyList<PriceForProductRequest> Prices { get; set; }
+    [Required]
+    public required Guid Id { get; set; }
+    
+    [Required]
+    public required string Name { get; set; }
+    
+    [Required]
+    public required Guid WarehouseId { get; set; }
+    
+    [Required]
+    public required IReadOnlyList<PriceForProductRequest> Prices { get; set; }
 }
 
 public class PriceForProductRequest
 {
+    [Required]
     public Guid DestinationId { get; set; }
+    
+    [Required]
+    [Range(0, double.MaxValue)]
     public decimal Value { get; set; }
 }
