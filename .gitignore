@@ -400,3 +400,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /flowershop-manager-api/FlowershopAPI/FlowershopAPI/appsettings.Development.json
+.idea/
+.DS_Store
+**/.DS_Store
