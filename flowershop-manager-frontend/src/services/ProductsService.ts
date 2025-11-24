@@ -2,7 +2,7 @@ import api from '@/services/API';
 import type {
   CreateProductRequest,
   UpdateProductRequest,
-} from '@/types/dtos/products/product.dto.ts'
+} from '@/types/dtos/products/productRequests.dto.ts'
 
 const baseUrl = '/Products'
 
@@ -11,9 +11,9 @@ export async function getProducts(warehouseId: string){
     return res.data
 }
 
-export async function addProduct(product: CreateProductRequest){
+export async function createProduct(product: CreateProductRequest){
   try{
-    const res = await api.post(baseUrl + '/AddProduct', product);
+    const res = await api.post(baseUrl + '/CreateProduct', product);
     return res.data
   }
   catch (error){

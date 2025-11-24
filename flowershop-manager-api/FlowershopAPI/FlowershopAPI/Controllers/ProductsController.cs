@@ -1,5 +1,5 @@
-﻿using FlowershopAPI.Contracts.Products;
-using FlowershopAPI.DTOs;
+﻿using FlowershopAPI.Contracts.Destinations;
+using FlowershopAPI.Contracts.Products;
 using FlowershopAPI.Managers.Products;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -9,69 +9,58 @@ namespace FlowershopAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController(IProductsManager productsManager) : ControllerBase
     {
-        IProductsManager _productsManager;
-        public ProductsController(IProductsManager productsManager)
+        [HttpPost("CreateProduct")]
+        public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody]CreateProductRequest createProduct)
         {
-            _productsManager = productsManager;
+            var result = await productsManager.CreateProduct(createProduct);
+            
+            return Ok(result);
         }
-
+        
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(Guid id)
         {
-            var result = await _productsManager.GetProduct(id);
+            var result = await productsManager.GetProduct(id);
             if (result == null)
             {
                 return NotFound("Product not found");
             }
             return Ok(result);
         }
-
-        [HttpPost("AddProduct")]
-        public async Task<ActionResult<DTOs.ProductDTO>> AddProduct([FromBody]CreateProductRequest createProduct)
+        
+        [HttpGet("GetDestinations")]
+        public async Task<ActionResult<List<DestinationResponse>>> GetDestinations()
         {
-            var result = await _productsManager.AddProduct(createProduct);
-            if (result == null)
+            var result = await productsManager.GetDestinations();
+            if (result.Count == 0)
             {
-                return BadRequest();
-            }
+                return NotFound("No destinations found");
+            } 
             return Ok(result);
         }
 
         [HttpPut("UpdateProduct")]
         public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] UpdateProductRequest updateProduct)
         {
-            var result = await _productsManager.UpdateProduct(updateProduct);
+            var result = await productsManager.UpdateProduct(updateProduct);
             
             if (result == null)
             {
                 return BadRequest();
             }
-            
             return Ok(result);
         }
 
         [HttpDelete("DeleteProduct/{id}")]
-        public async Task<ActionResult<DTOs.ProductDTO>> DeleteProduct(Guid id)
+        public async Task<ActionResult<ProductResponse>> DeleteProduct(Guid id)
         {
-            var result = await _productsManager.DeleteProduct(id);
+            var result = await productsManager.DeleteProduct(id);
             if (result == null)
             {
                 return NotFound();
             }
-
-            return Ok(result);
-        }
-
-        [HttpGet("GetDestinations")]
-        public async Task<ActionResult<List<DTOs.DestinationDTO>>> GetDestinations()
-        {
-            var result = await _productsManager.GetDestinations();
-            if (result == null)
-            {
-                return NotFound();
-            } 
             return Ok(result);
         }
     }

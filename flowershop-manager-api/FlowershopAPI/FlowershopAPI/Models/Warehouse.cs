@@ -1,16 +1,15 @@
-﻿namespace FlowershopAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FlowershopAPI.Models
 {
     public class Warehouse
     {
         public Guid Id { get; set; }
+        
+        [Required]
+        [MaxLength(100)]
         public required string Name { get; set; }
-        public ICollection<Product> Products { get; set; }
-    }
-
-    public class WarehouseNotFoundException : Exception
-    {
-        public WarehouseNotFoundException() { }
-        public WarehouseNotFoundException(string message) : base(message) { }
-        public WarehouseNotFoundException(string message, Exception inner) : base(message, inner) { }
+        
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
