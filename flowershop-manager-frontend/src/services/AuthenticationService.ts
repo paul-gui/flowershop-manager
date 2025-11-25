@@ -3,11 +3,11 @@ import type { LoginRequest, RegisterAccountRequest } from '@/types/dtos/authenti
 
 const baseUrl = "Authentication";
 
-export async function register(registerRequest: RegisterAccountRequest) {
+export async function register(registerRequest: RegisterAccountRequest): Promise<void> {
     const res = await api.post(baseUrl + "/Register", registerRequest);
     return res.data;
 }
-export async function login(loginRequest: LoginRequest) {
+export async function login(loginRequest: LoginRequest):Promise<void> {
     const res = await api.post(baseUrl + "/Login", loginRequest);
     return res.data;
 }
