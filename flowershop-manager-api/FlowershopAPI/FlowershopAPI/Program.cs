@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using FlowershopAPI.Managers.Authentication;
+using FlowershopAPI.Managers.Authentication.Contract;
 
 namespace FlowershopAPI
 {
@@ -76,7 +78,8 @@ namespace FlowershopAPI
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddAutoMapper(typeof(Program));
-
+            
+            builder.Services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             builder.Services.AddTransient<IWarehousesManager, WarehousesManager>();
             builder.Services.AddTransient<IProductsManager, ProductsManager>();
 
