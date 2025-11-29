@@ -52,7 +52,7 @@ async function handleRegistration() {
     }
   } catch (error: any) {
     if (error.response?.data && Array.isArray(error.response.data)) {
-      errors.value = error.response.data.map((e:any) => e.description)
+      errors.value = error.response.data.map((e:any) => e)
     }
     else {
       errors.value = ['An unexpected error occurred.']
