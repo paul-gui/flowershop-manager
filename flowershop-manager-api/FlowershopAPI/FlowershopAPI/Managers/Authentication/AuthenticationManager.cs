@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FlowershopAPI.Common.Results;
 using FlowershopAPI.Contracts.Authentication;
 using FlowershopAPI.Managers.Authentication.Contract;
 using FlowershopAPI.Models;
@@ -12,7 +13,7 @@ namespace FlowershopAPI.Managers.Authentication;
 public class AuthenticationManager(UserManager<User> userManager, IConfiguration configuration) : IAuthenticationManager
 {
     
-    public async Task<RegisterAccountResponse?> Register(RegisterAccountRequest request)
+    public async Task<OperationResult<RegisterAccountResponse>> Register(RegisterAccountRequest request)
     {
         var user = new User
         {
@@ -25,7 +26,7 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
 
         if (!result.Succeeded)
         {
-            return null;
+            return OperationResult<RegisterAccountResponse>.Failed(result.Errors.Select(e => e.Description).ToList());
         }
 
         await userManager.AddToRoleAsync(user, "User");
@@ -37,15 +38,15 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
             Name = user.Name,
         };
 
-        return response;
+        return OperationResult<RegisterAccountResponse>.Success(response);
     }
 
-    public async Task<LoginResponse?> Login(LoginRequest request)
+    public async Task<OperationResult<LoginResponse>> Login(LoginRequest request)
     {
         var user = await userManager.FindByNameAsync(request.Email);
         if (user == null || !await userManager.CheckPasswordAsync(user, request.Password))
         {
-            return null;
+            return OperationResult<LoginResponse>.Failed(["Invalid credentials"]);
         }
 
         var roles = await userManager.GetRolesAsync(user);
@@ -71,6 +72,6 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
         };
-        return result;
+        return OperationResult<LoginResponse>.Success(result);
     }
 }
