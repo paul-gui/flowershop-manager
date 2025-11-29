@@ -21,12 +21,12 @@ namespace FlowershopAPI.Controllers
         {
             var result = await authenticationManager.Register(request);
 
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(result.Errors);
             }
 
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpPost("Login")]
@@ -34,15 +34,12 @@ namespace FlowershopAPI.Controllers
         {
             var result = await authenticationManager.Login(loginRequest);
 
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return Unauthorized(new
-                {
-                    message = "Invalid email or password"
-                });
+                return Unauthorized(result.Errors);
             }
             
-            return Ok(result);
+            return Ok(result.Data);
         }
     }
 }
