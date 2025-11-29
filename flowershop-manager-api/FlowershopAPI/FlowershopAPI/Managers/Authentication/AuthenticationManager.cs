@@ -15,6 +15,11 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
     
     public async Task<OperationResult<RegisterAccountResponse>> Register(RegisterAccountRequest request)
     {
+        if (request.Password != request.PasswordConfirmation)
+        {
+            return OperationResult<RegisterAccountResponse>.Failed(["Passwords don't match!"]);
+        }
+        
         var user = new User
         {
             UserName = request.Email,
