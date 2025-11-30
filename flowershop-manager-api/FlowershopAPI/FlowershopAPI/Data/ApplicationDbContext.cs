@@ -15,6 +15,7 @@ namespace FlowershopAPI.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Destination> Destinations { get; set; }
         public DbSet<Price> Prices { get; set; }
+        public DbSet<Sale> Sales { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
