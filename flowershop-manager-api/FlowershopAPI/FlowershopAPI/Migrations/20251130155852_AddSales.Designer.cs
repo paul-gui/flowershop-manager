@@ -4,6 +4,7 @@ using FlowershopAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowershopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130155852_AddSales")]
+    partial class AddSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +109,6 @@ namespace FlowershopAPI.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("DestinationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("PriceAtSale")
                         .HasColumnType("decimal(18,2)");
 
@@ -123,8 +123,6 @@ namespace FlowershopAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
 
                     b.HasIndex("ProductId");
 
@@ -390,12 +388,6 @@ namespace FlowershopAPI.Migrations
 
             modelBuilder.Entity("FlowershopAPI.Models.Sale", b =>
                 {
-                    b.HasOne("FlowershopAPI.Models.Destination", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FlowershopAPI.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -407,8 +399,6 @@ namespace FlowershopAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Destination");
 
                     b.Navigation("Product");
 
