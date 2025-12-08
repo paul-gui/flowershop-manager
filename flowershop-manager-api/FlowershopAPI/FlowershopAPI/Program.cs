@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FlowershopAPI.Managers.Authentication;
 using FlowershopAPI.Managers.Authentication.Contract;
+using FlowershopAPI.Managers.Sales;
+using FlowershopAPI.Managers.Sales.Contract;
 
 namespace FlowershopAPI
 {
@@ -82,6 +84,7 @@ namespace FlowershopAPI
             builder.Services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             builder.Services.AddTransient<IWarehousesManager, WarehousesManager>();
             builder.Services.AddTransient<IProductsManager, ProductsManager>();
+            builder.Services.AddTransient<ISalesManager, SalesManager>();
 
             var app = builder.Build();
 
