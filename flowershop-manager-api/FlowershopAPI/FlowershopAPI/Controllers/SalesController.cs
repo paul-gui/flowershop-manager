@@ -1,15 +1,25 @@
+using System.Security.Claims;
 using FlowershopAPI.Contracts.Sales;
 using FlowershopAPI.Managers.Sales.Contract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowershopAPI.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class SalesController(ISalesManager salesManager) : ControllerBase
 {
     [HttpPost("CreateSale")]
     public async Task<ActionResult> CreateSale(SaleCreationRequest saleCreationRequest)
     {
-        var result = await salesManager.CreateSale(saleCreationRequest);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                     ?? User.FindFirstValue("sub");
+        if (userId == null)
+        {
+            return Forbid();
+        }
+        
+        var result = await salesManager.CreateSale(userId, saleCreationRequest);
         if (!result.Succeeded)
         {
             return BadRequest(result.Errors);
