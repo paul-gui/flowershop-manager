@@ -45,6 +45,12 @@ const router = createRouter({
       component: () => import('../components/Products/ProductEditPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
+    },
+    {
+      path: '/sales/create',
+      name: 'CreateSale',
+      component: () => import('../components/Sales/CreateSalePage.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
     }
   ],
 })

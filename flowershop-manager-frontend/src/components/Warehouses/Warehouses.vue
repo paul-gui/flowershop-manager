@@ -3,7 +3,7 @@
     <h1 class="text-h1 text-text_primary">Locatii</h1>
     <div class="w-[80%] space-y-2 max-h-[60%] overflow-y-scroll">
       <div v-for="(warehouse, index) in warehouses" :key="index">
-        <content-button :title="warehouse.name" icon="fa fa-pen" @secondary-click="() => goToEditWarehouse(warehouse.id)"></content-button>
+        <content-button :title="warehouse.name" icon="fa fa-pen" @primary-click="() => goToCreateSale()" @secondary-click="() => goToEditWarehouse(warehouse.id)"></content-button>
       </div>
     </div>
     <button class="bg-accent2 py-3 px-8 rounded-lg" v-on:click="goToAddWarehouse">Adauga</button>
@@ -32,6 +32,10 @@ function goToAddWarehouse(): void {
 
 function goToEditWarehouse(id: string): void {
   router.push("/warehouse-details/" + id);
+}
+
+function goToCreateSale(): void {
+  router.push("/sales/create")
 }
 
 </script>
