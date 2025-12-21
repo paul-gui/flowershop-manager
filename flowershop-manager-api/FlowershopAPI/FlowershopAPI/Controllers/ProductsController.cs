@@ -29,6 +29,30 @@ namespace FlowershopAPI.Controllers
             }
             return Ok(result);
         }
+
+        [HttpGet("GetProductsByWarehouseId/{warehouseId:guid}")]
+        public async Task<ActionResult<List<ProductResponse>>> GetProductsByWarehouseId(Guid warehouseId)
+        {
+            var result = await productsManager.GetProductsByWarehouseId(warehouseId);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+            
+            return Ok(result.Data);
+        }
+
+        [HttpGet("GetPrice/{productId:guid}/{destinationId:guid}")]
+        public async Task<ActionResult<decimal>> GetPrice(Guid productId, Guid destinationId)
+        {
+            var result = await productsManager.GetPrice(productId, destinationId);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+            
+            return Ok(result.Data);
+        }
         
         [HttpGet("GetDestinations")]
         public async Task<ActionResult<List<DestinationResponse>>> GetDestinations()

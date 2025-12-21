@@ -1,54 +1,19 @@
 <template>
-  <div class="p-6 max-w-sm mx-auto bg-gray-900 rounded-xl shadow-lg">
+  <div class="p-6 max-w-sm mx-auto">
     <div class="mb-6">
       <label class="block text-gray-400 text-sm mb-2">Opțiune</label>
       <div class="space-y-1">
         <div
           :class="[
             'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
-            selectedOption === 'Muscate tiroleze'
-              ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700',
+            createSaleForm?.productId === p.id
+              ? 'bg-accent3 text-white shadow-lg'
+              : 'bg-cards text-gray-300 hover:bg-divider',
           ]"
-          @click="selectOption('Muscate tiroleze')"
+          @click="selectProduct(p)"
+          v-for="p in products"
         >
-          Muscate tiroleze
-        </div>
-
-        <div
-          :class="[
-            'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
-            selectedOption === 'Muscate semi'
-              ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700',
-          ]"
-          @click="selectOption('Muscate semi')"
-        >
-          Muscate semi
-        </div>
-
-        <div
-          :class="[
-            'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
-            selectedOption === 'Muscate tufa'
-              ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700',
-          ]"
-          @click="selectOption('Muscate tufa')"
-        >
-          Muscate tufa
-        </div>
-
-        <div
-          :class="[
-            'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out relative',
-            selectedOption === 'Muscate caliope'
-              ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700',
-          ]"
-          @click="selectOption('Muscate caliope')"
-        >
-            Muscate caliope
+          {{ p.name }}
         </div>
       </div>
     </div>
@@ -56,98 +21,125 @@
 
     <div class="mb-6">
       <label class="block text-gray-400 text-sm mb-2">Destinație</label>
-      <div class="flex rounded-lg overflow-hidden bg-gray-800 p-1">
+      <div class="flex rounded-lg overflow-hidden bg-cards p-1">
         <button
           :class="[
             'flex-1 py-3 font-medium transition duration-150 ease-in-out rounded-lg',
-            selectedDestination === 'Florarie'
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'text-gray-300 hover:bg-gray-700',
+            createSaleForm.destinationId === d.id
+              ? 'bg-accent3 text-white shadow-md'
+              : 'text-gray-300 hover:bg-divider',
           ]"
-          @click="selectDestination('Florarie')"
+          @click="selectDestination(d)"
+          v-for="d of destinations"
         >
-          Florarie
-        </button>
-
-        <button
-          :class="[
-            'flex-1 py-3 font-medium transition duration-150 ease-in-out rounded-lg',
-            selectedDestination === 'En gros'
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'text-gray-300 hover:bg-gray-700',
-          ]"
-          @click="selectDestination('En gros')"
-        >
-          En gros
+          {{ d.name }}
         </button>
       </div>
     </div>
     <div class="mb-6">
       <label class="block text-gray-400 text-sm mb-2">Cantitate</label>
       <input
-        v-model.number="quantity"
+        v-model.number="createSaleForm.quantity"
         type="number"
-        class="w-full p-4 text-2xl font-bold text-center bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-        placeholder="0"
+        class="w-full p-4 text-2xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
       />
     </div>
 
     <div class="mb-8">
       <label class="block text-gray-400 text-sm mb-2">Pret</label>
-      <div
-        class="w-full p-4 text-2xl font-bold text-center bg-gray-800 text-white rounded-lg"
+      <input
+        v-model.number="createSaleForm.priceAtSale"
+        type="number"
+        class="w-full p-4 text-2xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
       >
-        {{ price.toFixed(2) }} Lei
-      </div>
+    </div>
+
+    <div>
+      <label class="block text-red-600" v-if="errors" v-for="e in errors">
+        {{ e }}
+      </label>
     </div>
 
     <button
       @click="submitForm"
-      class="w-full py-4 text-lg font-bold text-gray-900 bg-green-400 rounded-lg hover:bg-green-500 transition duration-150 ease-in-out shadow-lg"
+      class="w-full py-4 font-bold text-gray-900 bg-accent2 rounded-lg hover:bg-green-500 transition duration-150 ease-in-out shadow-lg"
     >
       Adauga
+    </button>
+
+    <button
+      @click="router.back()"
+      class="w-full py-4 mt-4 font-bold text-gray-900 bg-error rounded-lg hover:bg-red-500 transition duration-150 ease-in-out shadow-lg"
+    >
+      Anuleaza
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
+import { getDestinations, getPrice, getProductsByWarehouseId } from '@/services/ProductsService.ts'
+import type { ProductResponse } from '@/types/dtos/products/productResponses.dto.ts'
+import type { CreateSaleForm } from '@/types/models/createSaleForm.ts'
+import type { DestinationResponse } from '@/types/dtos/destinations/destinationResponses.dto.ts'
+import { useRoute } from 'vue-router'
+import { createSale } from '@/services/SalesService.ts'
+import router from '@/router'
 
-// State
-const selectedOption = ref("Muscate tiroleze"); // Matches the image
-const selectedDestination = ref("Florarie"); // Matches the image
-const quantity = ref(20); // Matches the image
-const unitPrice = 10; // Assuming a fixed unit price for display
+const route = useRoute();
 
-// Computed Property for Price (just for the display)
-const price = computed(() => {
-  // In a real app, this would be more complex based on selection/destination
-  return unitPrice; // We are mimicking the static "10 Lei" display in the image
+const createSaleForm = ref<CreateSaleForm>({
+  productId: '',
+  destinationId: '',
+  quantity: 0,
+  priceAtSale: 0,
+})
+const products = ref<ProductResponse[]>([])
+const destinations = ref<DestinationResponse[]>([])
+const errors = ref<string[]>([])
+
+onMounted( async () => {
+  const warehouseId = String(route.params.warehouseId);
+  if (!warehouseId) {
+    products.value = [];
+    return;
+  }
+  products.value = await getProductsByWarehouseId(warehouseId)
+  destinations.value = await getDestinations()
 });
 
 // Methods
-const selectOption = (option) => {
-  selectedOption.value = option;
-  // console.log("Selected Option:", option);
+const selectProduct = (product: ProductResponse) => {
+  createSaleForm.value.productId = product.id;
+  updatePrice();
 };
 
-const selectDestination = (destination) => {
-  selectedDestination.value = destination;
-  // console.log("Selected Destination:", destination);
+const selectDestination = (destination: DestinationResponse) => {
+  createSaleForm.value.destinationId = destination.id;
+  updatePrice();
 };
 
-const submitForm = () => {
-  const formData = {
-    option: selectedOption.value,
-    destination: selectedDestination.value,
-    quantity: quantity.value,
-    price: price.value, // This is the displayed price, not total
-    totalCost: quantity.value * unitPrice, // Example calculation for total
-  };
-  console.log("Form Data Submitted:", formData);
-  alert(
-    `Form Submitted! \nOption: ${formData.option}\nDestination: ${formData.destination}\nQuantity: ${formData.quantity}\nTotal Cost (example): ${formData.totalCost} Lei`
-  );
-  // In a real application, you would send this data to an API here
+const updatePrice = async () => {
+  if (!createSaleForm.value.productId || !createSaleForm.value.destinationId) return;
+  createSaleForm.value.priceAtSale = await getPrice(createSaleForm.value.productId, createSaleForm.value.destinationId)
+};
+
+const submitForm = async () => {
+  errors.value = [];
+  if (createSaleForm.value.quantity <= 0){
+    errors.value.push('Cantitatea trebuie sa fie mai mare de 0');
+  }
+  if (createSaleForm.value.priceAtSale <= 0){
+    errors.value.push('Pretul trebuie sa fie mai mare de 0');
+  }
+  if (errors.value.length > 0) return;
+
+  const result = createSale(createSaleForm.value)
+    .then(() => {
+      router.back()
+    })
+    .catch((err) => {
+    errors.value = err.response.data;
+  })
 };
 </script>
