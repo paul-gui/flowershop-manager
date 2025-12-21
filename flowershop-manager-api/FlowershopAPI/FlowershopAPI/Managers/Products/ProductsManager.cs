@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FlowershopAPI.Common.Results;
 using FlowershopAPI.Data;
 using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -45,12 +46,18 @@ namespace FlowershopAPI.Managers.Products
             return result;
         }
         
-        public async Task<List<ProductResponse>> GetProducts(Guid warehouseId)
+        public async Task<OperationResult<List<ProductResponse>>> GetProductsByWarehouseId(Guid warehouseId)
         {
+            var warehouse = await context.Warehouses.FindAsync(warehouseId);
+            if (warehouse == null)
+            {
+                return OperationResult<List<ProductResponse>>.Failed(["Warehouse not found"]);
+            }
+            
             var products = await context.Products.Where(p => p.WarehouseId == warehouseId).ToListAsync();
             var result = mapper.Map<List<ProductResponse>>(products);
 
-            return result;
+            return OperationResult<List<ProductResponse>>.Success(result);
         }
 
         public async Task<ProductResponse?> GetProduct(Guid id)
@@ -65,6 +72,16 @@ namespace FlowershopAPI.Managers.Products
                 return null;
             
             return product;
+        }
+
+        public async Task<OperationResult<decimal>> GetPrice(Guid productId, Guid destinationId)
+        {
+            var price = await context.Prices.FirstOrDefaultAsync(p => p.ProductId == productId && p.DestinationId == destinationId);
+            
+            if (price == null)
+                return OperationResult<decimal>.Failed(["Price not found"]);
+            
+            return OperationResult<decimal>.Success(price.Value);
         }
 
         public async Task<ProductResponse?> UpdateProduct(UpdateProductRequest updateProductRequest)

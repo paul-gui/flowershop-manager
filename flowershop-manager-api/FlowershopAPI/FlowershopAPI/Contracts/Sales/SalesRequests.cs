@@ -11,7 +11,6 @@ public class SaleCreationRequest
     public required Guid DestinationId { get; set; }
     
     [Required]
-    [Range(1, int.MaxValue)]
     public required int Quantity { get; set; }
     
     [Required]

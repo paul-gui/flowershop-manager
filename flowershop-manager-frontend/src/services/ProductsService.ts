@@ -30,6 +30,16 @@ export async function getProductById(id: string):Promise<ProductResponse>{
   return res.data
 }
 
+export async function getProductsByWarehouseId(warehouseId: string):Promise<ProductResponse[]>{
+  const res = await api.get(baseUrl + '/GetProductsByWarehouseId/' + warehouseId);
+  return res.data
+}
+
+export async function getPrice(productId: string, destinationId: string):Promise<number>{
+  const res = await api.get(baseUrl + '/GetPrice/' + productId + '/' + destinationId);
+  return res.data
+}
+
 export async function updateProduct(product: UpdateProductRequest):Promise<ProductResponse>{
   const res = await api.put(baseUrl + '/UpdateProduct/', product);
   return res.data
