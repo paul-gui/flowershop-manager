@@ -51,6 +51,12 @@ const router = createRouter({
       name: 'CreateSaleFromWarehouse',
       component: () => import('../components/Sales/CreateSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
+    },
+    {
+      path: '/sales/history',
+      name: 'salesHistory',
+      component: () => import('../components/Sales/HistoryPage.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
     }
   ],
 })
