@@ -1,9 +1,11 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FlowershopAPI.Common.Results;
 using FlowershopAPI.Contracts.Sales;
 using FlowershopAPI.Data;
 using FlowershopAPI.Managers.Sales.Contract;
 using FlowershopAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlowershopAPI.Managers.Sales;
 
@@ -41,6 +43,44 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         context.Sales.Add(sale);
         await context.SaveChangesAsync();
         return OperationResult<string>.Success("Sale Created");
+    }
+
+    public async Task<OperationResult<List<SaleResponse>>> GetSales(SalesFilterRequest filter)
+    {
+        var query = context.Sales.AsQueryable();
+
+        if (filter.WarehouseId.HasValue)
+        {
+            query = query.Where(s => s.Product.WarehouseId == filter.WarehouseId.Value);
+        }
+
+        if (filter.DestinationId.HasValue)
+        {
+            query = query.Where(s => s.DestinationId == filter.DestinationId.Value);
+        }
+
+        if (filter.StartDate.HasValue)
+        {
+            DateTime.SpecifyKind(filter.StartDate.Value, DateTimeKind.Utc);
+            query = query.Where(s => s.CreatedAt >= filter.StartDate.Value);
+
+        }
+
+        if (filter.EndDate.HasValue)
+        {
+            DateTime.SpecifyKind(filter.EndDate.Value, DateTimeKind.Utc);
+            query = query.Where(s => s.CreatedAt <= filter.EndDate.Value);
+        }
+            
+        
+        var sales = await query.ToListAsync();
+        
+        //var result = mapper.Map<List<SaleResponse>>(sales);
+        var result = await query
+            .ProjectTo<SaleResponse>(mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return OperationResult<List<SaleResponse>>.Success(result);
     }
 
     public Task<SaleResponse> GetSale()

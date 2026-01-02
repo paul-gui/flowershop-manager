@@ -13,5 +13,13 @@ public class SalesMappings : Profile
             .ForMember(d => d.Destination, opt => opt.Ignore())
             .ForMember(d => d.Product, opt => opt.Ignore())
             .ForMember(d => d.CreatedAt, opt => opt.Ignore());
+
+        CreateMap<Sale, SaleResponse>()
+            .ForMember(d => d.WarehouseName,
+                opt => opt.MapFrom(s => s.Product.Warehouse.Name))
+            .ForMember(d => d.ProductName,
+                opt => opt.MapFrom(s => s.Product.Name))
+            .ForMember(d => d.DestinationName,
+                opt => opt.MapFrom(s => s.Destination.Name));
     }
 }
