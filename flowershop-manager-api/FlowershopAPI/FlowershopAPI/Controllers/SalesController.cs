@@ -27,6 +27,13 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("GetSales")]
+    public async Task<ActionResult> GetSales([FromQuery] SalesFilterRequest salesFilterRequest)
+    {
+        var result = await salesManager.GetSales(salesFilterRequest);
+        return Ok(result);
+    }
+
     [HttpGet("GetSale")]
     public async Task<ActionResult<SaleResponse>> GetSale()
     {

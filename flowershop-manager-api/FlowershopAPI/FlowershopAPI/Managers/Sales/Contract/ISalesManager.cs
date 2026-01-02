@@ -6,6 +6,7 @@ namespace FlowershopAPI.Managers.Sales.Contract;
 public interface ISalesManager
 {
     public Task<OperationResult<string>> CreateSale(string userId, SaleCreationRequest saleCreationRequest);
+    public Task<OperationResult<List<SaleResponse>>> GetSales(SalesFilterRequest salesFilterRequest);
     public Task<SaleResponse> GetSale();
     public Task<OperationResult<string>> UpdateSale();
     public Task<OperationResult<string>> DeleteSale();

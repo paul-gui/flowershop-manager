@@ -16,3 +16,11 @@ public class SaleCreationRequest
     [Required]
     public decimal PriceAtSale { get; set; }
 }
+
+public class SalesFilterRequest
+{
+    public Guid? WarehouseId { get; set; }
+    public Guid? DestinationId { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+}
