@@ -61,21 +61,20 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
 
         if (filter.StartDate.HasValue)
         {
-            DateTime.SpecifyKind(filter.StartDate.Value, DateTimeKind.Utc);
-            query = query.Where(s => s.CreatedAt >= filter.StartDate.Value);
-
+            var startUtc = filter.StartDate.Value
+                .ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            query = query.Where(s => s.CreatedAt >= startUtc);
         }
 
         if (filter.EndDate.HasValue)
         {
-            DateTime.SpecifyKind(filter.EndDate.Value, DateTimeKind.Utc);
-            query = query.Where(s => s.CreatedAt <= filter.EndDate.Value);
+            var endUtcExclusive = filter.EndDate.Value
+                .AddDays(1)
+                .ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+            query = query.Where(s => s.CreatedAt < endUtcExclusive);
         }
             
         
-        var sales = await query.ToListAsync();
-        
-        //var result = mapper.Map<List<SaleResponse>>(sales);
         var result = await query
             .ProjectTo<SaleResponse>(mapper.ConfigurationProvider)
             .ToListAsync();

@@ -8,4 +8,5 @@ public class SaleResponse
     public string DestinationName { get; set; }
     public int Quantity { get; set; }
     public decimal PriceAtSale { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }

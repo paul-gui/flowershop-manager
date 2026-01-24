@@ -1,4 +1,4 @@
 export interface DestinationResponse{
-  id: string;
+  id: string | null;
   name: string;
 }

@@ -20,6 +20,8 @@ public class SalesMappings : Profile
             .ForMember(d => d.ProductName,
                 opt => opt.MapFrom(s => s.Product.Name))
             .ForMember(d => d.DestinationName,
-                opt => opt.MapFrom(s => s.Destination.Name));
+                opt => opt.MapFrom(s => s.Destination.Name))
+            .ForMember(d => d.CreatedAt, 
+                opt => opt.MapFrom(s => s.CreatedAt));
     }
 }
