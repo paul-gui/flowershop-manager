@@ -47,15 +47,21 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/sales/createFromWarehouse/:warehouseId',
-      name: 'CreateSaleFromWarehouse',
+      path: '/sales/createSale/:warehouseId',
+      name: 'CreateSale',
       component: () => import('../components/Sales/CreateSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
     {
       path: '/sales/history',
-      name: 'salesHistory',
+      name: 'SalesHistory',
       component: () => import('../components/Sales/HistoryPage.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
+    },
+    {
+      path: '/sales/history/createSale/:saleDate',
+      name: 'HistoryCreateSale',
+      component: () => import('../components/Sales/HistoryCreateSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     }
   ],
