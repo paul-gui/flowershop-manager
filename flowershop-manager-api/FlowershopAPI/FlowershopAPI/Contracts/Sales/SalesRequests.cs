@@ -15,6 +15,9 @@ public class SaleCreationRequest
     
     [Required]
     public decimal PriceAtSale { get; set; }
+    
+    [Required]
+    public DateOnly SaleDate { get; set; }
 }
 
 public class SalesFilterRequest
