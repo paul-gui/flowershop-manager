@@ -29,6 +29,14 @@ import router from "@/router";
 import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import ContentButton from "@/components/Warehouses/content-button.vue";
 
+
+const props = defineProps({
+  saleDate: {
+    type: String,
+    default: null
+  }
+})
+
 const warehouses = ref<WarehouseResponse[]>([])
 
 onMounted(async () => {
@@ -49,7 +57,7 @@ function goToEditWarehouse(id: string): void {
 
 function goToCreateSale(warehouseId: string): void {
   router.push({
-    name: "CreateSaleFromWarehouse",
+    name: "CreateSale",
     params: { warehouseId: warehouseId }
   })
 }

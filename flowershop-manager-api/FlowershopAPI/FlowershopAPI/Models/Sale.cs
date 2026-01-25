@@ -13,6 +13,8 @@ public class Sale
     public Guid DestinationId { get; set; }
     public Destination Destination { get; set; } = null!;
     
+    public DateTimeOffset SaleDate { get; set; } = DateTimeOffset.UtcNow;
+    
     public DateTimeOffset CreatedAt { get; set; } =  DateTimeOffset.UtcNow;
     
     public int Quantity { get; set; }

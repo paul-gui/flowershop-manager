@@ -5,5 +5,5 @@ export interface SaleResponse {
   destinationName: string,
   quantity: number,
   priceAtSale: number,
-  createdAt: string,
+  saleDate: string,
 }

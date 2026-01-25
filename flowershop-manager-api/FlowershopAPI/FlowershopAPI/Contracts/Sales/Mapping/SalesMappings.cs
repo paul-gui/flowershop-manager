@@ -12,6 +12,7 @@ public class SalesMappings : Profile
             .ForMember(d => d.User, opt => opt.Ignore())
             .ForMember(d => d.Destination, opt => opt.Ignore())
             .ForMember(d => d.Product, opt => opt.Ignore())
+            .ForMember(d => d.SaleDate, opt => opt.Ignore())
             .ForMember(d => d.CreatedAt, opt => opt.Ignore());
 
         CreateMap<Sale, SaleResponse>()
@@ -21,7 +22,7 @@ public class SalesMappings : Profile
                 opt => opt.MapFrom(s => s.Product.Name))
             .ForMember(d => d.DestinationName,
                 opt => opt.MapFrom(s => s.Destination.Name))
-            .ForMember(d => d.CreatedAt, 
-                opt => opt.MapFrom(s => s.CreatedAt));
+            .ForMember(d => d.SaleDate, 
+                opt => opt.MapFrom(s => s.SaleDate));
     }
 }
