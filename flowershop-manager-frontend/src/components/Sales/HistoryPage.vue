@@ -76,7 +76,7 @@
             class="absolute top-10 left-1/2 -translate-x-1/2 z-20 w-60 rounded-lg bg-white p-4 shadow-lg"
           >
             <label class="block text-sm font-medium text-gray-700 mb-1">Vizualizare</label>
-            <select v-model="viewType" class="w-full mb-3 rounded-lg border-gray-300 text-sm">
+            <select v-model="viewType" class="w-full p-1 mb-3 rounded-lg border-gray-300 text-sm">
               <option value="day">Zi</option>
               <option value="month">Luna</option>
             </select>
@@ -89,7 +89,7 @@
               :type="viewType === 'day' ? 'date' : 'month'"
               :key="viewType"
               v-model="inputDate"
-              class="w-full rounded-lg border-gray-300 text-sm"
+              class="w-full rounded-lg p-1 border-gray-300 text-sm"
               @change="acceptSelectedDate"
             />
 
@@ -126,10 +126,17 @@
       <!-- Sales Table -->
       <div>
         <div
-          class="overflow-x-auto rounded-xl bg-white shadow-sm mb-4 p-5 flex justify-center"
+          class="rounded-xl bg-white shadow-sm mb-4 p-5 flex flex-col items-center justify-center gap-3"
           v-if="!hasAnySales"
         >
-          <p class="text-sm font-medium text-gray-700">Nu exista vanzari</p>
+          <span class="text-sm font-medium text-gray-700">Nu exista vanzari</span>
+          <button
+            class="border-dashed border-2 p-3 rounded-xl text-sm"
+            @click="addProduct(inputDate)"
+          >
+            <i class="fa fa-plus"></i>
+            Adauga vanzare
+          </button>
         </div>
 
         <div v-else v-for="(daySales, date) in groupedSales" :key="date" class="mt-4">
@@ -144,7 +151,8 @@
                     {{ getWeekday(date)}}
                   </div>
                   <div class="justify-self-end">
-                    <button class="rounded-lg h-10 aspect-square  bg-gray-100">
+
+                    <button class="rounded-lg h-10 aspect-square  bg-gray-100 hover:bg-gray-200" @click="addProduct(date)">
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
@@ -202,6 +210,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import router from "@/router";
 import { getSales } from '@/services/SalesService.ts'
 import type { SalesFilterForm } from '@/types/models/salesFilterForm'
 import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
@@ -232,7 +241,7 @@ const groupedSales = computed(() => {
   const groups: Record<string, SaleResponse[]> = {}
 
   for (const sale of sales.value) {
-    const key = getDateKey(sale.createdAt)
+    const key = getDateKey(sale.saleDate)
 
     if (!groups[key]) {
       groups[key] = []
@@ -357,6 +366,15 @@ async function hydrateFilters() {
 
   destinations.value = [{ id: null, name: 'Toate destinatiile' }, ...(await getDestinations())]
   salesFilterForm.value.destinationId = null
+}
+
+function addProduct(date: string){
+  router.push({
+    name: 'HistoryCreateSale',
+    params: {
+      saleDate: date,
+    }
+  })
 }
 
 async function getSalesData() {

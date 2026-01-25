@@ -93,6 +93,7 @@ const createSaleForm = ref<CreateSaleForm>({
   destinationId: '',
   quantity: 0,
   priceAtSale: 0,
+  saleDate: ''
 })
 const products = ref<ProductResponse[]>([])
 const destinations = ref<DestinationResponse[]>([])
@@ -124,6 +125,14 @@ const updatePrice = async () => {
   createSaleForm.value.priceAtSale = await getPrice(createSaleForm.value.productId, createSaleForm.value.destinationId)
 };
 
+const getTodayDate = () => {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 const submitForm = async () => {
   errors.value = [];
   if (createSaleForm.value.quantity <= 0){
@@ -133,6 +142,8 @@ const submitForm = async () => {
     errors.value.push('Pretul trebuie sa fie mai mare de 0');
   }
   if (errors.value.length > 0) return;
+
+  createSaleForm.value.saleDate = getTodayDate()
 
   const result = createSale(createSaleForm.value)
     .then(() => {

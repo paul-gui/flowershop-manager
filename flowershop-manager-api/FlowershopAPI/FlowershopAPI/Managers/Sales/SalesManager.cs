@@ -36,6 +36,8 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         {
             return OperationResult<string>.Failed(["Price must be greater than 0!"]);
         }
+
+        sale.SaleDate = saleCreationRequest.SaleDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
         
         sale.UserId = userId;
         sale.CreatedAt = DateTimeOffset.UtcNow;
@@ -63,7 +65,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         {
             var startUtc = filter.StartDate.Value
                 .ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-            query = query.Where(s => s.CreatedAt >= startUtc);
+            query = query.Where(s => s.SaleDate >= startUtc);
         }
 
         if (filter.EndDate.HasValue)
@@ -71,11 +73,12 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
             var endUtcExclusive = filter.EndDate.Value
                 .AddDays(1)
                 .ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-            query = query.Where(s => s.CreatedAt < endUtcExclusive);
+            query = query.Where(s => s.SaleDate < endUtcExclusive);
         }
             
         
         var result = await query
+            .OrderBy(s => s.SaleDate)
             .ProjectTo<SaleResponse>(mapper.ConfigurationProvider)
             .ToListAsync();
 
