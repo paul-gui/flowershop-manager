@@ -10,3 +10,15 @@ public class SaleResponse
     public decimal PriceAtSale { get; set; }
     public DateTimeOffset SaleDate { get; set; }
 }
+
+public class SaleResponseForEdit
+{
+    public Guid Id { get; set; }
+    public string ProductName { get; set; } = string.Empty;
+    public Guid ProductId { get; set; }
+    public string WarehouseName { get; set; } = string.Empty;
+    public string DestinationId { get; set; } = string.Empty;
+    public int Quantity { get; set; }
+    public decimal PriceAtSale { get; set; }
+    public DateTimeOffset SaleDate { get; set; }
+}

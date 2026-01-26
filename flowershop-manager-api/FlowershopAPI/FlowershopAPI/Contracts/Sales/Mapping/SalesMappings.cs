@@ -24,5 +24,11 @@ public class SalesMappings : Profile
                 opt => opt.MapFrom(s => s.Destination.Name))
             .ForMember(d => d.SaleDate, 
                 opt => opt.MapFrom(s => s.SaleDate));
+
+        CreateMap<Sale, SaleResponseForEdit>()
+            .ForMember(d => d.WarehouseName,
+                opt => opt.MapFrom(s => s.Product.Warehouse.Name))
+            .ForMember(d => d.ProductName,
+                opt => opt.MapFrom(s => s.Product.Name));
     }
 }
