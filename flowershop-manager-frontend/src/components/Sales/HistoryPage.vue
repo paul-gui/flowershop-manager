@@ -182,7 +182,7 @@
                   </td>
                   <td class="px-4 py-3 text-right whitespace-nowrap">
                     <button
-                      @click="() => {}"
+                      @click="goToEditProduct(sale.id)"
                       class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
                     >
                       Editare
@@ -375,6 +375,10 @@ function addProduct(date: string){
       saleDate: date,
     }
   })
+}
+
+function goToEditProduct(id: string){
+  router.push({name: 'HistoryEditSale', params: {id: id}})
 }
 
 async function getSalesData() {
