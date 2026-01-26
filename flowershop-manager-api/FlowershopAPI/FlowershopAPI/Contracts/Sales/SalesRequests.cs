@@ -20,6 +20,21 @@ public class SaleCreationRequest
     public DateOnly SaleDate { get; set; }
 }
 
+public class SaleUpdateRequest
+{
+    [Required]
+    public DateOnly SaleDate { get; set; }
+    
+    [Required]
+    public Guid DestinationId { get; set; }
+    
+    [Required]
+    public int Quantity { get; set; }
+    
+    [Required]
+    public decimal PriceAtSale { get; set; }
+}
+
 public class SalesFilterRequest
 {
     public Guid? WarehouseId { get; set; }

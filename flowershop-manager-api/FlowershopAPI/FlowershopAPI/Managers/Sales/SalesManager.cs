@@ -85,18 +85,61 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         return OperationResult<List<SaleResponse>>.Success(result);
     }
 
-    public Task<SaleResponse> GetSale()
+    public async Task<OperationResult<SaleResponseForEdit>> GetSaleForEdit(Guid saleId)
     {
-        throw new NotImplementedException();
+        var sale = await context.Sales.Include(s => s.Product).ThenInclude(s => s.Warehouse).FirstOrDefaultAsync(s => s.Id == saleId);
+
+        if (sale == null)
+        {
+            return OperationResult<SaleResponseForEdit>.Failed(["Sale not found!"]);
+        }
+        var result = mapper.Map<SaleResponseForEdit>(sale);
+        return OperationResult<SaleResponseForEdit>.Success(result);
     }
 
-    public Task<OperationResult<string>> UpdateSale()
+    public async Task<OperationResult<string>> UpdateSale(Guid saleId, SaleUpdateRequest saleUpdateRequest)
     {
-        throw new NotImplementedException();
+        var sale = await context.Sales.FindAsync(saleId);
+        var destination = await context.Destinations.FindAsync(saleUpdateRequest.DestinationId);
+        
+        if (sale == null)
+        {
+            return OperationResult<string>.Failed(["Sale not found!"]);
+        }
+        
+        if (destination == null)
+        {
+            return OperationResult<string>.Failed(["Destination not found!"]);
+        }
+        
+        if (saleUpdateRequest.Quantity <= 0)
+        {
+            return OperationResult<string>.Failed(["Quantity must be greater than 0!"]);
+        }
+        
+        if (saleUpdateRequest.PriceAtSale <= 0)
+        {
+            return OperationResult<string>.Failed(["Price must be greater than 0!"]);
+        }
+        
+        sale.Quantity = saleUpdateRequest.Quantity;
+        sale.PriceAtSale = saleUpdateRequest.PriceAtSale;
+        sale.DestinationId = saleUpdateRequest.DestinationId;
+        sale.SaleDate = saleUpdateRequest.SaleDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+        
+        await context.SaveChangesAsync();
+        return OperationResult<string>.Success("Sale Updated");
     }
 
-    public Task<OperationResult<string>> DeleteSale()
+    public async Task<OperationResult<string>> DeleteSale(Guid saleId)
     {
-        throw new NotImplementedException();
+        var sale = await context.Sales.FindAsync(saleId);
+        if (sale == null)
+        {
+            return OperationResult<string>.Failed(["Sale not found!"]);
+        }
+        context.Sales.Remove(sale);
+        await context.SaveChangesAsync();
+        return OperationResult<string>.Success("Sale Deleted");
     }
 }
