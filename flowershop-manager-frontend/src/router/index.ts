@@ -63,6 +63,12 @@ const router = createRouter({
       name: 'HistoryCreateSale',
       component: () => import('../components/Sales/HistoryCreateSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
+    },
+    {
+      path: '/sales/history/editSale/:id',
+      name: 'HistoryEditSale',
+      component: () => import('../components/Sales/HistoryEditSalePage.vue'),
+      meta: { requiresAuth: true, roles: ['Admin'] },
     }
   ],
 })

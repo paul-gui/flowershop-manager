@@ -34,21 +34,36 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("GetSale")]
-    public async Task<ActionResult<SaleResponse>> GetSale()
+    [HttpGet("GetSaleForEdit/{saleId}")]
+    public async Task<ActionResult<SaleResponse>> GetSaleForEdit(Guid saleId)
     {
-        return NoContent();
+        var result = await salesManager.GetSaleForEdit(saleId);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+        return Ok(result.Data);
     }
 
-    [HttpPut("UpdateSale")]
-    public async Task<ActionResult> UpdateSale()
+    [HttpPut("UpdateSale/{saleId}")]
+    public async Task<ActionResult> UpdateSale(Guid saleId, [FromBody]SaleUpdateRequest saleUpdateRequest)
     {
-        return NoContent();
+        var result = await salesManager.UpdateSale(saleId, saleUpdateRequest);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+        return Ok(result.Data);
     }
 
-    [HttpDelete("DeleteSale")]
-    public async Task<ActionResult> DeleteSale()
+    [HttpDelete("DeleteSale/{saleId}")]
+    public async Task<ActionResult> DeleteSale(Guid saleId)
     {
-        return NoContent();
+        var result = await salesManager.DeleteSale(saleId);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+        return Ok(result.Data);
     }
 }
