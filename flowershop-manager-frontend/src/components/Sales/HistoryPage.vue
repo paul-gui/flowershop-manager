@@ -389,7 +389,7 @@ function addProduct(date: string) {
     name: 'HistoryCreateSale',
     params: {
       saleDate: date,
-    },
+    }
   })
 }
 
