@@ -233,7 +233,7 @@ import type { SalesFilterForm } from '@/types/models/salesFilterForm'
 import { getWarehouses } from '@/services/WarehousesService.ts'
 import { getDestinations } from '@/services/ProductsService.ts'
 import type { SaleResponse } from '@/types/dtos/sales/saleResponses.ts'
-import type { DestinationOption, WarehouseOption } from '@/types/models/createSaleForm.ts'
+import type { DestinationOption, WarehouseOption } from '@/types/models/salesFilterForm.ts'
 
 const salesFilterForm = ref<SalesFilterForm>({
   warehouseId: '',
@@ -389,7 +389,7 @@ function addProduct(date: string) {
     name: 'HistoryCreateSale',
     params: {
       saleDate: date,
-    },
+    }
   })
 }
 
