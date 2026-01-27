@@ -12,11 +12,15 @@ onMounted(async () => {
 
 async function onSubmit() {
   await upsert.submitProduct()
-  router.back()
+  goBack()
 }
 
 function onCancel() {
-  router.back()
+  goBack()
+}
+
+function goBack() {
+  router.replace( { path:'/warehouse-details/' + upsert.form.value.warehouseId})
 }
 </script>
 

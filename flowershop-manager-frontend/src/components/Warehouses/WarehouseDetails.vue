@@ -44,7 +44,7 @@
           <div v-for="(f, index) in products" :key="f.id" class="mb-2">
             <content-button
               :title="f.name"
-              :descriptionArray="f.prices.map((p) => `${p.destinationName}: ${p.value} Lei`)"
+              :pricesDescription="f.prices.map((p) => `${p.destinationName}: ${p.value} Lei`)"
               icon="fa fa-x text-gray-300"
               @primary-click="
               () => {
@@ -97,6 +97,7 @@ import ContentButton from '@/components/Warehouses/content-button.vue'
 import router from '@/router'
 import type { UpdateWarehouseRequest } from '@/types/dtos/warehouse/warehouseRequests.dto.ts'
 import type { ProductResponse } from '@/types/dtos/products/productResponses.dto.ts'
+import { toast } from 'vue-sonner'
 
 const props = defineProps<{
   id: string
@@ -149,19 +150,31 @@ async function onSubmit() {
 }
 
 async function goBack() {
-  await router.push({ path: `/warehouses` })
+  await router.replace({ name: 'Warehouses' })
 }
 
 async function deleteWarehouseButton() {
   if (warehouse.value) {
-    await deleteWarehouse(warehouse.value.id)
-    await goBack()
+    try{
+      await deleteWarehouse(warehouse.value.id)
+      toast.success('Locatie stearsa cu succes')
+      await goBack()
+    }
+    catch (error) {
+      toast.error('A aparut o eroare')
+    }
   }
 }
 
-const removeProduct = async (index: number) => {
-  const id = products.value[index].id
-  await deleteProduct(id)
-  await getWarehouseDetails()
+async function removeProduct(index: number) {
+  try{
+    const id = products.value[index].id
+    await deleteProduct(id)
+    await getWarehouseDetails()
+    toast.success('Produs sters cu succes')
+  }
+  catch (error) {
+    toast.error('A aparut o eroare')
+  }
 }
 </script>

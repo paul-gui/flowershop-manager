@@ -4,7 +4,7 @@ import { useProductFormLogic } from '@/components/Products/productFormLogic.ts'
 import router from '@/router'
 
 const props = defineProps<{ id: string }>()
-const upsert = useProductFormLogic({warehouseId: props.id})
+const upsert = useProductFormLogic({ warehouseId: props.id })
 
 onMounted(async () => {
   await upsert.hydrate()
@@ -12,13 +12,16 @@ onMounted(async () => {
 
 async function onSubmit() {
   await upsert.submitProduct()
-  router.back()
+  goBack()
 }
 
 function onCancel() {
-   router.back()
+  goBack()
 }
 
+function goBack() {
+  router.replace({ path: '/warehouse-details/' + props.id })
+}
 </script>
 
 <template>
@@ -37,7 +40,7 @@ function onCancel() {
         <label class="block text-gray-300 mb-2">Pret</label>
         <div class="space-y-3">
           <div
-            v-for="(p) in upsert.form.value.prices"
+            v-for="p in upsert.form.value.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >
