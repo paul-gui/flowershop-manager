@@ -25,39 +25,41 @@ function goBack() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#1A1A2E] text-white flex items-center justify-center p-6">
-    <div class="w-full max-w-sm space-y-6">
+  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+    <div class="max-w-md mx-auto space-y-6">
+      <h1 class="text-h1 text-text_primary">Modificare produs</h1>
       <div>
-        <label class="block text-sm mb-1">Denumire</label>
+        <label class="block text-sm mb-1">Denumire produs</label>
         <input
           v-model="upsert.form.value.name"
           type="text"
-          class="w-full bg-cards text-xl text-text_secondary px-4 py-2 rounded-xl focus:outline-none"
+          class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
         />
       </div>
 
       <div>
-        <label class="block text-gray-300 mb-2">Pret</label>
+        <label class="block mb-2">Pret</label>
         <div class="space-y-3">
           <div
             v-for="(p) in upsert.form.value.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >
-            <span class="text-h3 text-gray-300">{{ p.destinationName }}</span>
+            <span class="text-h3 ms-3">{{ p.destinationName }}</span>
             <input
               v-model="p.value"
               type="number"
               class="w-2/3 px-4 py-2 rounded-xl bg-[#2E2E4D] text-white focus:outline-none"
             />
+            <span>Lei</span>
           </div>
         </div>
       </div>
 
-      <div class="fixed bottom-8 left-0 flex justify-center mt-6 space-x-4 w-full">
+      <div class="fixed bottom-8 left-0 flex justify-center mt-6 gap-2 w-full">
         <button
           @click="onCancel"
-          class="bg-error hover:bg-red-600 text-text_accents py-3 px-10 rounded-xl"
+          class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
         >
           Anuleaza
         </button>

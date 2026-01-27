@@ -1,6 +1,7 @@
 <template>
   <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
+      <h1 class="text-h1 text-text_primary mb-4">Detalii locatie</h1>
       <!-- Name Field + Delete location button-->
       <div class="flex items-end gap-2 relative">
         <div class="flex-1">
