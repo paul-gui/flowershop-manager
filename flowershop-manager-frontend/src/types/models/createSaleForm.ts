@@ -5,3 +5,13 @@ export interface CreateSaleForm {
   priceAtSale: number,
   saleDate: String
 }
+
+export interface WarehouseOption {
+  id: string | null,
+  name: string,
+}
+
+export interface DestinationOption {
+  id: string | null,
+  name: string,
+}

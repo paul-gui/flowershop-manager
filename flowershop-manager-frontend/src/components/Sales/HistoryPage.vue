@@ -22,7 +22,10 @@
           <!-- Origin -->
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700"> Origine </label>
-            <select class="w-full rounded-lg p-2 text-sm hover:bg-gray-100 cursor-pointer" v-model="salesFilterForm.warehouseId">
+            <select
+              class="w-full rounded-lg p-2 text-sm hover:bg-gray-100 cursor-pointer"
+              v-model="salesFilterForm.warehouseId"
+            >
               <option
                 v-for="warehouse in warehouses"
                 :key="warehouse.id ?? 'all'"
@@ -36,7 +39,10 @@
           <!-- Destination -->
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700"> Destinatie </label>
-            <select class="w-full rounded-lg p-2  text-sm hover:bg-gray-100 cursor-pointer" v-model="salesFilterForm.destinationId">
+            <select
+              class="w-full rounded-lg p-2 text-sm hover:bg-gray-100 cursor-pointer"
+              v-model="salesFilterForm.destinationId"
+            >
               <option
                 v-for="destination in destinations"
                 :key="destination.id || 'all'"
@@ -61,10 +67,17 @@
 
       <!-- Date Navigator -->
       <div class="flex items-center justify-between rounded-xl bg-white p-4 shadow-sm mb-4">
-        <button @click="goPrevious" class="rounded-lg px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200">←</button>
+        <button
+          @click="goPrevious"
+          class="rounded-lg px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200"
+        >
+          ←
+        </button>
 
         <!-- Current period display + open picker -->
-        <div class="flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-xl hover:bg-gray-100">
+        <div
+          class="flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-xl hover:bg-gray-100"
+        >
           <div @click="pickerOpen = !pickerOpen" class="flex items-center gap-2">
             <p class="text-lg font-medium text-gray-900">{{ formattedPeriod }}</p>
             <i class="fa fa-angle-down text-gray-500"></i>
@@ -102,7 +115,9 @@
           </div>
         </div>
 
-        <button @click="goNext" class="rounded-lg px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200">→</button>
+        <button @click="goNext" class="rounded-lg px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200">
+          →
+        </button>
       </div>
 
       <!-- Summary -->
@@ -148,11 +163,13 @@
                     {{ getFormattedDate(date) }}
                   </div>
                   <div class="justify-self-center text-lg font-bold text-gray-700">
-                    {{ getWeekday(date)}}
+                    {{ getWeekday(date) }}
                   </div>
                   <div class="justify-self-end">
-
-                    <button class="rounded-lg h-10 aspect-square  bg-gray-100 hover:bg-gray-200" @click="addProduct(date)">
+                    <button
+                      class="rounded-lg h-10 aspect-square bg-gray-100 hover:bg-gray-200"
+                      @click="addProduct(date)"
+                    >
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
@@ -210,14 +227,13 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import router from "@/router";
+import router from '@/router'
 import { getSales } from '@/services/SalesService.ts'
 import type { SalesFilterForm } from '@/types/models/salesFilterForm'
-import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
-import type { DestinationResponse } from '@/types/dtos/destinations/destinationResponses.dto.ts'
 import { getWarehouses } from '@/services/WarehousesService.ts'
 import { getDestinations } from '@/services/ProductsService.ts'
 import type { SaleResponse } from '@/types/dtos/sales/saleResponses.ts'
+import type { DestinationOption, WarehouseOption } from '@/types/models/createSaleForm.ts'
 
 const salesFilterForm = ref<SalesFilterForm>({
   warehouseId: '',
@@ -227,8 +243,8 @@ const salesFilterForm = ref<SalesFilterForm>({
 })
 
 // Field values
-const warehouses = ref<WarehouseResponse[]>([])
-const destinations = ref<DestinationResponse[]>([])
+const warehouses = ref<WarehouseOption[]>([])
+const destinations = ref<DestinationOption[]>([])
 
 // State
 const pickerOpen = ref(false)
@@ -368,17 +384,17 @@ async function hydrateFilters() {
   salesFilterForm.value.destinationId = null
 }
 
-function addProduct(date: string){
+function addProduct(date: string) {
   router.push({
     name: 'HistoryCreateSale',
     params: {
       saleDate: date,
-    }
+    },
   })
 }
 
-function goToEditProduct(id: string){
-  router.push({name: 'HistoryEditSale', params: {id: id}})
+function goToEditProduct(id: string) {
+  router.push({ name: 'HistoryEditSale', params: { id: id } })
 }
 
 async function getSalesData() {
