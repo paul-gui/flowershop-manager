@@ -2,7 +2,7 @@ export interface ProductResponse {
   id: string;
   name: string;
   warehouseId: string;
-  prices: ReadonlyArray<PriceForProductResponse>;
+  prices: Array<PriceForProductResponse>;
 }
 
 export interface PriceForProductResponse {
