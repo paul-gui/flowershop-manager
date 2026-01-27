@@ -1,7 +1,7 @@
 import type { ProductResponse } from '@/types/dtos/products/productResponses.dto.ts'
 
 export interface WarehouseResponse {
-  id: string | null;
+  id: string;
   name: string;
 }
 
