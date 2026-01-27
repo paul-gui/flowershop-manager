@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen content-center">
-    <div class="max-w-md mx-auto space-y-4 flex flex-col p-4 py-12">
+  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+    <div class="max-w-md mx-auto space-y-4 flex flex-col">
       <div class="flex flex-row justify-between items-baseline">
         <h1 class="text-h1 text-text_primary">Locatii</h1>
         <button
