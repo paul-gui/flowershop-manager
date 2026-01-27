@@ -4,3 +4,13 @@ export interface SalesFilterForm {
   startDate: string;
   endDate: string;
 }
+
+export interface WarehouseOption {
+  id: string | null,
+  name: string,
+}
+
+export interface DestinationOption {
+  id: string | null,
+  name: string,
+}
