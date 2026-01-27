@@ -21,7 +21,7 @@ namespace FlowershopAPI.Managers.Warehouses
 
         public async Task<WarehouseDetailsResponse?> GetWarehouseById(Guid id)
         {
-            var warehouse = await context.Warehouses.Include(w => w.Products).FirstOrDefaultAsync(w => w.Id == id);
+            var warehouse = await context.Warehouses.Include(w => w.Products).ThenInclude(p => p.Prices).ThenInclude(p => p.Destination).FirstOrDefaultAsync(w => w.Id == id);
             var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
 
             return result;

@@ -8,6 +8,10 @@ defineProps({
     type: String,
     default: '',
   },
+  descriptionArray: {
+    type: Array,
+    default: () => [],
+  },
   icon: {
     type: String, // Can be a component or string name
     default: null,
@@ -21,19 +25,21 @@ defineProps({
   <div class="flex rounded-lg overflow-hidden border border-divider bg-cards text-text_secondary w-full p-1">
     <!-- Left Button -->
     <button
-        class="flex-1 px-4 text-left hover:bg-[#3A3A55] transition-colors"
+        class="flex-1 px-4 text-left hover:bg-[#3A3A55] rounded-lg transition-colors"
         @click="$emit('primary-click')"
     >
       <span class="block text-h2 text-text_primary">{{ title }}</span>
-      <span class="block text-body">{{description}}</span>
+      <span class="inline-block text-body" v-if="description">{{description}}</span>
+      <span class="inline-block text-sm ms-2" v-if="descriptionArray" v-for="d of descriptionArray">{{ d }}</span>
+
     </button>
 
-    <!-- Divider (optional visual border) -->
-    <div class="w-px bg-divider h-auto"></div>
+    <!-- Divider -->
+    <div class="w-px bg-divider h-auto mx-1"></div>
 
-    <!-- Right Button (Icon) -->
+    <!-- Right Button -->
     <button
-        class="p-6 flex items-center justify-center hover:bg-divider transition-colors"
+        class="p-6 aspect-square w-auto flex items-center justify-center hover:bg-divider rounded-lg transition-colors"
         @click="$emit('secondary-click')"
     >
       <i :class="icon" ></i>
