@@ -1,79 +1,82 @@
 <template>
-  <div class="p-6 max-w-sm mx-auto">
-    <div class="mb-6">
-      <label class="block text-gray-400 text-sm mb-2">Opțiune</label>
-      <div class="space-y-1">
-        <div
-          :class="[
+  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+    <div class="max-w-md mx-auto">
+      <h1 class="text-h1 text-text_primary mb-4">Adaugare vanzare</h1>
+      <div class="mb-4">
+        <label class="block text-sm mb-2">Produs</label>
+        <div class="space-y-1">
+          <div
+            :class="[
             'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
             createSaleForm?.productId === p.id
               ? 'bg-accent3 text-white shadow-lg'
               : 'bg-cards text-gray-300 hover:bg-divider',
           ]"
-          @click="selectProduct(p)"
-          v-for="p in products"
-        >
-          {{ p.name }}
+            @click="selectProduct(p)"
+            v-for="p in products"
+          >
+            {{ p.name }}
+          </div>
         </div>
+        <p class="text-red-500 text-sm" v-if="errors['product']">{{ errors['product'] }}</p>
       </div>
-    </div>
-    <hr class="border-gray-800 my-6" />
 
-    <div class="mb-6">
-      <label class="block text-gray-400 text-sm mb-2">Destinație</label>
-      <div class="flex rounded-lg overflow-hidden bg-cards p-1">
-        <button
-          :class="[
+      <div class="mb-4">
+        <label class="block text-sm mb-2">Destinație</label>
+        <div class="flex rounded-lg overflow-hidden bg-cards p-1">
+          <button
+            :class="[
             'flex-1 py-3 font-medium transition duration-150 ease-in-out rounded-lg',
             createSaleForm.destinationId === d.id
               ? 'bg-accent3 text-white shadow-md'
               : 'text-gray-300 hover:bg-divider',
           ]"
-          @click="selectDestination(d)"
-          v-for="d of destinations"
+            @click="selectDestination(d)"
+            v-for="d of destinations"
+          >
+            {{ d.name }}
+          </button>
+        </div>
+        <p class="text-red-500 text-sm" v-if="errors['destination']">{{ errors['destination'] }}</p>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm mb-2">Cantitate</label>
+        <input
+          v-model.number="createSaleForm.quantity"
+          type="number"
+          class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+        />
+        <p class="text-red-500 text-sm" v-if="errors['quantity']">{{ errors['quantity'] }}</p>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-sm mb-2">Pret</label>
+        <input
+          v-model.number="createSaleForm.priceAtSale"
+          type="number"
+          class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
         >
-          {{ d.name }}
+        <p class="text-red-500 text-sm" v-if="errors['price']">{{ errors['price'] }}</p>
+      </div>
+
+      <div class="fixed bottom-8 left-0 flex justify-center mt-6 gap-2 w-full bg-background pt-1">
+        <button
+          @click="goBack"
+          class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
+        >
+          Anuleaza
+        </button>
+        <button
+          @click="submitForm"
+          class="bg-accent2 hover:bg-green-600 text-text_accents py-3 px-10 rounded-xl"
+        >
+          Salveaza
         </button>
       </div>
     </div>
-    <div class="mb-6">
-      <label class="block text-gray-400 text-sm mb-2">Cantitate</label>
-      <input
-        v-model.number="createSaleForm.quantity"
-        type="number"
-        class="w-full p-4 text-2xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-      />
-    </div>
-
-    <div class="mb-8">
-      <label class="block text-gray-400 text-sm mb-2">Pret</label>
-      <input
-        v-model.number="createSaleForm.priceAtSale"
-        type="number"
-        class="w-full p-4 text-2xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-      >
-    </div>
-
-    <div>
-      <label class="block text-red-600" v-if="errors" v-for="e in errors">
-        {{ e }}
-      </label>
-    </div>
-
-    <button
-      @click="submitForm"
-      class="w-full py-4 font-bold text-gray-900 bg-accent2 rounded-lg hover:bg-green-500 transition duration-150 ease-in-out shadow-lg"
-    >
-      Adauga
-    </button>
-
-    <button
-      @click="router.back()"
-      class="w-full py-4 mt-4 font-bold text-gray-900 bg-error rounded-lg hover:bg-red-500 transition duration-150 ease-in-out shadow-lg"
-    >
-      Anuleaza
-    </button>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -85,6 +88,7 @@ import type { DestinationResponse } from '@/types/dtos/destinations/destinationR
 import { useRoute } from 'vue-router'
 import { createSale } from '@/services/SalesService.ts'
 import router from '@/router'
+import { toast } from 'vue-sonner'
 
 const route = useRoute();
 
@@ -97,7 +101,7 @@ const createSaleForm = ref<CreateSaleForm>({
 })
 const products = ref<ProductResponse[]>([])
 const destinations = ref<DestinationResponse[]>([])
-const errors = ref<string[]>([])
+const errors = ref<Record<string, string>>({})
 
 onMounted( async () => {
   const warehouseId = String(route.params.warehouseId);
@@ -125,6 +129,10 @@ const updatePrice = async () => {
   createSaleForm.value.priceAtSale = await getPrice(createSaleForm.value.productId, createSaleForm.value.destinationId)
 };
 
+const goBack = async () => {
+  await router.replace({ name: 'Warehouses' });
+}
+
 const getTodayDate = () => {
   const today = new Date();
   const y = today.getFullYear();
@@ -134,23 +142,32 @@ const getTodayDate = () => {
 }
 
 const submitForm = async () => {
-  errors.value = [];
-  if (createSaleForm.value.quantity <= 0){
-    errors.value.push('Cantitatea trebuie sa fie mai mare de 0');
+  errors.value = {};
+  if (createSaleForm.value.productId === '') {
+    errors.value['product'] = 'Alege un produs';
   }
-  if (createSaleForm.value.priceAtSale <= 0){
-    errors.value.push('Pretul trebuie sa fie mai mare de 0');
+  if (createSaleForm.value.destinationId === '') {
+    errors.value['destination'] = 'Alege o destinatie';
   }
-  if (errors.value.length > 0) return;
+  if (createSaleForm.value.quantity <= 0) {
+    errors.value['quantity'] = 'Cantitatea trebuie sa fie mai mare de 0'
+  }
+  if (createSaleForm.value.priceAtSale <= 0) {
+    errors.value['price'] = 'Pretul trebuie sa fie mai mare de 0'
+  }
+  if (Object.values(errors.value).length > 0) {
+    return
+  }
 
   createSaleForm.value.saleDate = getTodayDate()
 
-  const result = createSale(createSaleForm.value)
-    .then(() => {
-      router.back()
-    })
-    .catch((err) => {
-    errors.value = err.response.data;
-  })
+  try {
+    await createSale(createSaleForm.value)
+    toast.success('Vanzare adaugata cu succes')
+    await router.replace({ name: 'Warehouses' })
+  }
+  catch (error) {
+    toast.error('A aparut o eroare')
+  }
 };
 </script>
