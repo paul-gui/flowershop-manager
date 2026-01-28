@@ -1,18 +1,61 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useProductFormLogic } from '@/components/Products/productFormLogic.ts'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
+import type { UpdateProductRequest } from '@/types/dtos/products/productRequests.dto.ts'
+import { getProductById, updateProduct } from '@/services/ProductsService.ts'
+import { toast } from 'vue-sonner'
+import { useRoute } from 'vue-router'
+import type {
+  CreateProductForm,
+  PriceForProductCreation,
+} from '@/types/models/createProductForm.ts'
 
-const props = defineProps<{ id: string }>()
-const upsert = useProductFormLogic({productId: props.id})
+const route = useRoute()
+
+const form = ref<CreateProductForm>({ name: '', warehouseId: '', prices: [] })
+const validationErrors = ref<Record<string, string>>({})
 
 onMounted(async () => {
-  await upsert.hydrate()
+  await hydrate()
 })
 
 async function onSubmit() {
-  await upsert.submitProduct()
-  goBack()
+  validationErrors.value = {}
+
+  const updateProductRequest: UpdateProductRequest = {
+    id: String(route.params.id),
+    name: form.value.name,
+    warehouseId: form.value.warehouseId,
+    prices: form.value.prices.map((p) => ({ destinationId: p.destinationId, value: p.value })),
+  }
+
+  if (updateProductRequest.name === ''){
+    validationErrors.value['name'] = 'Introduceti numele produsului'
+  }
+  if (updateProductRequest.prices.some(p => p.value <= 0 || !p.value)){
+    validationErrors.value['prices'] = 'Pretul produsului trebuie sa fie mai mare decat 0'
+  }
+
+  if (Object.values(validationErrors.value).length > 0) {
+    return
+  }
+
+  try {
+    await updateProduct(updateProductRequest)
+    toast.success('Produs modificat cu succes!')
+    goBack()
+  } catch (error) {
+    toast.error('A aparut o eroare')
+  }
+}
+
+async function hydrate() {
+  const p = await getProductById(String(route.params.id))
+  form.value.name = p.name
+  form.value.warehouseId = p.warehouseId!
+  form.value.prices = p.prices.sort((a: PriceForProductCreation, b: PriceForProductCreation) =>
+    b.destinationName.localeCompare(a.destinationName),
+  )
 }
 
 function onCancel() {
@@ -20,7 +63,7 @@ function onCancel() {
 }
 
 function goBack() {
-  router.replace( { path:'/warehouse-details/' + upsert.form.value.warehouseId})
+  router.replace({ path: '/warehouse-details/' + form.value.warehouseId })
 }
 </script>
 
@@ -31,17 +74,18 @@ function goBack() {
       <div>
         <label class="block text-sm mb-1">Denumire produs</label>
         <input
-          v-model="upsert.form.value.name"
+          v-model="form.name"
           type="text"
           class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
         />
+        <p class="text-red-500 text-sm" v-if="validationErrors['name']">{{ validationErrors['name'] }}</p>
       </div>
 
       <div>
         <label class="block mb-2">Pret</label>
         <div class="space-y-3">
           <div
-            v-for="(p) in upsert.form.value.prices"
+            v-for="p in form.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >
@@ -53,6 +97,7 @@ function goBack() {
             />
             <span>Lei</span>
           </div>
+          <p class="text-red-500 text-sm" v-if="validationErrors['prices']">{{ validationErrors['prices'] }}</p>
         </div>
       </div>
 

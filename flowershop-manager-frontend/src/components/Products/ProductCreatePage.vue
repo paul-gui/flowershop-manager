@@ -1,18 +1,60 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useProductFormLogic } from '@/components/Products/productFormLogic.ts'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
+import type { CreateProductRequest } from '@/types/dtos/products/productRequests.dto.ts'
+import { createProduct, getDestinations } from '@/services/ProductsService.ts'
+import { toast } from 'vue-sonner'
+import type { CreateProductForm } from '@/types/models/createProductForm.ts'
+import type { DestinationResponse } from '@/types/dtos/destinations/destinationResponses.dto.ts'
+import { useRoute } from 'vue-router'
 
-const props = defineProps<{ id: string }>()
-const upsert = useProductFormLogic({ warehouseId: props.id })
+const route = useRoute()
+
+const form = ref<CreateProductForm>({ name: '', warehouseId: '', prices: [] })
+const destinations = ref<DestinationResponse[]>([])
+const validationErrors = ref<Record<string, string>>({})
 
 onMounted(async () => {
-  await upsert.hydrate()
+  await hydrate()
 })
 
+async function hydrate() {
+  form.value.warehouseId = String(route.params.id)
+  destinations.value = await getDestinations()
+  form.value.prices = destinations.value.map((d) => ({
+    destinationId: d.id,
+    destinationName: d.name,
+    value: 0,
+  }))
+}
+
 async function onSubmit() {
-  await upsert.submitProduct()
-  goBack()
+  validationErrors.value = {}
+
+  const createProductRequest: CreateProductRequest = {
+    name: form.value.name,
+    warehouseId: form.value.warehouseId,
+    prices: form.value.prices.map((p) => ({ destinationId: p.destinationId, value: p.value })),
+  }
+
+  if (createProductRequest.name === ''){
+    validationErrors.value['name'] = 'Introduceti numele produsului'
+  }
+  if (createProductRequest.prices.some(p => p.value <= 0 || !p.value)){
+    validationErrors.value['prices'] = 'Pretul produsului trebuie sa fie mai mare decat 0'
+  }
+
+  if (Object.values(validationErrors.value).length > 0) {
+    return
+  }
+
+  try {
+    await createProduct(createProductRequest)
+    toast.success('Produs creat cu succes!')
+    goBack()
+  } catch (error) {
+    toast.error('A aparut o eroare')
+  }
 }
 
 function onCancel() {
@@ -20,7 +62,7 @@ function onCancel() {
 }
 
 function goBack() {
-  router.replace({ path: '/warehouse-details/' + props.id })
+  router.replace({ path: '/warehouse-details/' + form.value.warehouseId })
 }
 </script>
 
@@ -29,19 +71,20 @@ function goBack() {
     <div class="max-w-md mx-auto space-y-6">
       <h1 class="text-h1 text-text_primary">Adaugare produs</h1>
       <div>
-        <label class="block text-sm  mb-1">Denumire produs</label>
+        <label class="block text-sm mb-1">Denumire produs</label>
         <input
-          v-model="upsert.form.value.name"
+          v-model="form.name"
           type="text"
           class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
         />
+        <p class="text-red-500 text-sm" v-if="validationErrors['name']">{{ validationErrors['name'] }}</p>
       </div>
 
       <div>
         <label class="block mb-2">Pret</label>
         <div class="space-y-3">
           <div
-            v-for="p in upsert.form.value.prices"
+            v-for="p in form.prices"
             :key="p.destinationId"
             class="flex items-center justify-between"
           >
@@ -53,6 +96,7 @@ function goBack() {
             />
             <span>Lei</span>
           </div>
+          <p class="text-red-500 text-sm" v-if="validationErrors['prices']">{{ validationErrors['prices'] }}</p>
         </div>
       </div>
 
