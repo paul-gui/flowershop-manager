@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-4 sm:p-6">
+  <div class="h-full p-4 sm:p-6">
     <div class="mx-auto max-w-7xl space-y-4 sm:space-y-6">
       <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Adauga vanzare in istoric</h1>
       <div class="bg-white rounded-xl shadow-sm px-4 py-6">

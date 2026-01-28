@@ -30,6 +30,7 @@ import { useAuthStore } from "@/stores/auth";
 const error = ref('');
 const loading = ref(false);
 const router = useRouter();
+const auth = useAuthStore();
 
 const loginForm = ref({
   email: '',
@@ -50,6 +51,7 @@ async function handleLogin() {
 
     setToken(res.token);
     setRolesFromToken(res.token);
+    setName(res.name);
 
     // Redirect after login
    await router.push('/warehouses'); // or whatever your home page is
@@ -66,7 +68,6 @@ async function handleLogin() {
 }
 
 function setToken(token: string) {
-  const auth = useAuthStore();
   auth.setToken(token);
 }
 
@@ -74,7 +75,10 @@ function setRolesFromToken(token: string) {
   const decoded : any = jwtDecode(token);
   const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   const roleList = Array.isArray(roles) ? roles : [roles];
-  const auth = useAuthStore();
   auth.setRoles(roleList);
+}
+
+function setName(name: string) {
+  auth.setName(name);
 }
 </script>

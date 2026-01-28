@@ -76,6 +76,7 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
         var result = new LoginResponse()
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
+            Name = user.Name,
         };
         return OperationResult<LoginResponse>.Success(result);
     }

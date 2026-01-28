@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+  <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
       <h1 class="text-h1 text-text_primary">Adaugare locatie</h1>
       <form @submit.prevent="handleSubmit" class="flex flex-col justify-center items-center space-y-6 w-full">
