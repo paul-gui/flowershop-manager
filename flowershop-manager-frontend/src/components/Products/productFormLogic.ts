@@ -9,6 +9,7 @@ import {
   getProductById,
   updateProduct,
 } from '@/services/ProductsService.ts'
+import { toast } from 'vue-sonner'
 
 export function useProductFormLogic(params: { warehouseId?: string, productId?: string }) {
   const isCreate = computed(() => !!params.warehouseId && !params.productId)
@@ -56,7 +57,13 @@ export function useProductFormLogic(params: { warehouseId?: string, productId?: 
         prices: form.value.prices.map(p => ({ destinationId: p.destinationId, value: p.value }))
       }
 
-      await createProduct(createProductRequest)
+      try{
+        await createProduct(createProductRequest)
+        toast.success('Produs creat cu succes!')
+      }
+      catch (error) {
+        toast.error('A aparut o eroare')
+      }
     }
     else {
       const updateProductRequest: UpdateProductRequest = {
@@ -66,7 +73,13 @@ export function useProductFormLogic(params: { warehouseId?: string, productId?: 
         prices: form.value.prices,
       }
 
-      await updateProduct(updateProductRequest)
+      try{
+        await updateProduct(updateProductRequest)
+        toast.success('Produs modificat cu succes!')
+      }
+      catch (error) {
+        toast.error('A aparut o eroare')
+      }
     }
   }
 

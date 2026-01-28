@@ -1,7 +1,7 @@
 export interface CreateProductForm {
   name: string;
   warehouseId: string;
-  prices: ReadonlyArray<PriceForProductCreation>
+  prices: Array<PriceForProductCreation>
 }
 
 export interface PriceForProductCreation{

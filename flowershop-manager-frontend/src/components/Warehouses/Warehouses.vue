@@ -1,25 +1,36 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-screen gap-4">
-    <div class="flex flex-row justify-between items-baseline w-[80%]">
-      <h1 class="text-h1 text-text_primary">Locatii</h1>
-      <button
-        class="h-12 aspect-square rounded-lg bg-cards hover:bg-divider"
-        @click="goToHistory"
-      >
-        <i class="fa fa-clock text-white text-2xl"></i>
-      </button>
-    </div>
-    <div class="w-[80%] space-y-2 max-h-[60%] overflow-y-scroll">
-      <div v-for="(warehouse, index) in warehouses" :key="index">
-        <content-button
-          :title="warehouse.name"
-          icon="fa fa-pen"
-          @primary-click="() => goToCreateSale(warehouse.id)"
-          @secondary-click="() => goToEditWarehouse(warehouse.id)"
-        ></content-button>
+  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+    <div class="max-w-md mx-auto space-y-4 flex flex-col">
+      <div class="flex flex-row justify-between items-baseline">
+        <h1 class="text-h1 text-text_primary">Locatii</h1>
+        <button
+          class="h-12 aspect-square rounded-lg bg-cards hover:bg-divider"
+          @click="goToHistory"
+        >
+          <i class="fa fa-clock text-white text-2xl"></i>
+        </button>
       </div>
+      <div class="space-y-2 max-h-[60%] overflow-y-scroll">
+        <div v-for="(warehouse, index) in warehouses" :key="index">
+          <content-button
+            :title="warehouse.name"
+            icon="fa fa-pen"
+            @primary-click="() => goToCreateSale(warehouse.id)"
+            @secondary-click="() => goToEditWarehouse(warehouse.id)"
+          ></content-button>
+        </div>
+      </div>
+      <div class="flex items-center justify-center">
+        <button
+          class="border-gray-300 hover:bg-[#1a1a28] border border-dashed text-gray-300 py-3 px-8 rounded-lg"
+          v-on:click="goToAddWarehouse"
+        >
+          <i class="fa fa-plus"></i>
+          Adauga
+        </button>
+      </div>
+
     </div>
-    <button class="bg-accent2 py-3 px-8 mt-4 rounded-lg" v-on:click="goToAddWarehouse">Adauga</button>
   </div>
 </template>
 <script setup lang="ts">
