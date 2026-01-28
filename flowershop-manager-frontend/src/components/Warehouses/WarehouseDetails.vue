@@ -37,6 +37,7 @@
           </button>
         </div>
       </div>
+      <p class="text-red-500 text-sm" v-if="errors['name']">{{ errors['name'] }}</p>
 
       <!-- Flowers List -->
       <div>
@@ -109,6 +110,8 @@ const products = ref<ProductResponse[]>([])
 const warehouse = ref<WarehouseDetailsResponse>()
 const showConfirmDialog = ref<boolean>(false)
 
+const errors = ref<Record<string, string>>({})
+
 onMounted(async () => {
   await getWarehouseDetails()
 })
@@ -140,6 +143,11 @@ async function goToProductDetailsPage(id: string) {
 
 async function onSubmit() {
   if (warehouse.value) {
+    if (name.value === '') {
+      errors.value['name'] = 'Introduceti numele locatiei'
+      return
+    }
+
     const updateWarehouseRequest: UpdateWarehouseRequest = {
       id: props.id,
       name: name.value,
