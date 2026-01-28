@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+  <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
       <h1 class="text-h1 text-text_primary mb-4">Detalii locatie</h1>
       <!-- Name Field + Delete location button-->
@@ -41,7 +41,7 @@
       <!-- Flowers List -->
       <div>
         <label class="block text-sm mb-2">Produse</label>
-        <div class="max-h-96 overflow-scroll">
+        <div class="max-h-60 overflow-scroll">
           <div v-for="(f, index) in products" :key="f.id" class="mb-2">
             <content-button
               :title="f.name"

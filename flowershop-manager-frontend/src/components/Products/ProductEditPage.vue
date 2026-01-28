@@ -25,7 +25,7 @@ function goBack() {
 </script>
 
 <template>
-  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+  <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-6">
       <h1 class="text-h1 text-text_primary">Modificare produs</h1>
       <div>

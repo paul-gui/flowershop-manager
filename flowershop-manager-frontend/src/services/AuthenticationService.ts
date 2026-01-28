@@ -1,5 +1,6 @@
 import api from "@/services/API";
 import type { LoginRequest, RegisterAccountRequest } from '@/types/dtos/authentication/authenticationRequests.dto.ts'
+import type { LoginResponse } from '@/types/dtos/authentication/authenticationResponses.dto.ts'
 
 const baseUrl = "Authentication";
 
@@ -7,7 +8,7 @@ export async function register(registerRequest: RegisterAccountRequest): Promise
     const res = await api.post(baseUrl + "/Register", registerRequest);
     return res.data;
 }
-export async function login(loginRequest: LoginRequest):Promise<void> {
+export async function login(loginRequest: LoginRequest):Promise<LoginResponse> {
     const res = await api.post(baseUrl + "/Login", loginRequest);
     return res.data;
 }

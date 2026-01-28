@@ -30,7 +30,7 @@ namespace FlowershopAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest loginRequest)
         {
             var result = await authenticationManager.Login(loginRequest);
 
