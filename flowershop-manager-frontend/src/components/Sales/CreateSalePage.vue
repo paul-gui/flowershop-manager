@@ -1,10 +1,10 @@
 <template>
-  <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
+  <div class="h-full bg-background text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto">
       <h1 class="text-h1 text-text_primary mb-4">Adaugare vanzare</h1>
       <div class="mb-4">
         <label class="block text-sm mb-2">Produs</label>
-        <div class="space-y-1">
+        <div class="space-y-1 max-h-44 overflow-scroll">
           <div
             :class="[
             'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
@@ -60,7 +60,7 @@
         <p class="text-red-500 text-sm" v-if="errors['price']">{{ errors['price'] }}</p>
       </div>
 
-      <div class="fixed bottom-8 left-0 flex justify-center mt-6 gap-2 w-full bg-background pt-1">
+      <div class="sticky bottom-0 flex justify-center mt-6 gap-2 w-full bg-background pt-1">
         <button
           @click="goBack"
           class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
