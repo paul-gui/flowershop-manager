@@ -1,6 +1,7 @@
 <template>
   <div class="h-screen bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
+      <h1 class="text-h1 text-text_primary mb-4">Detalii locatie</h1>
       <!-- Name Field + Delete location button-->
       <div class="flex items-end gap-2 relative">
         <div class="flex-1">
@@ -8,7 +9,7 @@
           <input
             v-model="name"
             type="text"
-            class="w-full bg-cards text-xl text-text_secondary px-4 py-2 rounded-xl focus:outline-none"
+            class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
           />
         </div>
 
@@ -44,7 +45,7 @@
           <div v-for="(f, index) in products" :key="f.id" class="mb-2">
             <content-button
               :title="f.name"
-              :descriptionArray="f.prices.map((p) => `${p.destinationName}: ${p.value} Lei`)"
+              :pricesDescription="f.prices.map((p) => `${p.destinationName}: ${p.value} Lei`)"
               icon="fa fa-x text-gray-300"
               @primary-click="
               () => {
@@ -71,7 +72,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="fixed bottom-8 left-0 flex justify-center mt-6 space-x-4 w-full">
+    <div class="fixed bottom-8 left-0 flex justify-center mt-6 gap-2 w-full">
       <button
         @click="goBack"
         class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
@@ -97,6 +98,7 @@ import ContentButton from '@/components/Warehouses/content-button.vue'
 import router from '@/router'
 import type { UpdateWarehouseRequest } from '@/types/dtos/warehouse/warehouseRequests.dto.ts'
 import type { ProductResponse } from '@/types/dtos/products/productResponses.dto.ts'
+import { toast } from 'vue-sonner'
 
 const props = defineProps<{
   id: string
@@ -118,7 +120,6 @@ async function getWarehouseDetails() {
     products.value = warehouse.value.products
   }
 }
-
 async function goToCreateProductPage() {
   await router.push({
     name: 'warehouseAddProduct',
@@ -149,19 +150,31 @@ async function onSubmit() {
 }
 
 async function goBack() {
-  await router.push({ path: `/warehouses` })
+  await router.replace({ name: 'Warehouses' })
 }
 
 async function deleteWarehouseButton() {
   if (warehouse.value) {
-    await deleteWarehouse(warehouse.value.id)
-    await goBack()
+    try{
+      await deleteWarehouse(warehouse.value.id)
+      toast.success('Locatie stearsa cu succes')
+      await goBack()
+    }
+    catch (error) {
+      toast.error('A aparut o eroare')
+    }
   }
 }
 
-const removeProduct = async (index: number) => {
-  const id = products.value[index].id
-  await deleteProduct(id)
-  await getWarehouseDetails()
+async function removeProduct(index: number) {
+  try{
+    const id = products.value[index].id
+    await deleteProduct(id)
+    await getWarehouseDetails()
+    toast.success('Produs sters cu succes')
+  }
+  catch (error) {
+    toast.error('A aparut o eroare')
+  }
 }
 </script>
