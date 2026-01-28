@@ -8,7 +8,7 @@ defineProps({
     type: String,
     default: '',
   },
-  descriptionArray: {
+  pricesDescription: {
     type: Array,
     default: () => [],
   },
@@ -24,15 +24,18 @@ defineProps({
 <template>
   <div class="flex rounded-lg overflow-hidden border border-divider bg-cards text-text_secondary w-full p-1">
     <!-- Left Button -->
-    <button
-        class="flex-1 px-4 text-left hover:bg-[#3A3A55] rounded-lg transition-colors"
+    <div
+        class="flex-1 flex flex-col justify-center px-4 text-left hover:bg-[#3A3A55] rounded-lg transition-colors cursor-pointer"
         @click="$emit('primary-click')"
     >
       <span class="block text-h2 text-text_primary">{{ title }}</span>
       <span class="inline-block text-body" v-if="description">{{description}}</span>
-      <span class="inline-block text-sm ms-2" v-if="descriptionArray" v-for="d of descriptionArray">{{ d }}</span>
-
-    </button>
+      <div v-if="pricesDescription.length !== 0">
+        <span class="inline-block text-sm ms-2" v-if="pricesDescription">{{ pricesDescription[0] }}</span>
+        <span> • </span>
+        <span class="inline-block text-sm" v-if="pricesDescription[1]">{{ pricesDescription[1] }}</span>
+      </div>
+    </div>
 
     <!-- Divider -->
     <div class="w-px bg-divider h-auto mx-1"></div>

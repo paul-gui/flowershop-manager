@@ -15,7 +15,7 @@ const router = createRouter({
     },
     {
       path: '/warehouses',
-      name: 'warehouses',
+      name: 'Warehouses',
       component: Warehouses,
       meta: { requiresAuth: true },
     },
