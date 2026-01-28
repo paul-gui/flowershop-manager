@@ -50,7 +50,7 @@ const router = createRouter({
       path: '/sales/createSale/:warehouseId',
       name: 'CreateSale',
       component: () => import('../components/Sales/CreateSalePage.vue'),
-      meta: { requiresAuth: true, roles: ['Admin'] },
+      meta: { requiresAuth: true },
     },
     {
       path: '/sales/history',
@@ -69,6 +69,11 @@ const router = createRouter({
       name: 'HistoryEditSale',
       component: () => import('../components/Sales/HistoryEditSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
+    },
+    {
+      path: '/unauthorized',
+      name: 'Unauthorized',
+      component: () => import('../components/Common/UnauthorizedPage.vue')
     }
   ],
 })
