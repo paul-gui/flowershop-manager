@@ -11,6 +11,7 @@
             type="text"
             class="bg-[#2a2a40] w-full text-lg text-text_secondary placeholder-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
+          <p class="text-red-500 text-sm" v-if="errors['name']">{{ errors['name'] }}</p>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button @click="goBack" type="button" class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-8 rounded-lg">Anuleaza</button>
@@ -29,8 +30,14 @@ import { toast } from 'vue-sonner'
 const warehouse = ref({
   name: ""
 })
+const errors = ref<Record<string, string>>({})
 
 async function handleSubmit() {
+  if(warehouse.value.name === ''){
+    errors.value['name'] = 'Introduceti numele locatiei'
+    return
+  }
+
   try{
     await createWarehouse(warehouse.value)
     toast.success('Locatie creata cu succes')
