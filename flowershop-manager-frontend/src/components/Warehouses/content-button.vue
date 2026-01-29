@@ -16,6 +16,10 @@ defineProps({
     type: String, // Can be a component or string name
     default: null,
   },
+  showSecondButton: {
+    type: Boolean,
+    default: true,
+  }
 });
 
   defineEmits(['primary-click', 'secondary-click']);
@@ -25,7 +29,7 @@ defineProps({
   <div class="flex rounded-lg overflow-hidden border border-divider bg-cards text-text_secondary w-full p-1">
     <!-- Left Button -->
     <div
-        class="flex-1 flex flex-col justify-center px-4 text-left hover:bg-[#3A3A55] rounded-lg transition-colors cursor-pointer"
+        class="flex-1 flex flex-col justify-center h-16 px-4 text-left hover:bg-[#3A3A55] rounded-lg transition-colors cursor-pointer"
         @click="$emit('primary-click')"
     >
       <span class="block text-h2 text-text_primary">{{ title }}</span>
@@ -38,12 +42,16 @@ defineProps({
     </div>
 
     <!-- Divider -->
-    <div class="w-px bg-divider h-auto mx-1"></div>
+    <div
+      class="w-px bg-divider h-auto mx-1"
+      v-if="showSecondButton"
+    ></div>
 
     <!-- Right Button -->
     <button
-        class="p-6 aspect-square w-auto flex items-center justify-center hover:bg-divider rounded-lg transition-colors"
+        class="p-6 aspect-square flex items-center justify-center hover:bg-divider rounded-lg transition-colors"
         @click="$emit('secondary-click')"
+        v-if="showSecondButton"
     >
       <i :class="icon" ></i>
     </button>
