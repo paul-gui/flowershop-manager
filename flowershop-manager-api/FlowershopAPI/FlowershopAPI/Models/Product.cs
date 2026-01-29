@@ -14,5 +14,7 @@ namespace FlowershopAPI.Models
         public Warehouse Warehouse { get; set; } = null!;
         
         public ICollection<Price> Prices { get; set; } = new List<Price>();
+
+        public bool IsActive { get; set; } = true;
     }
 }

@@ -15,19 +15,24 @@ namespace FlowershopAPI.Controllers
         public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody]CreateProductRequest createProduct)
         {
             var result = await productsManager.CreateProduct(createProduct);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
             
-            return Ok(result);
+            return Ok(result.Data);
         }
         
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(Guid id)
         {
             var result = await productsManager.GetProduct(id);
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return NotFound("Product not found");
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpGet("GetProductsByWarehouseId/{warehouseId:guid}")]
@@ -58,11 +63,11 @@ namespace FlowershopAPI.Controllers
         public async Task<ActionResult<List<DestinationResponse>>> GetDestinations()
         {
             var result = await productsManager.GetDestinations();
-            if (result.Count == 0)
+            if (!result.Succeeded)
             {
-                return NotFound("No destinations found");
+                return BadRequest(result.Errors);
             } 
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpPut("UpdateProduct")]
@@ -70,22 +75,22 @@ namespace FlowershopAPI.Controllers
         {
             var result = await productsManager.UpdateProduct(updateProduct);
             
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> DeleteProduct(Guid id)
         {
             var result = await productsManager.DeleteProduct(id);
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return NotFound();
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
     }
 }

@@ -78,6 +78,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
             
         
         var result = await query
+            .Where(s => s.IsActive)
             .OrderBy(s => s.SaleDate)
             .ProjectTo<SaleResponse>(mapper.ConfigurationProvider)
             .ToListAsync();
@@ -87,7 +88,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
 
     public async Task<OperationResult<SaleResponseForEdit>> GetSaleForEdit(Guid saleId)
     {
-        var sale = await context.Sales.Include(s => s.Product).ThenInclude(s => s.Warehouse).FirstOrDefaultAsync(s => s.Id == saleId);
+        var sale = await context.Sales.Where(s => s.IsActive).Include(s => s.Product).ThenInclude(s => s.Warehouse).FirstOrDefaultAsync(s => s.Id == saleId);
 
         if (sale == null)
         {
@@ -102,7 +103,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         var sale = await context.Sales.FindAsync(saleId);
         var destination = await context.Destinations.FindAsync(saleUpdateRequest.DestinationId);
         
-        if (sale == null)
+        if (sale is null || !sale.IsActive)
         {
             return OperationResult<string>.Failed(["Sale not found!"]);
         }
@@ -138,7 +139,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
         {
             return OperationResult<string>.Failed(["Sale not found!"]);
         }
-        context.Sales.Remove(sale);
+        sale.IsActive = false;
         await context.SaveChangesAsync();
         return OperationResult<string>.Success("Sale Deleted");
     }

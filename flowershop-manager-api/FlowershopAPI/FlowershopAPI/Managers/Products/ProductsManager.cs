@@ -13,15 +13,15 @@ namespace FlowershopAPI.Managers.Products
 {
     public class ProductsManager(ApplicationDbContext context, IMapper mapper) : IProductsManager
     {
-        public async Task<ProductResponse> CreateProduct(CreateProductRequest createProductRequest)
+        public async Task<OperationResult<string>> CreateProduct(CreateProductRequest createProductRequest)
         {
             var warehouse = await context.Warehouses.FindAsync(createProductRequest.WarehouseId);
-            if (warehouse == null)
+            if (warehouse is null || !warehouse.IsActive)
             {
-                throw new Exception("Warehouse not found");
+                return OperationResult<string>.Failed(["Warehouse not found"]);
             }
             
-            var product = mapper.Map<Models.Product>(createProductRequest);
+            var product = mapper.Map<Product>(createProductRequest);
             product.Prices = new List<Price>();
 
             foreach (var priceInput in createProductRequest.Prices)
@@ -29,7 +29,7 @@ namespace FlowershopAPI.Managers.Products
                 var destination = await context.Destinations.FindAsync(priceInput.DestinationId);
                 if (destination == null)
                 {
-                    throw new Exception("Destination not found");
+                    return OperationResult<string>.Failed(["Destination not found"]);
                 }
                 product.Prices.Add(new Price
                 {
@@ -41,37 +41,39 @@ namespace FlowershopAPI.Managers.Products
             context.Add(product);
             await context.SaveChangesAsync();
 
-            var result = mapper.Map<ProductResponse>(product);
+            return OperationResult<string>.Success("Product created");
+        }
 
-            return result;
+        public async Task<OperationResult<ProductResponse>> GetProduct(Guid id)
+        {
+            var product = await context.Products
+                .AsNoTracking()
+                .Where(p => p.IsActive)
+                .Where(p => p.Id == id)
+                .ProjectTo<ProductResponse>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                return OperationResult<ProductResponse>.Failed(["Product not found"]);
+            }
+            
+            var result = mapper.Map<ProductResponse>(product);
+            return OperationResult<ProductResponse>.Success(result);
         }
         
         public async Task<OperationResult<List<ProductResponse>>> GetProductsByWarehouseId(Guid warehouseId)
         {
             var warehouse = await context.Warehouses.FindAsync(warehouseId);
-            if (warehouse == null)
+            if (warehouse is null || !warehouse.IsActive)
             {
                 return OperationResult<List<ProductResponse>>.Failed(["Warehouse not found"]);
             }
             
-            var products = await context.Products.Where(p => p.WarehouseId == warehouseId).ToListAsync();
+            var products = await context.Products.Where(p => p.IsActive).Where(p => p.WarehouseId == warehouseId).ToListAsync();
             var result = mapper.Map<List<ProductResponse>>(products);
 
             return OperationResult<List<ProductResponse>>.Success(result);
-        }
-
-        public async Task<ProductResponse?> GetProduct(Guid id)
-        {
-            var product = await context.Products
-                .AsNoTracking()
-                .Where(p => p.Id == id)
-                .ProjectTo<ProductResponse>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-            
-            if (product == null)
-                return null;
-            
-            return product;
         }
 
         public async Task<OperationResult<decimal>> GetPrice(Guid productId, Guid destinationId)
@@ -84,41 +86,46 @@ namespace FlowershopAPI.Managers.Products
             return OperationResult<decimal>.Success(price.Value);
         }
 
-        public async Task<ProductResponse?> UpdateProduct(UpdateProductRequest updateProductRequest)
+        public async Task<OperationResult<string>> UpdateProduct(UpdateProductRequest updateProductRequest)
         {
-            var product = await context.Products.Include(p => p.Prices).FirstOrDefaultAsync(p => p.Id == updateProductRequest.Id);
+            var product = await context.Products.Where(p => p.IsActive).Include(p => p.Prices).FirstOrDefaultAsync(p => p.Id == updateProductRequest.Id);
             if (product == null)
-                return null;
+            {
+                return OperationResult<string>.Failed(["Product not found"]);
+            }
             
             product.Name = updateProductRequest.Name;
             product.Prices = mapper.Map<List<Price>>(updateProductRequest.Prices);
             
             await context.SaveChangesAsync();
             
-            var result = mapper.Map<ProductResponse>(product);
-            
-            return result;
+            return OperationResult<string>.Success("Product updated");
         }
 
-        public async Task<ProductResponse?> DeleteProduct(Guid id)
+        public async Task<OperationResult<ProductResponse>> DeleteProduct(Guid id)
         {
             var product = await context.Products.FindAsync(id);
 
-            if (product == null) return null;
-
-
-            context.Products.Remove(product);
+            if (product == null)
+            {
+                return OperationResult<ProductResponse>.Failed(["Product not found"]);
+            }
+            
+            product.IsActive = false;
             await context.SaveChangesAsync();
 
-            return mapper.Map<ProductResponse>(product);
-
+            return OperationResult<ProductResponse>.Success(mapper.Map<ProductResponse>(product));
         }
 
-        public async Task<List<DestinationResponse>> GetDestinations()
+        public async Task<OperationResult<List<DestinationResponse>>> GetDestinations()
         {
             var destinations = await context.Destinations.ToListAsync();
+            if (destinations.Count == 0)
+            {
+                return OperationResult<List<DestinationResponse>>.Failed(["No destinations found"]);
+            }
             var result = mapper.Map<List<DestinationResponse>>(destinations);
-            return result;
+            return OperationResult<List<DestinationResponse>>.Success(result);
         }
     }
 }
