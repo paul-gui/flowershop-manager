@@ -88,7 +88,7 @@ public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISales
 
     public async Task<OperationResult<SaleResponseForEdit>> GetSaleForEdit(Guid saleId)
     {
-        var sale = await context.Sales.Where(s => s.IsActive).Include(s => s.Product).ThenInclude(s => s.Warehouse).FirstOrDefaultAsync(s => s.Id == saleId);
+        var sale = await context.Sales.Where(s => s.IsActive).Include(s => s.User).Include(s => s.Product).ThenInclude(s => s.Warehouse).FirstOrDefaultAsync(s => s.Id == saleId);
 
         if (sale == null)
         {
