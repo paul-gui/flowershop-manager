@@ -10,7 +10,7 @@ const showMenu = ref(false)
 const logout = () => {
   auth.logout()
   showMenu.value = false
-  toast.success('Logout cu succes')
+  toast.success('V-ati deconectat cu succes')
   router.replace({ path: '/'})
 }
 </script>
@@ -41,13 +41,13 @@ const logout = () => {
       </div>
       <div
         v-if="showMenu"
-        class="absolute sm:max-w-lg max-w-xs right-0 ml-2 top-14 bg-cards shadow-lg border border-gray-600 rounded-xl p-2 flex items-center space-x-2 z-10 w-max"
+        class="absolute sm:max-w-lg max-w-xs right-1 ml-2 top-14 mt-1 bg-cards shadow-lg border border-gray-600 rounded-xl p-2 flex items-center space-x-2 z-10 w-max"
       >
         <button
           @click="logout"
           class="bg-red-600 text-white p-2 text-sm rounded-lg hover:bg-red-700"
         >
-          Logout
+          Deconectare
         </button>
       </div>
     </div>

@@ -18,7 +18,7 @@
 
       <!-- Filters -->
       <div class="rounded-xl bg-white p-4 shadow-sm" v-if="showFilters">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-[3fr_3fr_1fr]">
           <!-- Origin -->
           <div>
             <label class="mb-1 block text-sm font-medium text-gray-700"> Origine </label>
@@ -56,7 +56,7 @@
           <!-- Actions -->
           <div class="flex items-end justify-end">
             <button
-              class="w-full sm:w-[50%] rounded-lg bg-accent2 px-4 py-2 text-sm text-white"
+              class="w-full rounded-lg bg-accent2 px-4 py-2 text-sm text-white"
               @click="getSalesData"
             >
               Aplica
