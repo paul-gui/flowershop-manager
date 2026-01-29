@@ -23,11 +23,11 @@ namespace FlowershopAPI.Controllers
         public async Task<ActionResult<ProductResponse>> GetProduct(Guid id)
         {
             var result = await productsManager.GetProduct(id);
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return NotFound("Product not found");
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpGet("GetProductsByWarehouseId/{warehouseId:guid}")]
@@ -70,22 +70,22 @@ namespace FlowershopAPI.Controllers
         {
             var result = await productsManager.UpdateProduct(updateProduct);
             
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> DeleteProduct(Guid id)
         {
             var result = await productsManager.DeleteProduct(id);
-            if (result == null)
+            if (!result.Succeeded)
             {
-                return NotFound();
+                return BadRequest(result.Errors);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
     }
 }

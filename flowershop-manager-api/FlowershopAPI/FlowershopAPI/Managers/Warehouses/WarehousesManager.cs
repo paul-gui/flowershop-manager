@@ -21,7 +21,7 @@ namespace FlowershopAPI.Managers.Warehouses
 
         public async Task<WarehouseDetailsResponse?> GetWarehouseById(Guid id)
         {
-            var warehouse = await context.Warehouses.Include(w => w.Products).ThenInclude(p => p.Prices).ThenInclude(p => p.Destination).FirstOrDefaultAsync(w => w.Id == id);
+            var warehouse = await context.Warehouses.Where(w => w.IsActive).Include(w => w.Products.Where(p => p.IsActive)).ThenInclude(p => p.Prices).ThenInclude(p => p.Destination).FirstOrDefaultAsync(w => w.Id == id);
             var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
 
             return result;
@@ -29,7 +29,7 @@ namespace FlowershopAPI.Managers.Warehouses
 
         public async Task<List<WarehouseResponse>> GetWarehouses()
         {
-            var warehouses = await context.Warehouses.ToListAsync();
+            var warehouses = await context.Warehouses.Where(w => w.IsActive).ToListAsync();
             var result = mapper.Map<List<WarehouseResponse>>(warehouses);
 
             return result;
@@ -37,9 +37,9 @@ namespace FlowershopAPI.Managers.Warehouses
 
         public async Task<WarehouseDetailsResponse?> UpdateWarehouse(UpdateWarehouseRequest updateWarehouseRequest)
         {
-            var warehouse = await context.Warehouses.FirstOrDefaultAsync(w => w.Id == updateWarehouseRequest.Id);
+            var warehouse = await context.Warehouses.FindAsync(updateWarehouseRequest.Id);
 
-            if (warehouse == null)
+            if (warehouse is null || !warehouse.IsActive)
             {
                 return null;
             }
@@ -62,7 +62,7 @@ namespace FlowershopAPI.Managers.Warehouses
                 return null;
             }
 
-            context.Warehouses.Remove(warehouse);
+            warehouse.IsActive = false;
             await context.SaveChangesAsync();
 
             var result = mapper.Map<WarehouseDetailsResponse>(warehouse);
