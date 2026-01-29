@@ -75,6 +75,9 @@
               {{ errors['price'] }}
             </span>
           </div>
+          <div class="flex items-center justify-end w-full">
+            <span class="text-sm">Vanzare realizata de {{ sale.authorName }}</span>
+          </div>
           <div class="flex items-center justify-center gap-2">
             <button
               class="rounded-xl bg-gray-200 hover:bg-gray-300 p-3"
