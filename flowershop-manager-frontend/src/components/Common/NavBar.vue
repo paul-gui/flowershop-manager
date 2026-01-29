@@ -10,7 +10,7 @@ const showMenu = ref(false)
 const logout = () => {
   auth.logout()
   showMenu.value = false
-  toast.success('Logout cu succes')
+  toast.success('V-ati deconectat cu succes')
   router.replace({ path: '/'})
 }
 </script>
@@ -47,7 +47,7 @@ const logout = () => {
           @click="logout"
           class="bg-red-600 text-white p-2 text-sm rounded-lg hover:bg-red-700"
         >
-          Logout
+          Deconectare
         </button>
       </div>
     </div>
