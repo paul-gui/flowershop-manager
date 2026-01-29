@@ -13,6 +13,7 @@ const route = useRoute()
 const form = ref<CreateProductForm>({ name: '', warehouseId: '', prices: [] })
 const destinations = ref<DestinationResponse[]>([])
 const validationErrors = ref<Record<string, string>>({})
+const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
   await hydrate()
@@ -20,12 +21,21 @@ onMounted(async () => {
 
 async function hydrate() {
   form.value.warehouseId = String(route.params.id)
-  destinations.value = await getDestinations()
-  form.value.prices = destinations.value.map((d) => ({
-    destinationId: d.id,
-    destinationName: d.name,
-    value: 0,
-  }))
+  try {
+    isLoading.value = true
+    destinations.value = await getDestinations()
+    form.value.prices = destinations.value.map((d) => ({
+      destinationId: d.id,
+      destinationName: d.name,
+      value: 0,
+    }))
+  }
+  catch (error) {
+    toast.error('A aparut o eroare la incarcarea detaliilor')
+  }
+  finally {
+    isLoading.value = false
+  }
 }
 
 async function onSubmit() {
@@ -70,33 +80,38 @@ function goBack() {
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-6">
       <h1 class="text-h1 text-text_primary">Adaugare produs</h1>
-      <div>
-        <label class="block text-sm mb-1">Denumire produs</label>
-        <input
-          v-model="form.name"
-          type="text"
-          class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
-        />
-        <p class="text-red-500 text-sm" v-if="validationErrors['name']">{{ validationErrors['name'] }}</p>
+      <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
+        <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
       </div>
+      <div v-else>
+        <div>
+          <label class="block text-sm mb-1">Denumire produs</label>
+          <input
+            v-model="form.name"
+            type="text"
+            class="w-full bg-cards text-xl text-gray-50 px-4 py-2 rounded-xl focus:outline-none"
+          />
+          <p class="text-red-500 text-sm" v-if="validationErrors['name']">{{ validationErrors['name'] }}</p>
+        </div>
 
-      <div>
-        <label class="block mb-2">Pret</label>
-        <div class="space-y-3">
-          <div
-            v-for="p in form.prices"
-            :key="p.destinationId"
-            class="flex items-center justify-between"
-          >
-            <span class="text-h3 ms-3">{{ p.destinationName }}</span>
-            <input
-              v-model="p.value"
-              type="number"
-              class="w-2/3 px-4 py-2 rounded-xl bg-[#2E2E4D] text-white focus:outline-none"
-            />
-            <span>Lei</span>
+        <div>
+          <label class="block mb-2">Pret</label>
+          <div class="space-y-3">
+            <div
+              v-for="p in form.prices"
+              :key="p.destinationId"
+              class="flex items-center justify-between"
+            >
+              <span class="text-h3 ms-3">{{ p.destinationName }}</span>
+              <input
+                v-model="p.value"
+                type="number"
+                class="w-2/3 px-4 py-2 rounded-xl bg-[#2E2E4D] text-white focus:outline-none"
+              />
+              <span>Lei</span>
+            </div>
+            <p class="text-red-500 text-sm" v-if="validationErrors['prices']">{{ validationErrors['prices'] }}</p>
           </div>
-          <p class="text-red-500 text-sm" v-if="validationErrors['prices']">{{ validationErrors['prices'] }}</p>
         </div>
       </div>
 
