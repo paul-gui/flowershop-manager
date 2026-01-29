@@ -42,15 +42,13 @@
       </div>
       <div class="flex items-center justify-center">
         <button
-          class="border-gray-300 hover:bg-[#1a1a28] border border-dashed text-gray-300 py-3 px-8 rounded-lg"
+          class=" hover:bg-[#1a1a28] border border-dashed border-gray-300 text-gray-300 py-3 px-8 rounded-full"
           @click="goToAddWarehouse"
           v-if="editingMode"
         >
           <i class="fa fa-plus"></i>
-          Adauga
         </button>
       </div>
-
     </div>
   </div>
 </template>
