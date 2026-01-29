@@ -1,4 +1,7 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
+import type { LoginRequest } from '@/types/dtos/authentication/authenticationRequests.dto.ts'
+import { login } from '@/services/AuthenticationService.ts'
+import { jwtDecode } from 'jwt-decode'
 
 type authState = {
     token: string | null;
@@ -13,14 +16,16 @@ export const useAuthStore = defineStore('auth', {
         name: null
     }),
     actions: {
-        setToken(token: string) {
-            this.token = token;
+        async login(form: LoginRequest) {
+          const data = await login(form)
+          this.token = data.token
+          this.name = data.name
+          this.setRolesFromToken(data.token)
         },
-        setRoles(roles: string[]) {
-            this.roles = roles;
-        },
-        setName(name: string) {
-          this.name = name;
+        setRolesFromToken(token: string) {
+          const decoded : any = jwtDecode(token);
+          const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+          this.roles = Array.isArray(roles) ? roles : [roles];
         },
         logout() {
             this.token = null;
