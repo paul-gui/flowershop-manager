@@ -14,6 +14,7 @@ public class SaleResponse
 public class SaleResponseForEdit
 {
     public Guid Id { get; set; }
+    public string AuthorName { get; set; } = string.Empty;
     public string ProductName { get; set; } = string.Empty;
     public Guid ProductId { get; set; }
     public string WarehouseName { get; set; } = string.Empty;

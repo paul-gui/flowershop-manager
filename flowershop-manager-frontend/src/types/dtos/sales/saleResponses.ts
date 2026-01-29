@@ -10,6 +10,7 @@ export interface SaleResponse {
 
 export interface SaleResponseForEdit {
   id: string,
+  authorName: string,
   productName: string,
   productId: string,
   warehouseName: string,

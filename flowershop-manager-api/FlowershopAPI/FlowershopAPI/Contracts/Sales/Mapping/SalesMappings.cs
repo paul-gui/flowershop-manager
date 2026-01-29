@@ -29,6 +29,7 @@ public class SalesMappings : Profile
             .ForMember(d => d.WarehouseName,
                 opt => opt.MapFrom(s => s.Product.Warehouse.Name))
             .ForMember(d => d.ProductName,
-                opt => opt.MapFrom(s => s.Product.Name));
+                opt => opt.MapFrom(s => s.Product.Name))
+            .ForMember(d => d.AuthorName, opt => opt.MapFrom(s => s.User.Name));
     }
 }
