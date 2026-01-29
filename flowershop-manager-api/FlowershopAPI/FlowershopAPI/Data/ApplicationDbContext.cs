@@ -35,6 +35,10 @@ namespace FlowershopAPI.Data
                     Name = "En Gros",
                 }
             );
+            
+            builder.Entity<Sale>().Property(s => s.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
+            builder.Entity<Warehouse>().Property(w => w.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
+            builder.Entity<Product>().Property(p => p.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
         }
     }
 }

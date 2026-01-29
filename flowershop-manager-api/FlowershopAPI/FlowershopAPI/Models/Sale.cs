@@ -19,4 +19,6 @@ public class Sale
     
     public int Quantity { get; set; }
     public decimal PriceAtSale { get; set; }
+
+    public bool IsActive { get; set; } = true;
 }
