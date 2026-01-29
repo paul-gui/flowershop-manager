@@ -41,7 +41,7 @@ const logout = () => {
       </div>
       <div
         v-if="showMenu"
-        class="absolute sm:max-w-lg max-w-xs right-0 ml-2 top-14 bg-cards shadow-lg border border-gray-600 rounded-xl p-2 flex items-center space-x-2 z-10 w-max"
+        class="absolute sm:max-w-lg max-w-xs right-1 ml-2 top-14 mt-1 bg-cards shadow-lg border border-gray-600 rounded-xl p-2 flex items-center space-x-2 z-10 w-max"
       >
         <button
           @click="logout"
