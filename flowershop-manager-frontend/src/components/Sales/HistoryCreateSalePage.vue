@@ -111,7 +111,12 @@
             >
               Anuleaza
             </button>
-            <button class="rounded-xl bg-accent2 hover:bg-green-700 text-gray-50 p-3" @click="submitForm">Salveaza</button>
+            <button
+              class="rounded-xl bg-accent2 hover:bg-[#62c678] text-gray-50 p-3"
+              @click="submitForm"
+            >
+              Salveaza
+            </button>
           </div>
         </div>
       </div>
