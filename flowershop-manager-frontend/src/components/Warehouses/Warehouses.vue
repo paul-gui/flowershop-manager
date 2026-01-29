@@ -49,7 +49,6 @@
           <i class="fa fa-plus"></i>
         </button>
       </div>
-
     </div>
   </div>
 </template>

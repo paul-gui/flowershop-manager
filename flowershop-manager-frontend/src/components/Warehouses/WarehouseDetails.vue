@@ -46,7 +46,7 @@
         <!-- Flowers List -->
         <div>
           <label class="block text-sm mb-2">Produse</label>
-          <div class="max-h-60 overflow-scroll">
+          <div class="max-h-64 overflow-scroll">
             <div
               v-if="productsExist"
               v-for="(f, index) in products" :key="f.id"
@@ -74,13 +74,14 @@
             </div>
           </div>
 
-          <button
-            v-on:click="goToCreateProductPage"
-            class="mt-2 flex items-center gap-2 text-sm text-text_primary bg-cards px-4 py-2 rounded-xl hover:bg-[#3c3860]"
-          >
-            <i class="fa fa-plus" />
-            Adauga
-          </button>
+          <div class="flex items-center justify-center">
+            <button
+              v-on:click="goToCreateProductPage"
+              class="mt-1 hover:bg-[#1a1a28] border border-dashed border-gray-300 text-gray-300 py-3 px-8 rounded-full"
+            >
+              <i class="fa fa-plus" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

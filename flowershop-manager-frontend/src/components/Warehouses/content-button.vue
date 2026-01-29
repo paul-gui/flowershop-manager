@@ -49,7 +49,7 @@ defineProps({
 
     <!-- Right Button -->
     <button
-        class="p-6 aspect-square flex items-center justify-center hover:bg-divider rounded-lg transition-colors"
+        class="p-6 h-16 aspect-square flex items-center justify-center hover:bg-divider rounded-lg transition-colors"
         @click="$emit('secondary-click')"
         v-if="showSecondButton"
     >
