@@ -47,11 +47,7 @@ async function handleLogin() {
   error.value = '';
 
   try {
-    const res = await login(loginForm.value); // This calls your login method
-
-    setToken(res.token);
-    setRolesFromToken(res.token);
-    setName(res.name);
+    await auth.login(loginForm.value)
 
     // Redirect after login
    await router.push('/warehouses'); // or whatever your home page is
@@ -65,20 +61,5 @@ async function handleLogin() {
   } finally {
     loading.value = false;
   }
-}
-
-function setToken(token: string) {
-  auth.setToken(token);
-}
-
-function setRolesFromToken(token: string) {
-  const decoded : any = jwtDecode(token);
-  const roles = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-  const roleList = Array.isArray(roles) ? roles : [roles];
-  auth.setRoles(roleList);
-}
-
-function setName(name: string) {
-  auth.setName(name);
 }
 </script>
