@@ -3,7 +3,10 @@
     <div class="max-w-md mx-auto space-y-4 flex flex-col">
       <div class="flex flex-row justify-between items-baseline">
         <h1 class="text-h1 text-text_primary">Locatii</h1>
-        <div class="space-x-2">
+        <div
+          class="space-x-2"
+          v-if="isAdminLoggedIn"
+        >
           <button
             class="h-12 aspect-square rounded-lg bg-cards hover:bg-divider"
             @click="editingMode = !editingMode"
@@ -50,21 +53,19 @@
 </template>
 <script setup lang="ts">
 import {getWarehouses} from "@/services/WarehousesService.ts";
-import {onMounted, ref} from "vue";
+import { computed, onMounted, ref} from "vue";
 import router from "@/router";
 import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import ContentButton from "@/components/Warehouses/content-button.vue";
-
-
-const props = defineProps({
-  saleDate: {
-    type: String,
-    default: null
-  }
-})
+import { useAuthStore } from '@/stores/auth.ts'
 
 const editingMode = ref<boolean>(false);
 const warehouses = ref<WarehouseResponse[]>([])
+const auth = useAuthStore()
+
+const isAdminLoggedIn = computed(() => {
+  return auth.hasRole('Admin')
+})
 
 onMounted(async () => {
   await getWarehousesAsync();
