@@ -13,15 +13,15 @@ namespace FlowershopAPI.Managers.Products
 {
     public class ProductsManager(ApplicationDbContext context, IMapper mapper) : IProductsManager
     {
-        public async Task<ProductResponse> CreateProduct(CreateProductRequest createProductRequest)
+        public async Task<OperationResult<string>> CreateProduct(CreateProductRequest createProductRequest)
         {
             var warehouse = await context.Warehouses.FindAsync(createProductRequest.WarehouseId);
-            if (warehouse == null)
+            if (warehouse is null || !warehouse.IsActive)
             {
-                throw new Exception("Warehouse not found");
+                return OperationResult<string>.Failed(["Warehouse not found"]);
             }
             
-            var product = mapper.Map<Models.Product>(createProductRequest);
+            var product = mapper.Map<Product>(createProductRequest);
             product.Prices = new List<Price>();
 
             foreach (var priceInput in createProductRequest.Prices)
@@ -29,7 +29,7 @@ namespace FlowershopAPI.Managers.Products
                 var destination = await context.Destinations.FindAsync(priceInput.DestinationId);
                 if (destination == null)
                 {
-                    throw new Exception("Destination not found");
+                    return OperationResult<string>.Failed(["Destination not found"]);
                 }
                 product.Prices.Add(new Price
                 {
@@ -41,9 +41,7 @@ namespace FlowershopAPI.Managers.Products
             context.Add(product);
             await context.SaveChangesAsync();
 
-            var result = mapper.Map<ProductResponse>(product);
-
-            return result;
+            return OperationResult<string>.Success("Product created");
         }
 
         public async Task<OperationResult<ProductResponse>> GetProduct(Guid id)
@@ -119,11 +117,15 @@ namespace FlowershopAPI.Managers.Products
             return OperationResult<ProductResponse>.Success(mapper.Map<ProductResponse>(product));
         }
 
-        public async Task<List<DestinationResponse>> GetDestinations()
+        public async Task<OperationResult<List<DestinationResponse>>> GetDestinations()
         {
             var destinations = await context.Destinations.ToListAsync();
+            if (destinations.Count == 0)
+            {
+                return OperationResult<List<DestinationResponse>>.Failed(["No destinations found"]);
+            }
             var result = mapper.Map<List<DestinationResponse>>(destinations);
-            return result;
+            return OperationResult<List<DestinationResponse>>.Success(result);
         }
     }
 }

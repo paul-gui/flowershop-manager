@@ -14,7 +14,7 @@ export async function getProducts(warehouseId: string){
     return res.data
 }
 
-export async function createProduct(product: CreateProductRequest):Promise<ProductResponse>{
+export async function createProduct(product: CreateProductRequest):Promise<String>{
   try{
     const res = await api.post(baseUrl + '/CreateProduct', product);
     return res.data

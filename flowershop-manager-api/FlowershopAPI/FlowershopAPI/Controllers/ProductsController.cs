@@ -15,8 +15,13 @@ namespace FlowershopAPI.Controllers
         public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody]CreateProductRequest createProduct)
         {
             var result = await productsManager.CreateProduct(createProduct);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
             
-            return Ok(result);
+            return Ok(result.Data);
         }
         
         [HttpGet("GetProduct/{id}")]
@@ -58,11 +63,11 @@ namespace FlowershopAPI.Controllers
         public async Task<ActionResult<List<DestinationResponse>>> GetDestinations()
         {
             var result = await productsManager.GetDestinations();
-            if (result.Count == 0)
+            if (!result.Succeeded)
             {
-                return NotFound("No destinations found");
+                return BadRequest(result.Errors);
             } 
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpPut("UpdateProduct")]
