@@ -3,7 +3,10 @@
     <div class="mx-auto max-w-7xl space-y-4 sm:space-y-6">
       <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Adauga vanzare in istoric</h1>
       <div class="bg-white rounded-xl shadow-sm px-4 py-6">
-        <div class="max-w-sm mx-auto space-y-4">
+        <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
+          <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
+        </div>
+        <div v-else class="max-w-sm mx-auto space-y-4">
           <div>
             <label for="saleDate" class="block">Data vanzarii</label>
             <input
@@ -101,8 +104,14 @@
               {{ errors['price'] }}
             </span>
           </div>
-          <div class="flex items-center justify-center">
-            <button class="rounded-xl bg-accent2 p-3" @click="submitForm">Adauga</button>
+          <div class="flex items-center justify-center gap-2">
+            <button
+              class="rounded-xl bg-gray-200 hover:bg-gray-300 p-3"
+              @click="router.replace({ name: 'SalesHistory' })"
+            >
+              Anuleaza
+            </button>
+            <button class="rounded-xl bg-accent2 hover:bg-green-700 text-gray-50 p-3" @click="submitForm">Salveaza</button>
           </div>
         </div>
       </div>
@@ -121,10 +130,11 @@ import type { ProductResponse } from '@/types/dtos/products/productResponses.dto
 import { getDestinations, getPrice, getProductsByWarehouseId } from '@/services/ProductsService.ts'
 import { getWarehouses } from '@/services/WarehousesService.ts'
 import { createSale } from '@/services/SalesService.ts'
-import { Toaster, toast } from 'vue-sonner'
+import { toast } from 'vue-sonner'
 
 const route = useRoute()
 const errors = ref<Record<string, string>>({})
+const isLoading = ref<boolean>(false)
 
 // Form state
 const selectedWarehouseId = ref<string>('')
@@ -140,8 +150,17 @@ const destinations = ref<DestinationResponse[]>([])
 const products = ref<ProductResponse[]>([])
 
 onMounted(async () => {
-  warehouses.value = await getWarehouses()
-  destinations.value = await getDestinations()
+  try {
+    isLoading.value = true
+    warehouses.value = await getWarehouses()
+    destinations.value = await getDestinations()
+  }
+  catch (error) {
+    toast.error('A aparut o eroare la incarcarea formularului')
+  }
+  finally {
+    isLoading.value = false
+  }
 })
 
 async function getProductsForWarehouse() {

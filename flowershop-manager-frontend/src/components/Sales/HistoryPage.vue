@@ -139,7 +139,15 @@
       <!--      </div>-->
 
       <!-- Sales Table -->
-      <div>
+      <div
+        class="rounded-xl bg-white shadow-sm mb-4 p-10 flex flex-col items-center justify-center gap-3"
+        v-if="isLoading"
+      >
+        <div class="flex justify-center items-center gap-2">
+          <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
+        </div>
+      </div>
+      <div v-else>
         <div
           class="rounded-xl bg-white shadow-sm mb-4 p-5 flex flex-col items-center justify-center gap-3"
           v-if="!hasAnySales"
@@ -234,6 +242,7 @@ import { getWarehouses } from '@/services/WarehousesService.ts'
 import { getDestinations } from '@/services/ProductsService.ts'
 import type { SaleResponse } from '@/types/dtos/sales/saleResponses.ts'
 import type { DestinationOption, WarehouseOption } from '@/types/models/salesFilterForm.ts'
+import { toast } from 'vue-sonner'
 
 const salesFilterForm = ref<SalesFilterForm>({
   warehouseId: '',
@@ -252,6 +261,7 @@ const viewType = ref<'day' | 'month'>('day')
 const inputDate = ref('')
 const showFilters = ref(true)
 const sales = ref<SaleResponse[]>([])
+const isLoading = ref(false)
 
 const groupedSales = computed(() => {
   const groups: Record<string, SaleResponse[]> = {}
@@ -402,7 +412,17 @@ async function getSalesData() {
   salesFilterForm.value.startDate = start
   salesFilterForm.value.endDate = end
 
-  const res = await getSales(salesFilterForm.value)
-  sales.value = res.data
+  try {
+    isLoading.value = true
+    const res = await getSales(salesFilterForm.value)
+    sales.value = res.data
+  }
+  catch (error) {
+    toast.error('A aparut o eroare la incarcarea vanzarilor')
+  }
+  finally {
+    isLoading.value = false
+  }
+
 }
 </script>

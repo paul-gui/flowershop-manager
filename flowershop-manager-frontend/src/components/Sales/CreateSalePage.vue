@@ -2,62 +2,74 @@
   <div class="h-full bg-background text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto">
       <h1 class="text-h1 text-text_primary mb-4">Adaugare vanzare</h1>
-      <div class="mb-4">
-        <label class="block text-sm mb-2">Produs</label>
-        <div class="space-y-1 max-h-44 overflow-scroll">
+      <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
+        <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
+      </div>
+      <div v-else>
+        <div class="mb-4">
+          <label class="block text-sm mb-2">Produs</label>
           <div
-            :class="[
+            v-if="products.length === 0"
+            class="flex items-center justify-center p-4">
+            <p>Nu exista produse</p>
+          </div>
+          <div
+            v-else
+            class="space-y-1 max-h-44 overflow-scroll">
+            <div
+              :class="[
             'p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out',
             createSaleForm?.productId === p.id
               ? 'bg-accent3 text-white shadow-lg'
               : 'bg-cards text-gray-300 hover:bg-divider',
           ]"
-            @click="selectProduct(p)"
-            v-for="p in products"
-          >
-            {{ p.name }}
+              @click="selectProduct(p)"
+              v-for="p in products"
+            >
+              {{ p.name }}
+            </div>
           </div>
+          <p class="text-red-500 text-sm" v-if="errors['product']">{{ errors['product'] }}</p>
         </div>
-        <p class="text-red-500 text-sm" v-if="errors['product']">{{ errors['product'] }}</p>
-      </div>
 
-      <div class="mb-4">
-        <label class="block text-sm mb-2">Destinație</label>
-        <div class="flex rounded-lg overflow-hidden bg-cards p-1">
-          <button
-            :class="[
+        <div class="mb-4">
+          <label class="block text-sm mb-2">Destinație</label>
+          <div class="flex rounded-lg overflow-hidden bg-cards p-1">
+            <button
+              :class="[
             'flex-1 py-3 font-medium transition duration-150 ease-in-out rounded-lg',
             createSaleForm.destinationId === d.id
               ? 'bg-accent3 text-white shadow-md'
               : 'text-gray-300 hover:bg-divider',
           ]"
-            @click="selectDestination(d)"
-            v-for="d of destinations"
-          >
-            {{ d.name }}
-          </button>
+              @click="selectDestination(d)"
+              v-for="d of destinations"
+            >
+              {{ d.name }}
+            </button>
+          </div>
+          <p class="text-red-500 text-sm" v-if="errors['destination']">{{ errors['destination'] }}</p>
         </div>
-        <p class="text-red-500 text-sm" v-if="errors['destination']">{{ errors['destination'] }}</p>
-      </div>
 
-      <div class="mb-4">
-        <label class="block text-sm mb-2">Cantitate</label>
-        <input
-          v-model.number="createSaleForm.quantity"
-          type="number"
-          class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-        />
-        <p class="text-red-500 text-sm" v-if="errors['quantity']">{{ errors['quantity'] }}</p>
-      </div>
+        <div class="mb-4">
+          <label class="block text-sm mb-2">Cantitate</label>
+          <input
+            v-model.number="createSaleForm.quantity"
+            type="number"
+            class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          />
+          <p class="text-red-500 text-sm" v-if="errors['quantity']">{{ errors['quantity'] }}</p>
+        </div>
 
-      <div class="mb-6">
-        <label class="block text-sm mb-2">Pret</label>
-        <input
-          v-model.number="createSaleForm.priceAtSale"
-          type="number"
-          class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-        >
-        <p class="text-red-500 text-sm" v-if="errors['price']">{{ errors['price'] }}</p>
+        <div class="mb-6">
+          <label class="block text-sm mb-2">Pret</label>
+          <input
+            v-model.number="createSaleForm.priceAtSale"
+            type="number"
+            class="w-full p-3 text-xl font-bold text-center bg-cards text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+          >
+          <p class="text-red-500 text-sm" v-if="errors['price']">{{ errors['price'] }}</p>
+        </div>
       </div>
 
       <div class="sticky bottom-0 flex justify-center mt-6 gap-2 w-full bg-background pt-1">
@@ -102,6 +114,7 @@ const createSaleForm = ref<CreateSaleForm>({
 const products = ref<ProductResponse[]>([])
 const destinations = ref<DestinationResponse[]>([])
 const errors = ref<Record<string, string>>({})
+const isLoading = ref<boolean>(false)
 
 onMounted( async () => {
   const warehouseId = String(route.params.warehouseId);
@@ -109,8 +122,17 @@ onMounted( async () => {
     products.value = [];
     return;
   }
-  products.value = await getProductsByWarehouseId(warehouseId)
-  destinations.value = await getDestinations()
+  try{
+    isLoading.value = true
+    products.value = await getProductsByWarehouseId(warehouseId)
+    destinations.value = await getDestinations()
+  }
+  catch(error) {
+    toast.error('A aparut o eroare la incarcarea formuluarului')
+  }
+  finally {
+    isLoading.value = false
+  }
 });
 
 // Methods

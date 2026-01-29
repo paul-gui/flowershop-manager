@@ -27,7 +27,10 @@
         </div>
       </div>
       <div class="space-y-2 max-h-72 overflow-y-scroll">
-        <div v-for="(warehouse, index) in warehouses" :key="index">
+        <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
+          <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
+        </div>
+        <div v-else v-for="(warehouse, index) in warehouses" :key="index">
           <content-button
             :title="warehouse.name"
             icon="fa fa-pen"
@@ -58,9 +61,11 @@ import router from "@/router";
 import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
 import ContentButton from "@/components/Warehouses/content-button.vue";
 import { useAuthStore } from '@/stores/auth.ts'
+import { toast } from 'vue-sonner'
 
 const editingMode = ref<boolean>(false);
 const warehouses = ref<WarehouseResponse[]>([])
+const isLoading = ref(false)
 const auth = useAuthStore()
 
 const isAdminLoggedIn = computed(() => {
@@ -72,7 +77,16 @@ onMounted(async () => {
 })
 
 async function getWarehousesAsync() {
-  warehouses.value = await getWarehouses()
+  try{
+    isLoading.value = true
+    warehouses.value = await getWarehouses()
+  }
+  catch (error) {
+    toast.error('A aparut o eroare la incarcarea locatiilor')
+  }
+  finally {
+    isLoading.value = false
+  }
 }
 
 function goToAddWarehouse(): void {
