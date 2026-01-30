@@ -125,7 +125,7 @@ function goBack() {
         </button>
         <button
           @click="onSubmit"
-          class="bg-accent2 hover:bg-green-600 text-text_accents py-3 px-10 rounded-xl"
+          class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-10 rounded-xl"
         >
           Salveaza
         </button>
