@@ -75,11 +75,16 @@ const router = createRouter({
       path: '/unauthorized',
       name: 'Unauthorized',
       component: () => import('../components/Common/UnauthorizedPage.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('../components/Common/NotFound.vue')
     }
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
   const guestOnly = to.meta.guestOnly;
