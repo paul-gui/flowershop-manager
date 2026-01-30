@@ -63,7 +63,7 @@
           <!-- Actions -->
           <div class="flex items-end justify-end">
             <button
-              class="w-full rounded-lg bg-accent2 px-4 py-2 text-sm text-white"
+              class="w-full rounded-lg bg-accent2 hover:bg-accent2_hover px-4 py-2 text-sm text-white"
               @click="getSalesData"
             >
               Aplica
@@ -115,7 +115,7 @@
 
             <button
               @click="acceptSelectedDate"
-              class="mt-3 w-full rounded-lg bg-accent2 px-3 py-2 text-white text-sm"
+              class="mt-3 w-full rounded-lg bg-accent2 hover:bg-accent2_hover px-3 py-2 text-white text-sm"
             >
               Aplica
             </button>

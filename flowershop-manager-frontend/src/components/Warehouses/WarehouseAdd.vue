@@ -15,7 +15,7 @@
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button @click="goBack" type="button" class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-8 rounded-lg">Anuleaza</button>
-          <button type="submit" class="bg-accent2 text-text_accents hover:bg-green-600 py-3 px-8 rounded-lg">Salveaza</button>
+          <button type="submit" class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-8 rounded-lg">Salveaza</button>
         </div>
       </form>
     </div>
