@@ -12,6 +12,7 @@ export default {
         divider: '#44445d',
         accent1: '#d16ba5',
         accent2: '#88d498',
+        accent2_hover: '#62c678',
         accent3: '#9d79bc',
         error: '#f15c6d',
       },
