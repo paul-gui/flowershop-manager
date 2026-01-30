@@ -2,8 +2,15 @@
   <div class="h-full p-4 sm:p-6">
     <div class="mx-auto max-w-7xl space-y-4 sm:space-y-6">
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex items-end justify-between">
         <div>
+          <button
+            class="text-sm text-white rounded-xl mb-3"
+            @click="goBack"
+          >
+            <i class="fa fa-arrow-left"></i>
+            Inapoi
+          </button>
           <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Istoric Vanzari</h1>
         </div>
 
@@ -405,6 +412,10 @@ function addProduct(date: string) {
 
 function goToEditProduct(id: string) {
   router.push({ name: 'HistoryEditSale', params: { id: id } })
+}
+
+function goBack() {
+  router.push({ path:'/warehouses' })
 }
 
 async function getSalesData() {
