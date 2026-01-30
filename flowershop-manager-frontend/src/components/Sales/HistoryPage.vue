@@ -5,7 +5,7 @@
       <div class="flex items-end justify-between">
         <div>
           <button
-            class="text-sm text-white rounded-xl mb-3"
+            class="text-sm text-text_primary rounded-xl mb-3"
             @click="goBack"
           >
             <i class="fa fa-arrow-left"></i>
@@ -19,7 +19,7 @@
           class="rounded-lg bg-cards px-3 py-2 text-sm shadow-sm sm:hidden"
           @click="showFilters = !showFilters"
         >
-          <i class="fa fa-rectangle-list text-white"></i>
+          <i class="fa fa-rectangle-list text-text_primary"></i>
         </button>
       </div>
 
