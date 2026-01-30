@@ -12,6 +12,7 @@ const router = createRouter({
       path: '/',
       name: 'auth',
       component: AuthPage,
+      meta: { guestOnly: true },
     },
     {
       path: '/warehouses',
@@ -81,14 +82,19 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
+  const guestOnly = to.meta.guestOnly;
   const requiresAuth = to.meta.requiresAuth;
   const requiredRoles = to.meta.roles as string[] | null;
+
+  if (guestOnly && authStore.isAuthenticated) {
+    return next('/warehouses')
+  }
 
   if (requiresAuth && !authStore.isAuthenticated) {
     return next({ path: '/' })
   }
 
-  if (requiredRoles && !requiredRoles.every(role => authStore.roles.includes(role))){
+  if (requiredRoles && !requiredRoles.every(role => authStore.roles.includes(role))) {
     return next({ path: '/unauthorized' })
   }
 
