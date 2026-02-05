@@ -9,11 +9,6 @@ import type { DestinationResponse } from '@/types/dtos/destinations/destinationR
 
 const baseUrl = '/Products'
 
-export async function getProducts(warehouseId: string){
-    const res = await api.get(baseUrl + '/GetProducts/' + warehouseId);
-    return res.data
-}
-
 export async function createProduct(product: CreateProductRequest):Promise<String>{
   const res = await api.post(baseUrl + '/CreateProduct', product);
   return res.data
