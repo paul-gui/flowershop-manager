@@ -1,5 +1,6 @@
 ﻿using FlowerShopAPI.Contracts.Warehouses;
 using FlowerShopAPI.Managers.Warehouses.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShopAPI.Controllers
@@ -8,6 +9,7 @@ namespace FlowerShopAPI.Controllers
     [ApiController]
     public class WarehousesController(IWarehousesManager warehousesManager) : ControllerBase
     {
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateWarehouse")]
         public async Task<ActionResult<WarehouseDetailsResponse>> CreateWarehouse([FromBody]CreateWarehouseRequest createWarehouseRequest)
         {
@@ -15,6 +17,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("GetWarehouses")]
         public async Task<ActionResult<List<WarehouseResponse>>> GetWarehouses()
         {
@@ -26,6 +29,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result);
         }
         
+        [Authorize]
         [HttpGet("GetWarehouse/{id}")]
         public async Task<ActionResult<WarehouseDetailsResponse>> GetWarehouse(Guid id)
         {
@@ -37,6 +41,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateWarehouse")]
         public async Task<ActionResult<WarehouseDetailsResponse>> UpdateWarehouse([FromBody]UpdateWarehouseRequest updateWarehouseRequest)
         {
@@ -48,6 +53,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteWarehouse/{id}")]
         public async Task<ActionResult<WarehouseDetailsResponse>> DeleteWarehouse(Guid id)
         {

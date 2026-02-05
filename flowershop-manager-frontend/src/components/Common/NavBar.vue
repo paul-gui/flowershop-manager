@@ -11,7 +11,6 @@ const logout = () => {
   auth.logout()
   showMenu.value = false
   toast.success('V-ati deconectat cu succes')
-  router.replace({ path: '/'})
 }
 </script>
 
