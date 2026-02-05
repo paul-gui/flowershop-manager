@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace FlowershopAPI.Models
+namespace FlowerShopAPI.Models
 {
     public class User : IdentityUser
     {

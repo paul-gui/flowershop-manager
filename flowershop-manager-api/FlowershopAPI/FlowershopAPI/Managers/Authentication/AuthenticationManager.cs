@@ -1,14 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FlowershopAPI.Common.Results;
-using FlowershopAPI.Contracts.Authentication;
-using FlowershopAPI.Managers.Authentication.Contract;
-using FlowershopAPI.Models;
+using FlowerShopAPI.Common.Results;
+using FlowerShopAPI.Contracts.Authentication;
+using FlowerShopAPI.Managers.Authentication.Contract;
+using FlowerShopAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace FlowershopAPI.Managers.Authentication;
+namespace FlowerShopAPI.Managers.Authentication;
 
 public class AuthenticationManager(UserManager<User> userManager, IConfiguration configuration) : IAuthenticationManager
 {

@@ -1,7 +1,7 @@
 using AutoMapper;
-using FlowershopAPI.Models;
+using FlowerShopAPI.Models;
 
-namespace FlowershopAPI.Contracts.Sales.Mapping;
+namespace FlowerShopAPI.Contracts.Sales.Mapping;
 
 public class SalesMappings : Profile
 {

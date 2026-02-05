@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace FlowershopAPI.Extensions
+namespace FlowerShopAPI.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {

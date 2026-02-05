@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowershopAPI.Contracts.Warehouses;
+namespace FlowerShopAPI.Contracts.Warehouses;
 
 public class CreateWarehouseRequest
 {

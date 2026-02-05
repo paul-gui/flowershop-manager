@@ -1,4 +1,4 @@
-namespace FlowershopAPI.Contracts.Products;
+namespace FlowerShopAPI.Contracts.Products;
 
 public class ProductResponse
 {

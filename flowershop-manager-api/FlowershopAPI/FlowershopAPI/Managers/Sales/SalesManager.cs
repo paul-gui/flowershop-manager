@@ -1,13 +1,13 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FlowershopAPI.Common.Results;
-using FlowershopAPI.Contracts.Sales;
-using FlowershopAPI.Data;
-using FlowershopAPI.Managers.Sales.Contract;
-using FlowershopAPI.Models;
+using FlowerShopAPI.Common.Results;
+using FlowerShopAPI.Contracts.Sales;
+using FlowerShopAPI.Data;
+using FlowerShopAPI.Managers.Sales.Contract;
+using FlowerShopAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowershopAPI.Managers.Sales;
+namespace FlowerShopAPI.Managers.Sales;
 
 public class SalesManager(ApplicationDbContext context, IMapper mapper) : ISalesManager
 {

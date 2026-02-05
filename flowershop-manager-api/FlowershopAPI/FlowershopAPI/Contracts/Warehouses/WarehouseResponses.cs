@@ -1,6 +1,6 @@
-using FlowershopAPI.Contracts.Products;
+using FlowerShopAPI.Contracts.Products;
 
-namespace FlowershopAPI.Contracts.Warehouses;
+namespace FlowerShopAPI.Contracts.Warehouses;
 
 public class WarehouseDetailsResponse
 {

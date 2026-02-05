@@ -1,11 +1,9 @@
-﻿using FlowershopAPI.Contracts.Destinations;
-using FlowershopAPI.Contracts.Products;
-using FlowershopAPI.Managers.Products;
-using FlowershopAPI.Models;
-using Microsoft.AspNetCore.Http;
+﻿using FlowerShopAPI.Contracts.Destinations;
+using FlowerShopAPI.Contracts.Products;
+using FlowerShopAPI.Managers.Products.Contract;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowershopAPI.Controllers
+namespace FlowerShopAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
