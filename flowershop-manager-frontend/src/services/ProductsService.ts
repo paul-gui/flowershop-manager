@@ -15,14 +15,8 @@ export async function getProducts(warehouseId: string){
 }
 
 export async function createProduct(product: CreateProductRequest):Promise<String>{
-  try{
-    const res = await api.post(baseUrl + '/CreateProduct', product);
-    return res.data
-  }
-  catch (error){
-    console.log('Error adding product:' + error);
-    throw error;
-  }
+  const res = await api.post(baseUrl + '/CreateProduct', product);
+  return res.data
 }
 
 export async function getProductById(id: string):Promise<ProductResponse>{

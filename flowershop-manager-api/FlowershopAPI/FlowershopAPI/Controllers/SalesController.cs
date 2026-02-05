@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FlowerShopAPI.Contracts.Sales;
 using FlowerShopAPI.Managers.Sales.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShopAPI.Controllers;
@@ -9,6 +10,7 @@ namespace FlowerShopAPI.Controllers;
 [ApiController]
 public class SalesController(ISalesManager salesManager) : ControllerBase
 {
+    [Authorize]
     [HttpPost("CreateSale")]
     public async Task<ActionResult> CreateSale(SaleCreationRequest saleCreationRequest)
     {
@@ -16,7 +18,7 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
                      ?? User.FindFirstValue("sub");
         if (userId == null)
         {
-            return Forbid();
+            return Unauthorized();
         }
         
         var result = await salesManager.CreateSale(userId, saleCreationRequest);
@@ -27,6 +29,7 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("GetSales")]
     public async Task<ActionResult> GetSales([FromQuery] SalesFilterRequest salesFilterRequest)
     {
@@ -34,6 +37,7 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("GetSaleForEdit/{saleId}")]
     public async Task<ActionResult<SaleResponse>> GetSaleForEdit(Guid saleId)
     {
@@ -45,6 +49,7 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result.Data);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("UpdateSale/{saleId}")]
     public async Task<ActionResult> UpdateSale(Guid saleId, [FromBody]SaleUpdateRequest saleUpdateRequest)
     {
@@ -56,6 +61,7 @@ public class SalesController(ISalesManager salesManager) : ControllerBase
         return Ok(result.Data);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("DeleteSale/{saleId}")]
     public async Task<ActionResult> DeleteSale(Guid saleId)
     {

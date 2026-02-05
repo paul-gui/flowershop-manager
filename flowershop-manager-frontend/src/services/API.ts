@@ -15,4 +15,17 @@ api.interceptors.request.use(config => {
     return config;
 });
 
+api.interceptors.response.use(
+  response => response, // just pass successful responses
+  (err: unknown) => {
+    const authStore = useAuthStore();
+
+    if (axios.isAxiosError(err) && err.response?.status === 401) {
+      authStore.logout();
+    }
+
+    return Promise.reject(err);
+  }
+);
+
 export default api

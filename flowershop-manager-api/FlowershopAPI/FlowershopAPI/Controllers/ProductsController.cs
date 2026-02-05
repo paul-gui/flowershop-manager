@@ -1,6 +1,7 @@
 ﻿using FlowerShopAPI.Contracts.Destinations;
 using FlowerShopAPI.Contracts.Products;
 using FlowerShopAPI.Managers.Products.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShopAPI.Controllers
@@ -9,6 +10,7 @@ namespace FlowerShopAPI.Controllers
     [ApiController]
     public class ProductsController(IProductsManager productsManager) : ControllerBase
     {
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateProduct")]
         public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody]CreateProductRequest createProduct)
         {
@@ -22,6 +24,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
         
+        [Authorize]
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> GetProduct(Guid id)
         {
@@ -33,6 +36,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize]
         [HttpGet("GetProductsByWarehouseId/{warehouseId:guid}")]
         public async Task<ActionResult<List<ProductResponse>>> GetProductsByWarehouseId(Guid warehouseId)
         {
@@ -45,6 +49,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize]
         [HttpGet("GetPrice/{productId:guid}/{destinationId:guid}")]
         public async Task<ActionResult<decimal>> GetPrice(Guid productId, Guid destinationId)
         {
@@ -57,6 +62,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
         
+        [Authorize]
         [HttpGet("GetDestinations")]
         public async Task<ActionResult<List<DestinationResponse>>> GetDestinations()
         {
@@ -68,6 +74,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateProduct")]
         public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] UpdateProductRequest updateProduct)
         {
@@ -80,6 +87,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<ActionResult<ProductResponse>> DeleteProduct(Guid id)
         {
