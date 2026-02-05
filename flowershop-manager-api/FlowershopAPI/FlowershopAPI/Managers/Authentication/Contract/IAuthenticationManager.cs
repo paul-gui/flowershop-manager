@@ -1,7 +1,7 @@
-using FlowershopAPI.Common.Results;
-using FlowershopAPI.Contracts.Authentication;
+using FlowerShopAPI.Common.Results;
+using FlowerShopAPI.Contracts.Authentication;
 
-namespace FlowershopAPI.Managers.Authentication.Contract;
+namespace FlowerShopAPI.Managers.Authentication.Contract;
 
 public interface IAuthenticationManager
 {

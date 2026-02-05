@@ -1,11 +1,8 @@
-﻿using FlowershopAPI.Contracts.Warehouses;
-using FlowershopAPI.Managers.Warehouses.Contract;
-using FlowershopAPI.Models;
-using Microsoft.AspNetCore.Http;
+﻿using FlowerShopAPI.Contracts.Warehouses;
+using FlowerShopAPI.Managers.Warehouses.Contract;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
-namespace FlowershopAPI.Controllers
+namespace FlowerShopAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

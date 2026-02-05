@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowershopAPI.Contracts.Authentication;
+namespace FlowerShopAPI.Contracts.Authentication;
 
 public class RegisterAccountRequest
 {

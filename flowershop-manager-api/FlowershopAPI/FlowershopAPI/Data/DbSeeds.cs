@@ -1,7 +1,7 @@
-﻿using FlowershopAPI.Models;
+﻿using FlowerShopAPI.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace FlowershopAPI.Data
+namespace FlowerShopAPI.Data
 {
     public static class DbSeeds
     {

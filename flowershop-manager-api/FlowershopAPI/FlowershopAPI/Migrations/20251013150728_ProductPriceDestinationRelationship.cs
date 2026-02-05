@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace FlowershopAPI.Migrations
+namespace FlowerShopAPI.Migrations
 {
     /// <inheritdoc />
     public partial class ProductPriceDestinationRelationship : Migration

@@ -1,7 +1,7 @@
-using FlowershopAPI.Common.Results;
-using FlowershopAPI.Contracts.Sales;
+using FlowerShopAPI.Common.Results;
+using FlowerShopAPI.Contracts.Sales;
 
-namespace FlowershopAPI.Managers.Sales.Contract;
+namespace FlowerShopAPI.Managers.Sales.Contract;
 
 public interface ISalesManager
 {

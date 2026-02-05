@@ -1,22 +1,21 @@
-
-using FlowershopAPI.Data;
-using FlowershopAPI.Managers.Products;
-using FlowershopAPI.Managers.Warehouses;
-using FlowershopAPI.Managers.Warehouses.Contract;
-using FlowershopAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using FlowershopAPI.Managers.Authentication;
-using FlowershopAPI.Managers.Authentication.Contract;
-using FlowershopAPI.Managers.Sales;
-using FlowershopAPI.Managers.Sales.Contract;
+using FlowerShopAPI.Data;
+using FlowerShopAPI.Managers.Authentication;
+using FlowerShopAPI.Managers.Authentication.Contract;
+using FlowerShopAPI.Managers.Products;
+using FlowerShopAPI.Managers.Products.Contract;
+using FlowerShopAPI.Managers.Sales;
+using FlowerShopAPI.Managers.Sales.Contract;
+using FlowerShopAPI.Managers.Warehouses;
+using FlowerShopAPI.Managers.Warehouses.Contract;
+using FlowerShopAPI.Models;
 
-namespace FlowershopAPI
+namespace FlowerShopAPI
 {
     public class Program
     {

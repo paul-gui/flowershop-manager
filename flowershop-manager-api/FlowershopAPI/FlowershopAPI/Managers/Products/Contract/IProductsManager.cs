@@ -1,7 +1,8 @@
-﻿using FlowershopAPI.Common.Results;
-using FlowershopAPI.Contracts.Destinations;
-using FlowershopAPI.Contracts.Products;
-namespace FlowershopAPI.Managers.Products
+﻿using FlowerShopAPI.Common.Results;
+using FlowerShopAPI.Contracts.Destinations;
+using FlowerShopAPI.Contracts.Products;
+
+namespace FlowerShopAPI.Managers.Products.Contract
 {
     public interface IProductsManager
     {

@@ -1,4 +1,4 @@
-namespace FlowershopAPI.Contracts.Authentication;
+namespace FlowerShopAPI.Contracts.Authentication;
 
 public class RegisterAccountResponse
 {

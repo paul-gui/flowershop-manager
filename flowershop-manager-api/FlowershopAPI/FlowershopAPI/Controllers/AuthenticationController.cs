@@ -1,15 +1,8 @@
-﻿using FlowershopAPI.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using FlowershopAPI.Contracts.Authentication;
-using FlowershopAPI.Managers.Authentication.Contract;
+﻿using Microsoft.AspNetCore.Mvc;
+using FlowerShopAPI.Contracts.Authentication;
+using FlowerShopAPI.Managers.Authentication.Contract;
 
-namespace FlowershopAPI.Controllers
+namespace FlowerShopAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
