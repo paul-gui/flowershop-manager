@@ -1,6 +1,6 @@
-﻿using FlowershopAPI.Contracts.Warehouses;
+﻿using FlowerShopAPI.Contracts.Warehouses;
 
-namespace FlowershopAPI.Managers.Warehouses.Contract
+namespace FlowerShopAPI.Managers.Warehouses.Contract
 {
     public interface IWarehousesManager
     {

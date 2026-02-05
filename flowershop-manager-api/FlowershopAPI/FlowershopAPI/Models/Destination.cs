@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlowershopAPI.Models
+namespace FlowerShopAPI.Models
 {
     public class Destination
     {

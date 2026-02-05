@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FlowershopAPI.Migrations
+namespace FlowerShopAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Warehouses : Migration

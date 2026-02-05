@@ -1,8 +1,8 @@
-﻿using FlowershopAPI.Models;
+﻿using FlowerShopAPI.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowershopAPI.Data
+namespace FlowerShopAPI.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {

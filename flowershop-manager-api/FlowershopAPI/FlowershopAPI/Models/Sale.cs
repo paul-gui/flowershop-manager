@@ -1,4 +1,4 @@
-namespace FlowershopAPI.Models;
+namespace FlowerShopAPI.Models;
 
 public class Sale
 {

@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FlowershopAPI.Common.Results;
-using FlowershopAPI.Data;
-using FlowershopAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using FlowerShopAPI.Common.Results;
 using Microsoft.EntityFrameworkCore;
-using FlowershopAPI.Contracts;
-using FlowershopAPI.Contracts.Destinations;
-using FlowershopAPI.Contracts.Products;
+using FlowerShopAPI.Contracts.Destinations;
+using FlowerShopAPI.Contracts.Products;
+using FlowerShopAPI.Data;
+using FlowerShopAPI.Managers.Products.Contract;
+using FlowerShopAPI.Models;
 
-namespace FlowershopAPI.Managers.Products
+namespace FlowerShopAPI.Managers.Products
 {
     public class ProductsManager(ApplicationDbContext context, IMapper mapper) : IProductsManager
     {

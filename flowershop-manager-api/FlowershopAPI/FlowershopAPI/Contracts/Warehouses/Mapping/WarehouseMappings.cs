@@ -1,8 +1,8 @@
 using AutoMapper;
-using FlowershopAPI.Contracts.Products;
-using FlowershopAPI.Models;
+using FlowerShopAPI.Contracts.Products;
+using FlowerShopAPI.Models;
 
-namespace FlowershopAPI.Contracts.Warehouses.Mapping;
+namespace FlowerShopAPI.Contracts.Warehouses.Mapping;
 
 public class WarehouseMappings : Profile
 {

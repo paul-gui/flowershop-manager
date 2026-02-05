@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FlowershopAPI.Models
+namespace FlowerShopAPI.Models
 {
     public class Price
     {

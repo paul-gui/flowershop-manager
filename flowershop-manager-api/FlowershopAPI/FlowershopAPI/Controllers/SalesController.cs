@@ -1,9 +1,9 @@
 using System.Security.Claims;
-using FlowershopAPI.Contracts.Sales;
-using FlowershopAPI.Managers.Sales.Contract;
+using FlowerShopAPI.Contracts.Sales;
+using FlowerShopAPI.Managers.Sales.Contract;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlowershopAPI.Controllers;
+namespace FlowerShopAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

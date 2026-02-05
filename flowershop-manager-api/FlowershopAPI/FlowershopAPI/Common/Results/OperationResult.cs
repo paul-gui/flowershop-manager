@@ -1,4 +1,4 @@
-namespace FlowershopAPI.Common.Results;
+namespace FlowerShopAPI.Common.Results;
 
 public class OperationResult<T>
 {

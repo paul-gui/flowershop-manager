@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowershopAPI.Contracts.Sales;
+namespace FlowerShopAPI.Contracts.Sales;
 
 public class SaleCreationRequest
 {

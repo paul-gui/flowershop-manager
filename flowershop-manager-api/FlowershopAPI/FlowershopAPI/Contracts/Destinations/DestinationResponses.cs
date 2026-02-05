@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowershopAPI.Contracts.Destinations;
+namespace FlowerShopAPI.Contracts.Destinations;
 
 public class DestinationResponse
 {

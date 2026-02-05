@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using FlowershopAPI.Contracts.Warehouses;
-using FlowershopAPI.Data;
-using FlowershopAPI.Managers.Warehouses.Contract;
+using FlowerShopAPI.Contracts.Warehouses;
+using FlowerShopAPI.Data;
+using FlowerShopAPI.Managers.Warehouses.Contract;
 using Microsoft.EntityFrameworkCore;
 
-namespace FlowershopAPI.Managers.Warehouses
+namespace FlowerShopAPI.Managers.Warehouses
 {
     public class WarehousesManager(ApplicationDbContext context, IMapper mapper) : IWarehousesManager
     {
