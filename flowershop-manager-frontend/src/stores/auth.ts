@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { LoginRequest } from '@/types/dtos/authentication/authenticationRequests.dto.ts'
 import { login } from '@/services/AuthenticationService.ts'
 import { jwtDecode } from 'jwt-decode'
+import router from '@/router'
 
 type authState = {
     token: string | null;
@@ -28,10 +29,11 @@ export const useAuthStore = defineStore('auth', {
           this.roles = Array.isArray(roles) ? roles : [roles];
         },
         logout() {
-            this.token = null;
-            this.roles = [];
-            this.$reset()
-            localStorage.removeItem('auth')
+          this.token = null;
+          this.roles = [];
+          this.$reset()
+          localStorage.removeItem('auth')
+          router.push({ path: '/' })
         }
     },
     getters: {
