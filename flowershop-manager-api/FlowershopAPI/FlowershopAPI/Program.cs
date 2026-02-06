@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using FlowerShopAPI.Common.Configuration;
+using FlowerShopAPI.Common.Services.EmailSender;
+using FlowerShopAPI.Common.Services.EmailSender.Contract;
 using FlowerShopAPI.Data;
 using FlowerShopAPI.Managers.Authentication;
 using FlowerShopAPI.Managers.Authentication.Contract;
@@ -32,6 +35,10 @@ namespace FlowerShopAPI
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
+            // Change lifetime of tokens
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(options => 
+                options.TokenLifespan = TimeSpan.FromHours(2)); 
 
             //Configure CORS to allow requests from frontend
             builder.Services.AddCors(options =>
@@ -84,6 +91,11 @@ namespace FlowerShopAPI
             builder.Services.AddTransient<IWarehousesManager, WarehousesManager>();
             builder.Services.AddTransient<IProductsManager, ProductsManager>();
             builder.Services.AddTransient<ISalesManager, SalesManager>();
+            
+            //Configure email service
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+            var config = builder.Configuration.GetSection("EmailSettings");
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
             var app = builder.Build();
 
