@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AuthPage from '@/views/Authentication/AuthPage.vue'
 import WarehousesPage from '@/views/Warehouses/WarehousesPage.vue'
 import { useAuthStore } from '@/stores/auth.ts'
+import ResetPasswordPage from '@/views/Authentication/ResetPasswordPage.vue'
 
 
 
@@ -13,6 +14,12 @@ const router = createRouter({
       name: 'auth',
       component: AuthPage,
       meta: { guestOnly: true },
+    },
+    {
+      path: '/reset-password',
+      name: 'ResetPassword',
+      component: () => import('@/views/Authentication/ResetPasswordPage.vue'),
+      props: route => ({email: route.query.email, token: route.query.token}),
     },
     {
       path: '/warehouses',
