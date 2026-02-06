@@ -35,6 +35,10 @@ namespace FlowerShopAPI
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
+            // Change lifetime of tokens
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(options => 
+                options.TokenLifespan = TimeSpan.FromHours(2)); 
 
             //Configure CORS to allow requests from frontend
             builder.Services.AddCors(options =>
