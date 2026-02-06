@@ -26,6 +26,7 @@ const router = createRouter({
       name: 'ResetPassword',
       component: () => import('@/views/Authentication/ResetPasswordPage.vue'),
       props: route => ({email: route.query.email, token: route.query.token}),
+      meta: { guestOnly: true },
     },
     {
       path: '/warehouses',
