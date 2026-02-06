@@ -7,5 +7,3 @@
     <span class="text-gray-300">Pagina nu a fost gasita!</span>
   </div>
 </template>
-
-<style scoped></style>

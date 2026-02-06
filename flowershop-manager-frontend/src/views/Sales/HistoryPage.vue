@@ -244,7 +244,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import router from '@/router'
 import { getSales } from '@/services/SalesService.ts'
-import type { SalesFilterForm } from '@/types/models/salesFilterForm'
+import type { SalesFilterForm } from '@/types/models/salesFilterForm.ts'
 import { getWarehouses } from '@/services/WarehousesService.ts'
 import { getDestinations } from '@/services/ProductsService.ts'
 import type { SaleResponse } from '@/types/dtos/sales/saleResponses.ts'

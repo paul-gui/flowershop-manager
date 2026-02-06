@@ -57,7 +57,7 @@ import {getWarehouses} from "@/services/WarehousesService.ts";
 import { computed, onMounted, ref} from "vue";
 import router from "@/router";
 import type { WarehouseResponse } from '@/types/dtos/warehouse/warehouseResponses.dto.ts'
-import ContentButton from "@/components/Warehouses/content-button.vue";
+import ContentButton from "@/components/Common/ContentButton.vue";
 import { useAuthStore } from '@/stores/auth.ts'
 import { toast } from 'vue-sonner'
 
