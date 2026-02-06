@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AuthPage from '@/views/AuthPage.vue'
-import Warehouses from '@/components/Warehouses/Warehouses.vue'
+import AuthPage from '@/views/Authentication/AuthPage.vue'
+import WarehousesPage from '@/views/Warehouses/WarehousesPage.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 
 
@@ -17,69 +17,69 @@ const router = createRouter({
     {
       path: '/warehouses',
       name: 'Warehouses',
-      component: Warehouses,
+      component: WarehousesPage,
       meta: { requiresAuth: true },
     },
     {
       path: '/warehouse-details/:id',
       name: 'warehouseDetails',
-      component: () => import('../components/Warehouses/WarehouseDetails.vue'),
+      component: () => import('@/views/Warehouses/WarehouseDetailsPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
     },
     {
       path: '/warehouse-details/:id/add-product',
       name: 'warehouseAddProduct',
-      component: () => import('../components/Products/ProductCreatePage.vue'),
+      component: () => import('@/views/Products/ProductCreatePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
     },
     {
       path: '/warehouse-add',
       name: 'wareHouseAdd',
-      component: () => import('../components/Warehouses/WarehouseAdd.vue'),
+      component: () => import('@/views/Warehouses/WarehouseAddPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
     {
       path: '/product-details/:id',
       name: 'productDetails',
-      component: () => import('../components/Products/ProductEditPage.vue'),
+      component: () => import('@/views/Products/ProductEditPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
       props: true
     },
     {
       path: '/sales/createSale/:warehouseId',
       name: 'CreateSale',
-      component: () => import('../components/Sales/CreateSalePage.vue'),
+      component: () => import('@/views/Sales/CreateSalePage.vue'),
       meta: { requiresAuth: true },
     },
     {
       path: '/sales/history',
       name: 'SalesHistory',
-      component: () => import('../components/Sales/HistoryPage.vue'),
+      component: () => import('@/views/Sales/HistoryPage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
     {
       path: '/sales/history/createSale/:saleDate',
       name: 'HistoryCreateSale',
-      component: () => import('../components/Sales/HistoryCreateSalePage.vue'),
+      component: () => import('@/views/Sales/HistoryCreateSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
     {
       path: '/sales/history/editSale/:id',
       name: 'HistoryEditSale',
-      component: () => import('../components/Sales/HistoryEditSalePage.vue'),
+      component: () => import('@/views/Sales/HistoryEditSalePage.vue'),
       meta: { requiresAuth: true, roles: ['Admin'] },
     },
     {
       path: '/unauthorized',
       name: 'Unauthorized',
-      component: () => import('../components/Common/UnauthorizedPage.vue')
+      component: () => import('../views/Common/UnauthorizedPage.vue')
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () => import('../components/Common/NotFound.vue')
+      component: () => import('../views/Common/NotFoundPage.vue')
     }
   ],
 })
