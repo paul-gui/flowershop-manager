@@ -25,3 +25,9 @@ public class LoginRequest
     [Required]
     public required string Password { get; set; }
 }
+
+public class ForgotPasswordRequest
+{
+    [Required]
+    public string Email { get; set; }
+}

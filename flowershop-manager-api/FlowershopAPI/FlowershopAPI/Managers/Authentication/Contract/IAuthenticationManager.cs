@@ -7,4 +7,5 @@ public interface IAuthenticationManager
 {
     public Task<OperationResult<RegisterAccountResponse>> Register(RegisterAccountRequest request);
     public Task<OperationResult<LoginResponse>> Login(LoginRequest request);
+    public Task SendForgotPasswordEmail(ForgotPasswordRequest request);
 }

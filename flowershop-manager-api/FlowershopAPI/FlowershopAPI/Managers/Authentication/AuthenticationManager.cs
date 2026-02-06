@@ -5,12 +5,13 @@ using FlowerShopAPI.Common.Results;
 using FlowerShopAPI.Contracts.Authentication;
 using FlowerShopAPI.Managers.Authentication.Contract;
 using FlowerShopAPI.Models;
+using FlowerShopAPI.Common.Services.EmailSender.Contract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FlowerShopAPI.Managers.Authentication;
 
-public class AuthenticationManager(UserManager<User> userManager, IConfiguration configuration) : IAuthenticationManager
+public class AuthenticationManager(UserManager<User> userManager, IConfiguration configuration, IEmailSender emailSender) : IAuthenticationManager
 {
     
     public async Task<OperationResult<RegisterAccountResponse>> Register(RegisterAccountRequest request)
@@ -79,5 +80,25 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
             Name = user.Name,
         };
         return OperationResult<LoginResponse>.Success(result);
+    }
+
+    public async Task SendForgotPasswordEmail(ForgotPasswordRequest request)
+    {
+        var user = await userManager.FindByNameAsync(request.Email);
+        
+        if (user == null)
+        {
+            return;
+        }
+        var token = await userManager.GeneratePasswordResetTokenAsync(user);
+        var resetLink = $"http://localhost:5173/reset-password?email={Uri.EscapeDataString(request.Email)}&token={Uri.EscapeDataString(token)}";
+        
+        await emailSender.SendEmailAsync(
+            request.Email,
+            "Reseteaza parola contului tau Flower Shop Manager",
+            $"Am primit o solicitare de resetare a parolei contului tau de pe Flower Shop Manager.\n \n" +
+            $"Daca nu tu ai facut aceasta solicitare, poti ignora acest mesaj.\n \n" +
+            $"In schimb, pentru a continua procesul de resetare al parolei fa click pe acest link: {resetLink}"
+        );
     }
 }
