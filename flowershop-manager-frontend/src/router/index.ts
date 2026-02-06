@@ -74,12 +74,12 @@ const router = createRouter({
     {
       path: '/unauthorized',
       name: 'Unauthorized',
-      component: () => import('../components/Common/UnauthorizedPage.vue')
+      component: () => import('../views/Common/UnauthorizedPage.vue')
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () => import('../components/Common/NotFoundPage.vue')
+      component: () => import('../views/Common/NotFoundPage.vue')
     }
   ],
 })
