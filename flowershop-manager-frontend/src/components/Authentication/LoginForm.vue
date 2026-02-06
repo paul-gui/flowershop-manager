@@ -14,6 +14,11 @@
       <p class="ms-2 text-xs text-red-500" v-if="validationErrors['password']">
         {{ validationErrors['password'] }}
       </p>
+      <div class="flex justify-end mt-2">
+        <span @click="goToForgotPassword" class="text-text_secondary underline cursor-pointer">
+          Ai uitat parola?
+        </span>
+      </div>
     </div>
     <button type="submit" :disabled="loading" class="w-full bg-accent3 text-text_accents py-2 rounded-md hover:bg-[rgb(128,100,128)]">
       <!-- Show spinner when loading -->
@@ -41,6 +46,10 @@ const loginForm = ref({
   email: '',
   password: '',
 })
+
+async function goToForgotPassword() {
+  await router.push({ path: '/forgot-password' });
+}
 
 async function handleLogin() {
   validationErrors.value = {}

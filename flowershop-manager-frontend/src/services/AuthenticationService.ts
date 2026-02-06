@@ -1,5 +1,6 @@
 import api from "@/services/API";
 import type {
+  ForgotPasswordRequest,
   LoginRequest,
   RegisterAccountRequest,
   ResetPasswordRequest,
@@ -15,6 +16,10 @@ export async function register(registerRequest: RegisterAccountRequest): Promise
 export async function login(loginRequest: LoginRequest):Promise<LoginResponse> {
     const res = await api.post(baseUrl + "/Login", loginRequest);
     return res.data;
+}
+
+export async function forgotPassword(forgotPasswordRequest: ForgotPasswordRequest):Promise<void> {
+  const res = await api.post(baseUrl + "/ForgotPassword", forgotPasswordRequest);
 }
 
 export async function resetPassword(resetPasswordRequest: ResetPasswordRequest):Promise<void> {
