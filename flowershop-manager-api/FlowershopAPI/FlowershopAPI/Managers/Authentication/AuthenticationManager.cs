@@ -101,4 +101,18 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
             $"In schimb, pentru a continua procesul de resetare al parolei fa click pe acest link: {resetLink}"
         );
     }
+
+    public async Task<OperationResult<string>> ResetPassword(ResetPasswordRequest request)
+    {
+        var user = await userManager.FindByNameAsync(request.Email);
+        
+        if (user == null)
+        {
+            return OperationResult<string>.Failed(["User not found"]);
+        }
+        
+        await userManager.ResetPasswordAsync(user, request.Token, request.Password);
+        
+        return OperationResult<string>.Success("Password modified");
+    }
 }

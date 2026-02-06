@@ -41,6 +41,19 @@ namespace FlowerShopAPI.Controllers
             await authenticationManager.SendForgotPasswordEmail(request);
             return Ok();
         }
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
+        {
+            var result = await authenticationManager.ResetPassword(request);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+            
+            return Ok(result.Data);
+        }
     }
 }
 
