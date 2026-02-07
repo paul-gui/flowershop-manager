@@ -47,7 +47,7 @@ namespace FlowerShopAPI.Data
             if (!context.Destinations.Any())
             {
                 context.Destinations.AddRange(
-                    new Destination { Id =Guid.NewGuid(), Name = "Florarie"},
+                    new Destination { Id =Guid.NewGuid(), Name = "Florărie"},
                     new Destination { Id = Guid.NewGuid(), Name = "En Gros"}
                 );
                 await context.SaveChangesAsync();
