@@ -1,14 +1,14 @@
 <template>
   <div class="h-full p-4 sm:p-6">
     <div class="mx-auto max-w-7xl space-y-4 sm:space-y-6">
-      <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Adauga vanzare in istoric</h1>
+      <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Adaugă vânzare în istoric</h1>
       <div class="bg-white rounded-xl shadow-sm px-4 py-6">
         <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
           <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
         </div>
         <div v-else class="max-w-sm mx-auto space-y-4">
           <div>
-            <label for="saleDate" class="block">Data vanzarii</label>
+            <label for="saleDate" class="block">Data vânzării</label>
             <input
               type="date"
               name="saleDate"
@@ -24,7 +24,7 @@
               v-model="selectedWarehouseId"
               @change="getProductsForWarehouse"
             >
-              <option value="">Selecteaza depozit</option>
+              <option value="">Selectează depozit</option>
               <option
                 v-for="warehouse of warehouses"
                 :key="warehouse.id ?? 'all'"
@@ -48,7 +48,7 @@
               v-model="selectedProductId"
               @change="getPriceForProduct"
             >
-              <option value="">Selecteaza produs</option>
+              <option value="">Selectează produs</option>
               <option v-for="product in products" :key="product.id" :value="product.id">
                 {{ product.name }}
               </option>
@@ -61,14 +61,14 @@
             </span>
           </div>
           <div>
-            <label for="destination" class="block">Destinatie</label>
+            <label for="destination" class="block">Destinație</label>
             <select
               name="destination"
               class="p-2 rounded-xl w-full bg-gray-100"
               v-model="selectedDestinationId"
               @change="getPriceForProduct"
             >
-              <option value="">Selecteaza destinatie</option>
+              <option value="">Selectează destinație</option>
               <option
                 v-for="destination in destinations"
                 :key="destination.id"
@@ -95,7 +95,7 @@
             </span>
           </div>
           <div>
-            <label for="price" class="block">Pret</label>
+            <label for="price" class="block">Preț</label>
             <input type="number" class="p-2 rounded-xl w-full bg-gray-100" v-model="priceAtSale" />
             <span
               class="text-red-600 text-sm"
@@ -109,13 +109,13 @@
               class="rounded-xl bg-gray-200 hover:bg-gray-300 p-3"
               @click="router.replace({ name: 'SalesHistory' })"
             >
-              Anuleaza
+              Anulează
             </button>
             <button
               class="rounded-xl bg-accent2 hover:bg-[#62c678] text-gray-50 p-3"
               @click="submitForm"
             >
-              Salveaza
+              Salvează
             </button>
           </div>
         </div>
@@ -161,7 +161,7 @@ onMounted(async () => {
     destinations.value = await getDestinations()
   }
   catch (error) {
-    toast.error('A aparut o eroare la incarcarea formularului')
+    toast.error('A apărut o eroare la încărcarea formularului')
   }
   finally {
     isLoading.value = false
@@ -186,19 +186,19 @@ async function submitForm() {
   errors.value = {}
 
   if (!selectedWarehouseId.value) {
-    errors.value['warehouse'] = 'Selecteaza depozit'
+    errors.value['warehouse'] = 'Selectează un depozit'
   }
   if (!selectedProductId.value) {
-    errors.value['product'] = 'Selecteaza un produs'
+    errors.value['product'] = 'Selectează un produs'
   }
   if (!selectedDestinationId.value) {
-    errors.value['destination'] = 'Selecteaza o destinatie'
+    errors.value['destination'] = 'Selectează o destinație'
   }
   if (!quantity.value || quantity.value <= 0) {
-    errors.value['quantity'] = 'Cantitatea trebuie sa fie un numar pozitiv'
+    errors.value['quantity'] = 'Cantitatea trebuie să fie mai mare decât 0'
   }
   if (!priceAtSale.value || priceAtSale.value <= 0) {
-    errors.value['price'] = 'Pretul trebuie sa fie un numar pozitiv'
+    errors.value['price'] = 'Prețul trebuie să fie mai mare decât 0'
   }
 
   if(Object.values(errors.value).length > 0) {
@@ -215,11 +215,11 @@ async function submitForm() {
 
   try{
     await createSale(createSaleForm)
-    toast.success('Produs adaugat cu succes')
+    toast.success('Produs adăugat cu succes')
     await router.replace({ name: 'SalesHistory' })
   }
   catch(error) {
-    toast.error('A aparut o eroare')
+    toast.error('A apărut o eroare')
   }
 
 }

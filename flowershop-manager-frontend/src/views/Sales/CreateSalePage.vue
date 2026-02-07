@@ -1,7 +1,7 @@
 <template>
   <div class="h-full bg-background text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto">
-      <h1 class="text-h1 text-text_primary mb-4">Adaugare vanzare</h1>
+      <h1 class="text-h1 text-text_primary mb-4">Adăugare vânzare</h1>
       <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
         <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
       </div>
@@ -11,7 +11,7 @@
           <div
             v-if="products.length === 0"
             class="flex items-center justify-center p-4">
-            <p>Nu exista produse</p>
+            <p>Nu există produse</p>
           </div>
           <div
             v-else
@@ -62,7 +62,7 @@
         </div>
 
         <div class="mb-6">
-          <label class="block text-sm mb-2">Pret</label>
+          <label class="block text-sm mb-2">Preț</label>
           <input
             v-model.number="createSaleForm.priceAtSale"
             type="number"
@@ -77,13 +77,13 @@
           @click="goBack"
           class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
         >
-          Anuleaza
+          Anulează
         </button>
         <button
           @click="submitForm"
           class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-10 rounded-xl"
         >
-          Salveaza
+          Salvează
         </button>
       </div>
     </div>
@@ -128,7 +128,7 @@ onMounted( async () => {
     destinations.value = await getDestinations()
   }
   catch(error) {
-    toast.error('A aparut o eroare la incarcarea formuluarului')
+    toast.error('A apărut o eroare la încărcarea formuluarului')
   }
   finally {
     isLoading.value = false
@@ -169,13 +169,13 @@ const submitForm = async () => {
     errors.value['product'] = 'Alege un produs';
   }
   if (createSaleForm.value.destinationId === '') {
-    errors.value['destination'] = 'Alege o destinatie';
+    errors.value['destination'] = 'Alege o destinație';
   }
   if (createSaleForm.value.quantity <= 0) {
-    errors.value['quantity'] = 'Cantitatea trebuie sa fie mai mare de 0'
+    errors.value['quantity'] = 'Cantitatea trebuie să fie mai mare decât 0'
   }
   if (createSaleForm.value.priceAtSale <= 0) {
-    errors.value['price'] = 'Pretul trebuie sa fie mai mare de 0'
+    errors.value['price'] = 'Prețul trebuie să fie mai mare decât 0'
   }
   if (Object.values(errors.value).length > 0) {
     return
@@ -185,11 +185,11 @@ const submitForm = async () => {
 
   try {
     await createSale(createSaleForm.value)
-    toast.success('Vanzare adaugata cu succes')
+    toast.success('Vânzare adăugată cu succes')
     await router.replace({ name: 'Warehouses' })
   }
   catch (error) {
-    toast.error('A aparut o eroare')
+    toast.error('A apărut o eroare')
   }
 };
 </script>
