@@ -2,7 +2,7 @@
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-4 flex flex-col">
       <div class="flex flex-row justify-between items-baseline">
-        <h1 class="text-h1 text-text_primary">Locatii</h1>
+        <h1 class="text-h1 text-text_primary">Locații</h1>
         <div
           class="space-x-2"
           v-if="isAdminLoggedIn"
@@ -80,7 +80,7 @@ async function getWarehousesAsync() {
     warehouses.value = await getWarehouses()
   }
   catch (error) {
-    toast.error('A aparut o eroare la incarcarea locatiilor')
+    toast.error('A apărut o eroare la încarcarea locațiilor')
   }
   finally {
     isLoading.value = false

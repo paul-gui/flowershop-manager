@@ -31,7 +31,7 @@ async function hydrate() {
     }))
   }
   catch (error) {
-    toast.error('A aparut o eroare la incarcarea detaliilor')
+    toast.error('A apărut o eroare la încărcarea formularului')
   }
   finally {
     isLoading.value = false
@@ -48,10 +48,10 @@ async function onSubmit() {
   }
 
   if (createProductRequest.name === ''){
-    validationErrors.value['name'] = 'Introduceti numele produsului'
+    validationErrors.value['name'] = 'Introduceți numele produsului'
   }
   if (createProductRequest.prices.some(p => p.value <= 0 || !p.value)){
-    validationErrors.value['prices'] = 'Pretul produsului trebuie sa fie mai mare decat 0'
+    validationErrors.value['prices'] = 'Prețul produsului trebuie să fie mai mare decât 0'
   }
 
   if (Object.values(validationErrors.value).length > 0) {
@@ -63,7 +63,7 @@ async function onSubmit() {
     toast.success('Produs creat cu succes!')
     goBack()
   } catch (error) {
-    toast.error('A aparut o eroare')
+    toast.error('A apărut o eroare')
   }
 }
 
@@ -79,11 +79,11 @@ function goBack() {
 <template>
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-6">
-      <h1 class="text-h1 text-text_primary">Adaugare produs</h1>
+      <h1 class="text-h1 text-text_primary">Adăugare produs</h1>
       <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
         <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
       </div>
-      <div v-else>
+      <div v-else class="space-y-2">
         <div>
           <label class="block text-sm mb-1">Denumire produs</label>
           <input
@@ -95,7 +95,7 @@ function goBack() {
         </div>
 
         <div>
-          <label class="block mb-2">Pret</label>
+          <label class="block mb-2">Preț</label>
           <div class="space-y-3">
             <div
               v-for="p in form.prices"
@@ -120,13 +120,13 @@ function goBack() {
           @click="onCancel"
           class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-10 rounded-xl"
         >
-          Anuleaza
+          Anulează
         </button>
         <button
           @click="onSubmit"
           class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-10 rounded-xl"
         >
-          Salveaza
+          Salvează
         </button>
       </div>
     </div>

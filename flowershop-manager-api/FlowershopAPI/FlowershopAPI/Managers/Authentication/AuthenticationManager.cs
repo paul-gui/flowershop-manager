@@ -95,10 +95,10 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
         
         await emailSender.SendEmailAsync(
             request.Email,
-            "Reseteaza parola contului tau Flower Shop Manager",
-            $"Am primit o solicitare de resetare a parolei contului tau de pe Flower Shop Manager.\n \n" +
-            $"Daca nu tu ai facut aceasta solicitare, poti ignora acest mesaj.\n \n" +
-            $"In schimb, pentru a continua procesul de resetare al parolei fa click pe acest link: {resetLink}"
+            "Resetează parola contului tău Flower Shop Manager",
+            $"Am primit o solicitare de resetare a parolei contului tău de pe Flower Shop Manager.\n \n" +
+            $"Daca nu tu ai făcut această solicitare, poți ignora acest mesaj.\n \n" +
+            $"În schimb, pentru a continua procesul de resetare al parolei fă click pe acest link: {resetLink}"
         );
     }
 

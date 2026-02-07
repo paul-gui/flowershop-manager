@@ -9,9 +9,9 @@
             @click="goBack"
           >
             <i class="fa fa-arrow-left"></i>
-            Inapoi
+            Înapoi
           </button>
-          <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Istoric Vanzari</h1>
+          <h1 class="text-xl font-semibold text-text_primary sm:text-2xl">Istoric Vânzări</h1>
         </div>
 
         <!-- Filter button (mobile) -->
@@ -45,7 +45,7 @@
 
           <!-- Destination -->
           <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700"> Destinatie </label>
+            <label class="mb-1 block text-sm font-medium text-gray-700"> Destinație </label>
             <select
               class="w-full rounded-lg p-2 text-sm hover:bg-gray-100 cursor-pointer"
               v-model="salesFilterForm.destinationId"
@@ -66,7 +66,7 @@
               class="w-full rounded-lg bg-accent2 hover:bg-accent2_hover px-4 py-2 text-sm text-white"
               @click="getSalesData"
             >
-              Aplica
+              Aplică
             </button>
           </div>
         </div>
@@ -98,11 +98,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Vizualizare</label>
             <select v-model="viewType" class="w-full p-1 mb-3 rounded-lg border-gray-300 text-sm">
               <option value="day">Zi</option>
-              <option value="month">Luna</option>
+              <option value="month">Lună</option>
             </select>
 
             <label class="block text-sm font-medium text-gray-700 mb-1">
-              Selecteaza {{ viewType === 'day' ? 'Ziua' : 'Luna' }}
+              Selectează {{ viewType === 'day' ? 'Ziua' : 'Luna' }}
             </label>
 
             <input
@@ -117,7 +117,7 @@
               @click="acceptSelectedDate"
               class="mt-3 w-full rounded-lg bg-accent2 hover:bg-accent2_hover px-3 py-2 text-white text-sm"
             >
-              Aplica
+              Aplică
             </button>
           </div>
         </div>
@@ -126,24 +126,6 @@
           →
         </button>
       </div>
-
-      <!-- Summary -->
-      <!--      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">-->
-      <!--        <div class="rounded-xl bg-white p-4 shadow-sm">-->
-      <!--          <p class="text-sm text-gray-500">Total Sales</p>-->
-      <!--          <p class="text-2xl font-semibold text-gray-900">124</p>-->
-      <!--        </div>-->
-
-      <!--        <div class="rounded-xl bg-white p-4 shadow-sm">-->
-      <!--          <p class="text-sm text-gray-500">Total Revenue</p>-->
-      <!--          <p class="text-2xl font-semibold text-gray-900">€8,420</p>-->
-      <!--        </div>-->
-
-      <!--        <div class="rounded-xl bg-white p-4 shadow-sm">-->
-      <!--          <p class="text-sm text-gray-500">Products Sold</p>-->
-      <!--          <p class="text-2xl font-semibold text-gray-900">1,352</p>-->
-      <!--        </div>-->
-      <!--      </div>-->
 
       <!-- Sales Table -->
       <div
@@ -159,13 +141,13 @@
           class="rounded-xl bg-white shadow-sm mb-4 p-5 flex flex-col items-center justify-center gap-3"
           v-if="!hasAnySales"
         >
-          <span class="text-sm font-medium text-gray-700">Nu exista vanzari</span>
+          <span class="text-sm font-medium text-gray-700">Nu există vânzări</span>
           <button
             class="border-dashed border-2 p-3 rounded-xl text-sm"
             @click="addProduct(inputDate)"
           >
             <i class="fa fa-plus"></i>
-            Adauga vanzare
+            Adaugă vânzare
           </button>
         </div>
 
@@ -194,11 +176,11 @@
                 <tr>
                   <th class="px-4 py-3 text-left font-semibold text-gray-600">Produs</th>
                   <th class="px-4 py-3 text-left font-semibold text-gray-600">Origine</th>
-                  <th class="px-4 py-3 text-left font-semibold text-gray-600">Destinatie</th>
+                  <th class="px-4 py-3 text-left font-semibold text-gray-600">Destinație</th>
                   <th class="px-4 py-3 text-right font-semibold text-gray-600">Cantitate</th>
-                  <th class="px-4 py-3 text-right font-semibold text-gray-600">Pret / unitate</th>
+                  <th class="px-4 py-3 text-right font-semibold text-gray-600">Preț / unitate</th>
                   <th class="px-4 py-3 text-right font-semibold text-gray-600">Total</th>
-                  <th class="px-4 py-3 text-right">Actiuni</th>
+                  <th class="px-4 py-3 text-right">Acțiuni</th>
                 </tr>
               </thead>
 
@@ -397,7 +379,7 @@ async function hydrateFilters() {
   warehouses.value = [{ id: null, name: 'Toate originile' }, ...(await getWarehouses())]
   salesFilterForm.value.warehouseId = null
 
-  destinations.value = [{ id: null, name: 'Toate destinatiile' }, ...(await getDestinations())]
+  destinations.value = [{ id: null, name: 'Toate destinațiile' }, ...(await getDestinations())]
   salesFilterForm.value.destinationId = null
 }
 
@@ -429,7 +411,7 @@ async function getSalesData() {
     sales.value = res.data
   }
   catch (error) {
-    toast.error('A aparut o eroare la incarcarea vanzarilor')
+    toast.error('A apărut o eroare la încărcarea vânzărilor')
   }
   finally {
     isLoading.value = false
