@@ -9,7 +9,7 @@
       </p>
     </div>
     <div>
-      <label class="block mb-1 font-medium text-text_secondary">Parola</label>
+      <label class="block mb-1 font-medium text-text_secondary">Parolă</label>
       <input v-model="loginForm.password" type="password" class="w-full p-2 border rounded-md border-cards bg-divider focus:outline-none focus:ring-2 focus:ring-indigo-500 text-text_secondary"/>
       <p class="ms-2 text-xs text-red-500" v-if="validationErrors['password']">
         {{ validationErrors['password'] }}
@@ -55,10 +55,10 @@ async function handleLogin() {
   validationErrors.value = {}
 
   if (loginForm.value.email === ''){
-    validationErrors.value['email'] = 'Introduceti un email';
+    validationErrors.value['email'] = 'Introduceți un email';
   }
   if (loginForm.value.password === ''){
-    validationErrors.value['password'] = 'Introduceti o parola';
+    validationErrors.value['password'] = 'Introduceți o parolă';
   }
   if (Object.values(validationErrors.value).length > 0){
     return
@@ -68,11 +68,11 @@ async function handleLogin() {
     loading.value = true
     await auth.login(loginForm.value)
 
-    toast.success('V-ati conectat cu succes');
+    toast.success('V-ați conectat cu succes');
     await router.replace({ path: '/warehouses'});
   }
   catch (err: any) {
-    toast.error('Conectare esuata')
+    toast.error('Conectare eșuată')
   } finally {
     loading.value = false;
   }

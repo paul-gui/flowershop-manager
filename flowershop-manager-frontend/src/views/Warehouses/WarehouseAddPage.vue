@@ -1,10 +1,10 @@
 <template>
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
-      <h1 class="text-h1 text-text_primary">Adaugare locatie</h1>
+      <h1 class="text-h1 text-text_primary">Adăugare locație</h1>
       <form @submit.prevent="handleSubmit" class="flex flex-col justify-center items-center space-y-6 w-full">
         <div class="w-full">
-          <label for="name" class="block text-sm mb-1">Denumire locatie</label>
+          <label for="name" class="block text-sm mb-1">Denumire locație</label>
           <input
             v-model="warehouse.name"
             id="name"
@@ -14,8 +14,8 @@
           <p class="text-red-500 text-sm" v-if="errors['name']">{{ errors['name'] }}</p>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <button @click="goBack" type="button" class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-8 rounded-lg">Anuleaza</button>
-          <button type="submit" class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-8 rounded-lg">Salveaza</button>
+          <button @click="goBack" type="button" class="bg-cards hover:bg-[#3c3860] text-gray-50 py-3 px-8 rounded-lg">Anulează</button>
+          <button type="submit" class="bg-accent2 hover:bg-accent2_hover text-text_accents py-3 px-8 rounded-lg">Salvează</button>
         </div>
       </form>
     </div>
@@ -34,17 +34,17 @@ const errors = ref<Record<string, string>>({})
 
 async function handleSubmit() {
   if(warehouse.value.name === ''){
-    errors.value['name'] = 'Introduceti numele locatiei'
+    errors.value['name'] = 'Introduceți numele locației'
     return
   }
 
   try{
     await createWarehouse(warehouse.value)
-    toast.success('Locatie creata cu succes')
+    toast.success('Locație creată cu succes')
     await router.replace({ path: "/warehouses" })
   }
   catch (error){
-    toast.error('A aparut o eroare')
+    toast.error('A apărut o eroare')
   }
 }
 

@@ -10,7 +10,7 @@ const showMenu = ref(false)
 const logout = () => {
   auth.logout()
   showMenu.value = false
-  toast.success('V-ati deconectat cu succes')
+  toast.success('V-ați deconectat cu succes')
 }
 </script>
 

@@ -2,9 +2,9 @@
   <div class="h-full flex flex-col items-center justify-center">
     <div class="max-w-sm p-6 w-full">
       <form @submit.prevent="handleResetPassword" class="space-y-6 p-8 bg-cards rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold text-center text-text_primary">Resetare parola</h2>
+        <h2 class="text-2xl font-bold text-center text-text_primary">Resetare parolă</h2>
         <div>
-          <label class="block mb-1 font-medium text-text_secondary">Parola noua</label>
+          <label class="block mb-1 font-medium text-text_secondary">Parolă nouă</label>
           <input v-model="password" type="password" class="w-full p-2 rounded-md border border-cards bg-divider focus:outline-none focus:ring-2 focus:ring-indigo-500 text-text_secondary"/>
           <p class="ms-2 text-xs text-red-500" v-if="validationErrors['password']">
             {{ validationErrors['password'] }}
@@ -26,7 +26,7 @@
           </p>
         </div>
         <div>
-          <label class="block mb-1 font-medium text-text_secondary">Confirmare Parola</label>
+          <label class="block mb-1 font-medium text-text_secondary">Confirmare Parolă</label>
           <input
             v-model="passwordConfirmation"
             type="password"
@@ -74,22 +74,22 @@ async function handleResetPassword() {
 
   if (password.value !== '') {
     if (!hasLowercase.test(password.value)) {
-      validationErrors.value['pLowercase'] = 'Parola trebuie sa contina macar o litera mica'
+      validationErrors.value['pLowercase'] = 'Parola trebuie să conțină măcar o literă mică'
     }
     if (!hasUppercase.test(password.value)) {
-      validationErrors.value['pUppercase'] = 'Parola trebuie sa contina macar o litera mare'
+      validationErrors.value['pUppercase'] = 'Parola trebuie să conțină măcar o literă mare'
     }
     if (!hasNumber.test(password.value)) {
-      validationErrors.value['pNumber'] = 'Parola trebuie sa contina macar o cifra'
+      validationErrors.value['pNumber'] = 'Parola trebuie să conțină măcar o cifră'
     }
     if (!hasSpecial.test(password.value)) {
-      validationErrors.value['pSpecial'] = 'Parola trebuie sa contina macar un caracter special'
+      validationErrors.value['pSpecial'] = 'Parola trebuie să conțină măcar un caracter special'
     }
     if (!hasMinLength.test(password.value)) {
-      validationErrors.value['pMinLength'] = 'Parola trebuie sa fie de minim 6 caractere'
+      validationErrors.value['pMinLength'] = 'Parola trebuie să fie de minim 6 caractere'
     }
   } else {
-    validationErrors.value['password'] = 'Introduceti o parola'
+    validationErrors.value['password'] = 'Introduceți o parolă'
   }
   if (password.value !== passwordConfirmation.value) {
     validationErrors.value['passwordConfirmation'] = 'Parolele nu se potrivesc'
@@ -100,7 +100,7 @@ async function handleResetPassword() {
   }
 
   if (!props.token || !props.email){
-    toast.error("Link-ul de resetare al parolei nu este valid")
+    toast.error("Link-ul de resetare a parolei nu este valid")
     return
   }
 
@@ -115,11 +115,11 @@ async function handleResetPassword() {
     }
 
     await resetPassword(resetPasswordRequest)
-    toast.success('Parola a fost resetata cu succes')
+    toast.success('Parola a fost resetată cu succes')
     await router.push({ path: '/' })
   }
   catch (error) {
-    toast.error('A aparut o eroare la resetarea parolei')
+    toast.error('A apărut o eroare la resetarea parolei')
   }
   finally {
     loading.value = false
