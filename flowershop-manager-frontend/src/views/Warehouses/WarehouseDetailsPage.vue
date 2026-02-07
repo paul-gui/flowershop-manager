@@ -1,7 +1,7 @@
 <template>
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
-      <h1 class="text-h1 text-text_primary mb-4">Detalii locație</h1>
+      <h1 class="text-h1 text-text_primary mb-4">Detalii depozit</h1>
       <div v-if="isLoading" class="flex justify-center items-center py-10 gap-2">
         <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
       </div>
@@ -9,7 +9,7 @@
         <!-- Name Field + Delete location button-->
         <div class="flex items-end gap-2 relative">
           <div class="flex-1">
-            <label class="block text-sm mb-1">Denumire locație</label>
+            <label class="block text-sm mb-1">Denumire depozit</label>
             <input
               v-model="name"
               type="text"
@@ -26,7 +26,7 @@
             v-if="showConfirmDialog"
             class="absolute sm:max-w-lg max-w-xs right-0 ml-2 top-20 bg-cards shadow-lg border border-gray-600 rounded-xl p-2 flex items-center space-x-2 z-10 w-max"
           >
-            <p class="overflow-auto">Dorești să ștergi locația?</p>
+            <p class="overflow-auto">Dorești să ștergi depozitul?</p>
             <button
               @click="deleteWarehouseButton"
               class="bg-red-600 text-white p-2 text-sm rounded-lg hover:bg-red-700"
@@ -172,7 +172,7 @@ async function goToProductDetailsPage(id: string) {
 async function onSubmit() {
   if (warehouse.value) {
     if (name.value === '') {
-      errors.value['name'] = 'Introduceți numele locației'
+      errors.value['name'] = 'Introduceți numele depozitului'
       return
     }
 
@@ -193,7 +193,7 @@ async function deleteWarehouseButton() {
   if (warehouse.value) {
     try{
       await deleteWarehouse(warehouse.value.id)
-      toast.success('Locație ștearsă cu succes')
+      toast.success('Depozit șters cu succes')
       await goBack()
     }
     catch (error) {
