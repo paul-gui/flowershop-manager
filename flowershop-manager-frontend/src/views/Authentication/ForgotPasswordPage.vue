@@ -2,8 +2,8 @@
   <div class="h-full flex flex-col items-center justify-center">
     <div class="max-w-sm p-6 w-full">
       <form @submit.prevent="handleFormSubmit" class="space-y-6 p-8 bg-cards rounded-lg shadow-md">
-        <span @click="goBack" class="text-text_secondary cursor-pointer"><i class="fa fa-arrow-left"></i> Inapoi</span>
-        <h2 class="text-2xl font-bold text-center text-text_primary">Solicita resetarea parolei</h2>
+        <span @click="goBack" class="text-text_secondary cursor-pointer"><i class="fa fa-arrow-left"></i> Înapoi</span>
+        <h2 class="text-2xl font-bold text-center text-text_primary">Solicită resetarea parolei</h2>
         <div>
           <label class="block mb-1 font-medium text-text_secondary">Email</label>
           <input
@@ -53,7 +53,7 @@ async function handleFormSubmit() {
   validationErrors.value = {}
 
   if (email.value === '' || !emailRegex.test(email.value)) {
-    validationErrors.value['email'] = 'Introduceti un email valid'
+    validationErrors.value['email'] = 'Introduceți un email valid'
   }
 
   if (Object.values(validationErrors.value).length > 0) {
@@ -68,11 +68,11 @@ async function handleFormSubmit() {
     }
     await forgotPassword(forgotPasswordRequest)
 
-    toast.success('S-a inregistrat solicitarea de resetare a parolei')
+    toast.success('S-a trimis un email de resetare al parolei')
     await router.push({ path: '/' })
   }
   catch (error) {
-    toast.error('A aparut o eroare la solicitarea de resetare a parolei')
+    toast.error('A apărut o eroare la solicitarea de resetare a parolei')
   }
   finally {
     loading.value = false
