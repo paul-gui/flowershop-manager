@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleRegistration" class="space-y-6 bg-cards p-8 rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold text-center text-text_primary">Inregistrare</h2>
+    <h2 class="text-2xl font-bold text-center text-text_primary">Înregistrare</h2>
     <div>
       <label class="block mb-1 font-medium text-text_secondary">Nume</label>
       <input
@@ -24,7 +24,7 @@
       </p>
     </div>
     <div>
-      <label class="block mb-1 font-medium text-text_secondary">Parola</label>
+      <label class="block mb-1 font-medium text-text_secondary">Parolă</label>
       <input
         v-model="user.password"
         type="password"
@@ -50,7 +50,7 @@
       </p>
     </div>
     <div>
-      <label class="block mb-1 font-medium text-text_secondary">Confirmare Parola</label>
+      <label class="block mb-1 font-medium text-text_secondary">Confirmare Parolă</label>
       <input
         v-model="user.passwordConfirmation"
         type="password"
@@ -64,7 +64,7 @@
       type="submit"
       class="w-full bg-accent3 text-text_accents py-2 rounded-md hover:bg-[rgb(128,100,128)]"
     >
-      Inregistrare
+      Înregistrare
     </button>
   </form>
 </template>
@@ -106,29 +106,29 @@ async function handleRegistration() {
 
   //Perform validations
   if (user.value.name === '') {
-    validationErrors.value['name'] = 'Introduceti un nume'
+    validationErrors.value['name'] = 'Introduceți un nume'
   }
   if (user.value.email === '' || !emailRegex.test(user.value.email)) {
-    validationErrors.value['email'] = 'Introduceti un email valid'
+    validationErrors.value['email'] = 'Introduceți un email valid'
   }
   if (user.value.password !== '') {
     if (!hasLowercase.test(user.value.password)) {
-      validationErrors.value['pLowercase'] = 'Parola trebuie sa contina macar o litera mica'
+      validationErrors.value['pLowercase'] = 'Parola trebuie să conțină măcar o literă mică'
     }
     if (!hasUppercase.test(user.value.password)) {
-      validationErrors.value['pUppercase'] = 'Parola trebuie sa contina macar o litera mare'
+      validationErrors.value['pUppercase'] = 'Parola trebuie să conțină măcar o literă mare'
     }
     if (!hasNumber.test(user.value.password)) {
-      validationErrors.value['pNumber'] = 'Parola trebuie sa contina macar o cifra'
+      validationErrors.value['pNumber'] = 'Parola trebuie să conțină măcar o cifră'
     }
     if (!hasSpecial.test(user.value.password)) {
-      validationErrors.value['pSpecial'] = 'Parola trebuie sa contina macar un caracter special'
+      validationErrors.value['pSpecial'] = 'Parola trebuie să conțină măcar un caracter special'
     }
     if (!hasMinLength.test(user.value.password)) {
-      validationErrors.value['pMinLength'] = 'Parola trebuie sa fie de minim 6 caractere'
+      validationErrors.value['pMinLength'] = 'Parola trebuie să fie de minim 6 caractere'
     }
   } else {
-    validationErrors.value['password'] = 'Introduceti o parola'
+    validationErrors.value['password'] = 'Introduceți o parolă'
   }
   if (user.value.password !== user.value.passwordConfirmation) {
     validationErrors.value['passwordConfirmation'] = 'Parolele nu se potrivesc'
@@ -142,11 +142,11 @@ async function handleRegistration() {
     await register(user.value)
     await auth.login(loginCredentials)
 
-    toast.success('V-ati inregistrat cu succes')
+    toast.success('V-ați înregistrat cu succes')
     await router.replace({ path: '/warehouses'})
   }
   catch (error) {
-    toast.error('A avut loc o eroare in timpul inregistrarii')
+    toast.error('A avut loc o eroare în timpul înregistrării')
   }
 }
 </script>
