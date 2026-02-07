@@ -1,10 +1,10 @@
 <template>
   <div class="h-full bg-background content-center text-text_primary p-4 py-12 space-y-4">
     <div class="max-w-md mx-auto space-y-2">
-      <h1 class="text-h1 text-text_primary">Adăugare locație</h1>
+      <h1 class="text-h1 text-text_primary">Adăugare depozit</h1>
       <form @submit.prevent="handleSubmit" class="flex flex-col justify-center items-center space-y-6 w-full">
         <div class="w-full">
-          <label for="name" class="block text-sm mb-1">Denumire locație</label>
+          <label for="name" class="block text-sm mb-1">Denumire depozit</label>
           <input
             v-model="warehouse.name"
             id="name"
@@ -34,13 +34,13 @@ const errors = ref<Record<string, string>>({})
 
 async function handleSubmit() {
   if(warehouse.value.name === ''){
-    errors.value['name'] = 'Introduceți numele locației'
+    errors.value['name'] = 'Introduceți numele depozitului'
     return
   }
 
   try{
     await createWarehouse(warehouse.value)
-    toast.success('Locație creată cu succes')
+    toast.success('Depozit creat cu succes')
     await router.replace({ path: "/warehouses" })
   }
   catch (error){
