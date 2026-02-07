@@ -11,7 +11,12 @@ public class EmailSender(IOptions<EmailSettings> emailSettings) : IEmailSender
 {
     public async Task SendEmailAsync(string to, string subject, string body)
     {
-        var message = new MailMessage(emailSettings.Value.From, to, subject, body);
+        var message = new MailMessage();
+        message.From = new MailAddress(emailSettings.Value.From, emailSettings.Value.FromName);
+        message.To.Add(to);
+        message.Subject = subject;
+        message.Body = body;
+        
         var client = new SmtpClient(emailSettings.Value.Host)
         {
             Port = emailSettings.Value.Port,
