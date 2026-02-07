@@ -62,7 +62,7 @@
     </div>
     <button
       type="submit"
-      class="w-full bg-accent2 text-text_accents py-2 rounded-md hover:bg-[#62c678]"
+      class="w-full bg-accent3 text-text_accents py-2 rounded-md hover:bg-[rgb(128,100,128)]"
     >
       Inregistrare
     </button>
