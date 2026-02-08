@@ -91,7 +91,9 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
             return;
         }
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
-        var resetLink = $"http://localhost:5173/reset-password?email={Uri.EscapeDataString(request.Email)}&token={Uri.EscapeDataString(token)}";
+        var resetLink = $"http://localhost:5173/reset-password?" +
+                        $"email={Uri.EscapeDataString(request.Email)}&" +
+                        $"token={Uri.EscapeDataString(token)}";
         
         await emailSender.SendEmailAsync(
             request.Email,
