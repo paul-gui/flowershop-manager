@@ -93,7 +93,7 @@
           <!-- Picker Popover -->
           <div
             v-if="pickerOpen"
-            class="absolute top-10 left-1/2 -translate-x-1/2 z-20 w-60 rounded-lg bg-white p-4 shadow-lg"
+            class="absolute top-10 left-1/2 -translate-x-1/2 z-20 w-60 rounded-lg bg-white p-4 shadow-lg border"
           >
             <label class="block text-sm font-medium text-gray-700 mb-1">Vizualizare</label>
             <select v-model="viewType" class="w-full p-1 mb-3 rounded-lg border-gray-300 text-sm">
@@ -306,18 +306,30 @@ function goPrevious() {
   const [y, m, d] = inputDate.value.split('-').map(Number)
   const date = new Date(y, m - 1, d ? d : 1, 12, 0, 0)
 
-  if (viewType.value === 'day') date.setDate(date.getDate() - 1)
-  else date.setMonth(date.getMonth() - 1)
-  inputDate.value = date.toISOString().split('T')[0]
+  if (viewType.value === 'day') {
+    date.setDate(date.getDate() - 1)
+    inputDate.value = date.toISOString().split('T')[0]
+  }
+  else {
+    date.setMonth(date.getMonth() - 1)
+    inputDate.value = date.toISOString().split('T')[0].slice(0, 7)
+  }
+
   getSalesData()
 }
 
 function goNext() {
   const [y, m, d] = inputDate.value.split('-').map(Number)
   const date = new Date(y, m - 1, d ? d : 1, 12, 0, 0)
-  if (viewType.value === 'day') date.setDate(date.getDate() + 1)
-  else date.setMonth(date.getMonth() + 1)
-  inputDate.value = date.toISOString().split('T')[0]
+  if (viewType.value === 'day') {
+    date.setDate(date.getDate() + 1)
+    inputDate.value = date.toISOString().split('T')[0]
+  }
+  else {
+    date.setMonth(date.getMonth() + 1)
+    inputDate.value = date.toISOString().split('T')[0].slice(0, 7)
+  }
+
   getSalesData()
 }
 
