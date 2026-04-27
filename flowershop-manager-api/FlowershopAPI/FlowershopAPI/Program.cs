@@ -123,7 +123,6 @@ namespace FlowerShopAPI
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
                 await DbSeeds.SeedRoles(roleManager);
-                await DbSeeds.SeedAdminUser(userManager);
                 await DbSeeds.SeedDestinations(context);
             }
 
