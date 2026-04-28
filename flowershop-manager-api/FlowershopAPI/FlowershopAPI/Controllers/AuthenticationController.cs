@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FlowerShopAPI.Contracts.Authentication;
 using FlowerShopAPI.Managers.Authentication.Contract;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace FlowerShopAPI.Controllers
 {
@@ -9,6 +10,7 @@ namespace FlowerShopAPI.Controllers
     public class AuthenticationController(IAuthenticationManager authenticationManager)
         : ControllerBase
     {
+        [EnableRateLimiting("auth-policy")]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterAccountRequest request)
         {
@@ -22,6 +24,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [EnableRateLimiting("auth-policy")]
         [HttpPost("Login")]
         public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest loginRequest)
         {
@@ -35,6 +38,7 @@ namespace FlowerShopAPI.Controllers
             return Ok(result.Data);
         }
 
+        [EnableRateLimiting("auth-policy")]
         [HttpPost("ForgotPassword")]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordRequest request)
         {
@@ -42,6 +46,7 @@ namespace FlowerShopAPI.Controllers
             return Ok();
         }
 
+        [EnableRateLimiting("auth-policy")]
         [HttpPost("ResetPassword")]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequest request)
         {

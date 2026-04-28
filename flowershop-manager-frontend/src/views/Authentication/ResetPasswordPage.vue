@@ -118,8 +118,14 @@ async function handleResetPassword() {
     toast.success('Parola a fost resetată cu succes')
     await router.push({ path: '/' })
   }
-  catch (error) {
-    toast.error('A apărut o eroare la resetarea parolei')
+  catch (error: any) {
+    const status = error.response?.status
+    if (status === 429) {
+      toast.error('Prea multe încercări, reveniți mai târziu')
+    }
+    else {
+      toast.error('A apărut o eroare la resetarea parolei')
+    }
   }
   finally {
     loading.value = false

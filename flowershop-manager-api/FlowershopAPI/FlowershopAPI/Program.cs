@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.RateLimiting;
 using FlowerShopAPI.Common.Configuration;
 using FlowerShopAPI.Common.Services.EmailSender;
 using FlowerShopAPI.Common.Services.EmailSender.Contract;
@@ -81,6 +82,25 @@ namespace FlowerShopAPI
             });
             builder.Services.AddAuthorization();
 
+            // Add rate limiter for login
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+                
+                options.AddPolicy("auth-policy", httpContext =>
+                {
+                    var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+                    
+                    return RateLimitPartition.GetFixedWindowLimiter(ip, _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 5,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0
+                    });
+                });
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -110,6 +130,7 @@ namespace FlowerShopAPI
 
             app.UseHttpsRedirection();
 
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
 
