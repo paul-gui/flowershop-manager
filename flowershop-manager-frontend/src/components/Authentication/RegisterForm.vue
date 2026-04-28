@@ -145,8 +145,14 @@ async function handleRegistration() {
     toast.success('V-ați înregistrat cu succes')
     await router.replace({ path: '/warehouses'})
   }
-  catch (error) {
-    toast.error('A avut loc o eroare în timpul înregistrării')
+  catch (error: any) {
+    const status = error.response?.status
+    if (status === 429) {
+      toast.error('Prea multe încercări, reveniți mai târziu')
+    }
+    else {
+      toast.error('A avut loc o eroare în timpul înregistrării')
+    }
   }
 }
 </script>

@@ -71,8 +71,14 @@ async function handleLogin() {
     toast.success('V-ați conectat cu succes');
     await router.replace({ path: '/warehouses'});
   }
-  catch (err: any) {
-    toast.error('Conectare eșuată')
+  catch (error: any) {
+    const status = error.response?.status;
+    if (status === 429) {
+      toast.error('Prea multe încercări, reveniți mai târziu')
+    }
+    else {
+      toast.error('Conectare eșuată')
+    }
   } finally {
     loading.value = false;
   }

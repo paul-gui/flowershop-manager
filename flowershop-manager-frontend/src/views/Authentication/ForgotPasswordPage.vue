@@ -71,8 +71,14 @@ async function handleFormSubmit() {
     toast.success('S-a trimis un email de resetare al parolei')
     await router.push({ path: '/' })
   }
-  catch (error) {
-    toast.error('A apărut o eroare la solicitarea de resetare a parolei')
+  catch (error: any) {
+    const status = error.response?.status
+    if (status === 429) {
+      toast.error('Prea multe încercări, reveniți mai târziu')
+    }
+    else {
+      toast.error('A apărut o eroare la solicitarea de resetare a parolei')
+    }
   }
   finally {
     loading.value = false
