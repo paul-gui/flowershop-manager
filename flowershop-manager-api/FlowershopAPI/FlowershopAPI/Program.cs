@@ -26,6 +26,7 @@ namespace FlowerShopAPI
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = builder.Configuration;
 
             //Add EF Core
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -47,16 +48,14 @@ namespace FlowerShopAPI
                 options.AddPolicy("AllowVueApp",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:5173") // Or your frontend URL
+                        policy.WithOrigins($"{configuration["App:FrontendBaseUrl"]}")
                               .AllowAnyHeader()
                               .AllowAnyMethod()
-                              .AllowCredentials(); // If using cookies or Identity
+                              .AllowCredentials(); 
                     });
             });
 
             //Configure JWT
-            var configuration = builder.Configuration;
-
             var issuer = configuration["Jwt:Issuer"];
             var audience = configuration["Jwt:Audience"];
             var key = configuration["Jwt:Key"];
