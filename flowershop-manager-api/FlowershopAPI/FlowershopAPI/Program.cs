@@ -127,6 +127,11 @@ namespace FlowerShopAPI
 
             app.UseCors("AllowVueApp");
 
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHsts();
+            }
+
             app.UseHttpsRedirection();
 
             app.UseRateLimiter();
