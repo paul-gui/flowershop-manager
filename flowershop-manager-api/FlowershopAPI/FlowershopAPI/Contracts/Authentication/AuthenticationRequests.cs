@@ -5,6 +5,7 @@ namespace FlowerShopAPI.Contracts.Authentication;
 public class RegisterAccountRequest
 {
     [Required]
+    [EmailAddress]
     public required string Email { get; set; }
     
     [Required]
@@ -20,6 +21,7 @@ public class RegisterAccountRequest
 public class LoginRequest
 {
     [Required]
+    [EmailAddress]
     public required string Email { get; set; }
     
     [Required]
@@ -29,6 +31,7 @@ public class LoginRequest
 public class ForgotPasswordRequest
 {
     [Required]
+    [EmailAddress]
     public string Email { get; set; }
 }
 
@@ -36,10 +39,14 @@ public class ResetPasswordRequest
 {
     [Required]
     public string Token { get; set; }
+    
     [Required]
+    [EmailAddress]
     public string Email { get; set; }
+    
     [Required]
     public string Password { get; set; }
+    
     [Required]
     public string PasswordConfirmation { get; set; }
 }
