@@ -67,11 +67,13 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+        var expirationHours = double.Parse(configuration["Jwt:ExpirationHours"] ?? "1");
+
         var token = new JwtSecurityToken(
             issuer: configuration["Jwt:Issuer"],
             audience: configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddHours(expirationHours),
             signingCredentials: credentials);
 
         var result = new LoginResponse()
