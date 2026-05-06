@@ -115,6 +115,11 @@ public class AuthenticationManager(UserManager<User> userManager, IConfiguration
             return OperationResult<string>.Failed(["User not found"]);
         }
         
+        if (request.Password != request.PasswordConfirmation)
+        {
+            return OperationResult<string>.Failed(["Passwords don't match!"]);
+        }
+        
         await userManager.ResetPasswordAsync(user, request.Token, request.Password);
         
         return OperationResult<string>.Success("Password modified");
