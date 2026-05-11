@@ -64,7 +64,7 @@ const hasLowercase = /[a-z]/
 const hasUppercase = /[A-Z]/
 const hasNumber = /\d/
 const hasSpecial = /[^A-Za-z0-9]/
-const hasMinLength = /^.{6,}$/
+const hasMinLength = /^.{8,}$/
 
 const validationErrors = ref<Record<string, string>>({})
 const loading = ref<boolean>(false)
@@ -86,7 +86,7 @@ async function handleResetPassword() {
       validationErrors.value['pSpecial'] = 'Parola trebuie să conțină măcar un caracter special'
     }
     if (!hasMinLength.test(password.value)) {
-      validationErrors.value['pMinLength'] = 'Parola trebuie să fie de minim 6 caractere'
+      validationErrors.value['pMinLength'] = 'Parola trebuie să fie de minim 8 caractere'
     }
   } else {
     validationErrors.value['password'] = 'Introduceți o parolă'
