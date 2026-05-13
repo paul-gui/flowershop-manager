@@ -51,15 +51,16 @@ namespace FlowerShopAPI
                 options.TokenLifespan = TimeSpan.FromHours(2)); 
 
             //Configure CORS to allow requests from frontend
+            var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowVueApp",
                     policy =>
                     {
-                        policy.WithOrigins($"{configuration["App:FrontendBaseUrl"]}")
+                        policy.WithOrigins(allowedOrigins)
                               .AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .AllowCredentials(); 
+                              .AllowAnyMethod();
                     });
             });
 
