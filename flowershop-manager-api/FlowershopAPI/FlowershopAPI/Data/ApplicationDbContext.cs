@@ -25,16 +25,7 @@ namespace FlowerShopAPI.Data
                 .HasIndex(p => new { p.ProductId, p.DestinationId })
                 .IsUnique();
 
-            builder.Entity<Destination>().HasData(
-                new Destination {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    Name = "Florărie",
-                },
-                new Destination {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                    Name = "En Gros",
-                }
-            );
+            builder.Entity<Destination>().HasData(SeedData.Destinations);
             
             builder.Entity<Sale>().Property(s => s.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
             builder.Entity<Warehouse>().Property(w => w.IsActive).HasDefaultValue(true).ValueGeneratedOnAdd();
