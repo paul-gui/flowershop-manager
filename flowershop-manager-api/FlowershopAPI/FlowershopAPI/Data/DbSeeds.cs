@@ -20,12 +20,16 @@ namespace FlowerShopAPI.Data
 
         public static async Task SeedDestinations(ApplicationDbContext context)
         {
-            if (!context.Destinations.Any())
+            foreach (var seed in SeedData.Destinations)
             {
-                context.Destinations.AddRange(
-                    new Destination { Id =Guid.NewGuid(), Name = "Florărie"},
-                    new Destination { Id = Guid.NewGuid(), Name = "En Gros"}
-                );
+                if (!context.Destinations.Any(d => d.Id == seed.Id))
+                {
+                    context.Destinations.Add(new Destination { Id = seed.Id, Name = seed.Name });
+                }
+            }
+
+            if (context.ChangeTracker.HasChanges())
+            {
                 await context.SaveChangesAsync();
             }
         }

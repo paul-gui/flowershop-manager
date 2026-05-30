@@ -35,7 +35,7 @@ namespace FlowerShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Destinations");
+                    b.ToTable("Destinations", (string)null);
 
                     b.HasData(
                         new
@@ -73,7 +73,7 @@ namespace FlowerShopAPI.Migrations
                     b.HasIndex("ProductId", "DestinationId")
                         .IsUnique();
 
-                    b.ToTable("Prices");
+                    b.ToTable("Prices", (string)null);
                 });
 
             modelBuilder.Entity("FlowerShopAPI.Models.Product", b =>
@@ -99,7 +99,7 @@ namespace FlowerShopAPI.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("FlowerShopAPI.Models.Sale", b =>
@@ -143,7 +143,7 @@ namespace FlowerShopAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Sales");
+                    b.ToTable("Sales", (string)null);
                 });
 
             modelBuilder.Entity("FlowerShopAPI.Models.User", b =>
@@ -237,7 +237,7 @@ namespace FlowerShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses");
+                    b.ToTable("Warehouses", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
