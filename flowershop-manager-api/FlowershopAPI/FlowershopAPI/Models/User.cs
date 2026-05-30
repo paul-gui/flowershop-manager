@@ -7,13 +7,6 @@ namespace FlowerShopAPI.Models
     {
         [MaxLength(100)]
         public string Name { get; set; } = null!;
-        public Role Role { get; set; }
         public DateTime CreatedAt { get; set; }
-    }
-
-    public enum Role
-    {
-        Admin,
-        User,
     }
 }
